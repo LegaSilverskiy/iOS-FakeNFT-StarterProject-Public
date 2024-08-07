@@ -7,6 +7,6 @@
 
 import Foundation
 
-final class CatalogViewPresenter {
+final class CatalogViewPresenter: CatalogViewPresenterProtocol {
     
 }

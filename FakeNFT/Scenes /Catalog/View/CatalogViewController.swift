@@ -11,9 +11,6 @@ final class CatalogViewController: UIViewController {
     let tableForCollectionsNft = UITableView()
     let filterButton = UIButton()
     
-    //    let testNftButton = UIButton()
-    
-    
     //MARK: - INIT
     init(servicesAssembly: ServicesAssembly) {
         self.servicesAssembly = servicesAssembly
@@ -27,6 +24,7 @@ final class CatalogViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureUI()
+        setupFilterButton()
         setupTableForCollectionsNft()
         setupConstraints()
     }
@@ -35,7 +33,9 @@ final class CatalogViewController: UIViewController {
     
     private func configureUI() {
         configureView()
+        setupNavigationBar()
         addSubviews()
+        setupFilterButton()
     }
     
     private func configureView() {
@@ -46,9 +46,23 @@ final class CatalogViewController: UIViewController {
         view.addSubview(tableForCollectionsNft)
     }
     
+    //MARK: - FILTER BUTTON
+    
+    private func setupFilterButton() {
+        
+    }
+    
+    private func setupFilterButtonConstraints() {
+        filterButton.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            //TODO: запилить констрейнты для фильтров
+        ])
+    }
+    
     // MARK: - TABLE VIEW WITH COLLECTIONS NFT
     private func setupTableForCollectionsNft() {
-        
+        //TODO: сделать описание таблицы. Зарегать ее и т.д.
     }
     
     private func setupTableForCollectionsNftConstraint() {
@@ -67,12 +81,12 @@ final class CatalogViewController: UIViewController {
     //MARK: - NAVIGATION BAR
     
     private func setupNavigationBar() {
-        
+        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: filterButton)
     }
     
 }
 
-    //MARK: - CONSTRAINTS
+//MARK: - CONSTRAINTS
 
 extension CatalogViewController {
     
