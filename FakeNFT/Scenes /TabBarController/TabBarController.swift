@@ -1,30 +1,30 @@
 import UIKit
 
 final class TabBarController: UITabBarController {
-
+    
     private let servicesAssembly: ServicesAssembly
-
+    
     private let profileTabBarItem = UITabBarItem(
         title: NSLocalizedString("tabBarController.tab.profile", comment: ""),
-        image: UIImage(named: "tabBar.profile"),
+        image: .tabBarIconsProfile,
         tag: 0
     )
-
+    
     private let catalogTabBarItem = UITabBarItem(
         title: NSLocalizedString("tabBarController.tab.catalog", comment: ""),
-        image: UIImage(named: "tabBar.catalog"),
+        image: .tabBarIconsCatalog,
         tag: 0
     )
-
+    
     private let cartTabBarItem = UITabBarItem(
         title: NSLocalizedString("tabBarController.tab.cart", comment: ""),
-        image: UIImage(named: "tabBar.cart"),
+        image: .tabBarIconsCart,
         tag: 0
     )
-
+    
     private let statisticsTabBarItem = UITabBarItem(
         title: NSLocalizedString("tabBarController.tab.statistics", comment: ""),
-        image: UIImage(named: "tabBar.statistics"),
+        image: .tabBarIconsStatistics,
         tag: 0
     )
     
@@ -37,11 +37,11 @@ final class TabBarController: UITabBarController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        
         view.backgroundColor = .systemBackground
+        tabBar.unselectedItemTintColor = .tabBarItemsTintColor
         
         setTabs()
     }
@@ -67,7 +67,7 @@ final class TabBarController: UITabBarController {
             servicesAssembly: servicesAssembly
         )
         statisticsController.tabBarItem = statisticsTabBarItem
-
+        
         viewControllers = [profileController, catalogController, cartController, statisticsController]
     }
 }
