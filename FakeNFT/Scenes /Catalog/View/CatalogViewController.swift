@@ -9,7 +9,7 @@ final class CatalogViewController: UIViewController {
     //MARK: - UI PROPERTIES
     
     let tableForCollectionsNft = UITableView()
-    let filterButton = UIButton()
+    let sortButton = UIButton()
     let navigationBar = UINavigationBar()
     
     //MARK: - INIT
@@ -25,7 +25,7 @@ final class CatalogViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         configureUI()
-        setupFilterButton()
+        setupSortButton()
         setupTableForCollectionsNft()
         setupConstraints()
     }
@@ -36,7 +36,7 @@ final class CatalogViewController: UIViewController {
         setupNavigationBar()
         configureView()
         addSubviews()
-        setupFilterButton()
+        setupSortButton()
     }
     
     private func configureView() {
@@ -46,23 +46,24 @@ final class CatalogViewController: UIViewController {
     private func addSubviews() {
         view.addSubview(tableForCollectionsNft)
         view.addSubview(navigationBar)
-        navigationBar.addSubview(filterButton)
+        navigationBar.addSubview(sortButton)
     }
     
-    //MARK: - FILTER BUTTON
+    //MARK: - SORT BUTTON
     
-    private func setupFilterButton() {
-        filterButton.setImage(UIImage(named: "navBar.filter"), for: .normal)
+    private func setupSortButton() {
+        sortButton.setImage(UIImage(named: "navBar.sort"), for: .normal)
+        sortButton.addTarget(self, action: #selector(sortButtonTapped), for: .touchUpInside)
     }
     
-    private func setupFilterButtonConstraints() {
-        filterButton.translatesAutoresizingMaskIntoConstraints = false
+    private func setupSortButtonConstraints() {
+        sortButton.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            filterButton.topAnchor.constraint(equalTo: navigationBar.topAnchor),
-            filterButton.trailingAnchor.constraint(equalTo: navigationBar.trailingAnchor, constant: -9),
-            filterButton.bottomAnchor.constraint(equalTo: navigationBar.bottomAnchor),
-            filterButton.widthAnchor.constraint(equalToConstant: 42)
+            sortButton.topAnchor.constraint(equalTo: navigationBar.topAnchor),
+            sortButton.trailingAnchor.constraint(equalTo: navigationBar.trailingAnchor, constant: -9),
+            sortButton.bottomAnchor.constraint(equalTo: navigationBar.bottomAnchor),
+            sortButton.widthAnchor.constraint(equalToConstant: 42)
         ])
     }
     
@@ -88,7 +89,7 @@ final class CatalogViewController: UIViewController {
     
     private func setupNavigationBar() {
         navigationBar.backgroundColor = .systemBackground
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: filterButton)
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: sortButton)
     }
     
     private func setupNavigationBarConstraints() {
@@ -102,15 +103,34 @@ final class CatalogViewController: UIViewController {
         ])
     }
     
+    //MARK: - ACTIONS
+    
+    @objc func sortButtonTapped() {
+        showAlertController()
+    }
+    
+    //MARK: - UIALERTCONTROLLER
+    
+    private func showAlertController() {
+        let alert = UIAlertController(title: "Сортировка",
+                                      message: nil,
+                                      preferredStyle: .actionSheet)
+        let sortByName = UIAlertAction(title: "Сортировка по имени", style: .default)
+        let sortByNftCount = UIAlertAction(title: "По количеству NFT", style: .default)
+        let cancelAction = UIAlertAction(title: "Закрыть", style: .cancel)
+        [sortByName, sortByNftCount, cancelAction].forEach { alert.addAction($0)}
+        self.present(alert, animated: true)
+    }
+    
 }
 
-//MARK: - CONSTRAINTS
+    //MARK: - CONSTRAINTS
 
 extension CatalogViewController {
     
     private func setupConstraints() {
         setupNavigationBarConstraints()
-        setupFilterButtonConstraints()
+        setupSortButtonConstraints()
         setupTableForCollectionsNftConstraint()
     }
 }
