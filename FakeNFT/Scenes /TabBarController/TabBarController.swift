@@ -1,25 +1,73 @@
 import UIKit
 
 final class TabBarController: UITabBarController {
-
-    var servicesAssembly: ServicesAssembly!
-
-    private let catalogTabBarItem = UITabBarItem(
-        title: NSLocalizedString("Tab.catalog", comment: ""),
-        image: UIImage(systemName: "square.stack.3d.up.fill"),
+    
+    private let servicesAssembly: ServicesAssembly
+    
+    private let profileTabBarItem = UITabBarItem(
+        title: NSLocalizedString("tabBarController.tab.profile", comment: ""),
+        image: .tabBarIconsProfile,
         tag: 0
     )
-
+    
+    private let catalogTabBarItem = UITabBarItem(
+        title: NSLocalizedString("tabBarController.tab.catalog", comment: ""),
+        image: .tabBarIconsCatalog,
+        tag: 0
+    )
+    
+    private let cartTabBarItem = UITabBarItem(
+        title: NSLocalizedString("tabBarController.tab.cart", comment: ""),
+        image: .tabBarIconsCart,
+        tag: 0
+    )
+    
+    private let statisticsTabBarItem = UITabBarItem(
+        title: NSLocalizedString("tabBarController.tab.statistics", comment: ""),
+        image: .tabBarIconsStatistics,
+        tag: 0
+    )
+    
+    init(servicesAssembly: ServicesAssembly) {
+        self.servicesAssembly = servicesAssembly
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-
-        let catalogController = TestCatalogViewController(
+        
+        view.backgroundColor = .systemBackground
+        tabBar.unselectedItemTintColor = .tabBarItemsTintColor
+        
+        setTabs()
+    }
+    
+    private func setTabs() {
+        
+        let profileController = ProfileViewController(
+            servicesAssembly: servicesAssembly
+        )
+        profileController.tabBarItem = profileTabBarItem
+        
+        let catalogController = CatalogViewController(
             servicesAssembly: servicesAssembly
         )
         catalogController.tabBarItem = catalogTabBarItem
-
-        viewControllers = [catalogController]
-
-        view.backgroundColor = .systemBackground
+        
+        let cartController = CartViewController(
+            servicesAssembly: servicesAssembly
+        )
+        cartController.tabBarItem = cartTabBarItem
+        
+        let statisticsController = StatisticsViewController(
+            servicesAssembly: servicesAssembly
+        )
+        statisticsController.tabBarItem = statisticsTabBarItem
+        
+        viewControllers = [profileController, catalogController, cartController, statisticsController]
     }
 }
