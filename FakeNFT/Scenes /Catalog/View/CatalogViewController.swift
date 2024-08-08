@@ -10,6 +10,7 @@ final class CatalogViewController: UIViewController {
     
     let tableForCollectionsNft = UITableView()
     let filterButton = UIButton()
+    let navigationBar = UINavigationBar()
     
     //MARK: - INIT
     init(servicesAssembly: ServicesAssembly) {
@@ -32,8 +33,8 @@ final class CatalogViewController: UIViewController {
     // MARK: - CONFIGURE UI
     
     private func configureUI() {
-        configureView()
         setupNavigationBar()
+        configureView()
         addSubviews()
         setupFilterButton()
     }
@@ -44,19 +45,24 @@ final class CatalogViewController: UIViewController {
     
     private func addSubviews() {
         view.addSubview(tableForCollectionsNft)
+        view.addSubview(navigationBar)
+        navigationBar.addSubview(filterButton)
     }
     
     //MARK: - FILTER BUTTON
     
     private func setupFilterButton() {
-        
+        filterButton.setImage(UIImage(named: "navBar.filter"), for: .normal)
     }
     
     private func setupFilterButtonConstraints() {
         filterButton.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            //TODO: запилить констрейнты для фильтров
+            filterButton.topAnchor.constraint(equalTo: navigationBar.topAnchor),
+            filterButton.trailingAnchor.constraint(equalTo: navigationBar.trailingAnchor, constant: -9),
+            filterButton.bottomAnchor.constraint(equalTo: navigationBar.bottomAnchor),
+            filterButton.widthAnchor.constraint(equalToConstant: 42)
         ])
     }
     
@@ -81,7 +87,19 @@ final class CatalogViewController: UIViewController {
     //MARK: - NAVIGATION BAR
     
     private func setupNavigationBar() {
-        navigationItem.rightBarButtonItem = UIBarButtonItem(customView: filterButton)
+        navigationBar.backgroundColor = .systemBackground
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: filterButton)
+    }
+    
+    private func setupNavigationBarConstraints() {
+        navigationBar.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            navigationBar.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            navigationBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            navigationBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            navigationBar.heightAnchor.constraint(equalToConstant: 42)
+        ])
     }
     
 }
@@ -91,6 +109,8 @@ final class CatalogViewController: UIViewController {
 extension CatalogViewController {
     
     private func setupConstraints() {
+        setupNavigationBarConstraints()
+        setupFilterButtonConstraints()
         setupTableForCollectionsNftConstraint()
     }
 }
