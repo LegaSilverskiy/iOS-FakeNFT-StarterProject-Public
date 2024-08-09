@@ -5,25 +5,25 @@ final class TabBarController: UITabBarController {
     private let servicesAssembly: ServicesAssembly
     
     private let profileTabBarItem = UITabBarItem(
-        title: NSLocalizedString("tabBarController.tab.profile", comment: ""),
+        title: .tabBarItemsProfile,
         image: .tabBarIconsProfile,
         tag: 0
     )
     
     private let catalogTabBarItem = UITabBarItem(
-        title: NSLocalizedString("tabBarController.tab.catalog", comment: ""),
+        title: .tabBarItemsCatalog,
         image: .tabBarIconsCatalog,
         tag: 0
     )
     
     private let cartTabBarItem = UITabBarItem(
-        title: NSLocalizedString("tabBarController.tab.cart", comment: ""),
+        title: .tabBarItemsCart,
         image: .tabBarIconsCart,
         tag: 0
     )
     
     private let statisticsTabBarItem = UITabBarItem(
-        title: NSLocalizedString("tabBarController.tab.statistics", comment: ""),
+        title: .tabBarItemsStatistics,
         image: .tabBarIconsStatistics,
         tag: 0
     )

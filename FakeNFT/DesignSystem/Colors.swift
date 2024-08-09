@@ -24,7 +24,8 @@ extension UIColor {
             alpha: CGFloat(alpha) / 255
         )
     }
-
+    
+    // сюда добавляем цвета нужные для верстки
     // Ниже приведены примеры цветов, настоящие цвета надо взять из фигмы
 
     // Primary Colors
@@ -42,11 +43,7 @@ extension UIColor {
     static let textOnPrimary = UIColor.white
     static let textOnSecondary = UIColor.black
 
-    private static let yaBlackLight = UIColor(hexString: "1A1B22")
-    private static let yaBlackDark = UIColor.white
-    private static let yaLightGrayLight = UIColor(hexString: "#F7F7F8")
-    private static let yaLightGrayDark = UIColor(hexString: "#2C2C2E")
-  
+    // тут создаем константы для цветов с поддержкой темной темы
     static let tabBarItemsTintColor = UIColor { traits in
         return traits.userInterfaceStyle == .dark
         ? .yaBlackDark
@@ -70,4 +67,10 @@ extension UIColor {
         ? .yaBlackDark
         : .yaBlackLight
     }
+    
+    // сюда помещаем цвета, используемые для создания констант, но не используемые в коде напрямую
+    private static let yaBlackLight = UIColor(hexString: "1A1B22")
+    private static let yaBlackDark = UIColor.white
+    private static let yaLightGrayLight = UIColor(hexString: "#F7F7F8")
+    private static let yaLightGrayDark = UIColor(hexString: "#2C2C2E")
 }
