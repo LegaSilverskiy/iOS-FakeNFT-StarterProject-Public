@@ -48,9 +48,10 @@ final class StatisticsViewController: UIViewController {
     }
     
     private func setNavBarButtons () {
-        
+
         let backItem = UIBarButtonItem()
         backItem.title = nil
+        backItem.tintColor = .tabBarItemsTintColor
         navigationItem.backBarButtonItem = backItem
         
         let navBarSortButton = UIBarButtonItem(
