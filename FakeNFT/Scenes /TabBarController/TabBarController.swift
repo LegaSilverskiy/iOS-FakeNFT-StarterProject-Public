@@ -68,6 +68,11 @@ final class TabBarController: UITabBarController {
         )
         statisticsController.tabBarItem = statisticsTabBarItem
         
-        viewControllers = [profileController, catalogController, cartController, statisticsController]
+        let navigationCatalogVC = UINavigationController(rootViewController: catalogController)
+        let navigationCartVC = UINavigationController(rootViewController: cartController)
+        let navigationProfileVC = UINavigationController(rootViewController: profileController)
+        let navigationStatisticVC = UINavigationController(rootViewController: statisticsController)
+        
+        viewControllers = [navigationProfileVC, navigationCatalogVC, navigationCartVC, navigationStatisticVC]
     }
 }
