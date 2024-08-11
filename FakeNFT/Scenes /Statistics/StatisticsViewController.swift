@@ -13,8 +13,9 @@ final class StatisticsViewController: UIViewController {
     init(servicesAssembly: ServicesAssembly) {
         
         self.presenter = StatisticsPresenter(servicesAssembly: servicesAssembly)
-        
+                
         super.init(nibName: nil, bundle: nil)
+        self.navigationController?.isNavigationBarHidden = true
     }
     
     required init?(coder: NSCoder) {
@@ -41,21 +42,27 @@ final class StatisticsViewController: UIViewController {
     private func setUI() {
         
         view.backgroundColor = .systemBackground
-        
-        setSortButton()
+
+        setNavBarButtons()
         setRatingTable()
     }
     
-    private func setSortButton () {
-        sortButton = UIButton.systemButton(with: .navBarIconSort ?? UIImage(), target: self, action: #selector(self.sortButtonPressed))
-        sortButton.tintColor = .tabBarItemsTintColor
-        sortButton.translatesAutoresizingMaskIntoConstraints = false
-        view.addSubview(sortButton)
+    private func setNavBarButtons () {
         
-        sortButton.heightAnchor.constraint(equalToConstant: 42).isActive = true
-        sortButton.widthAnchor.constraint(equalToConstant: 42).isActive = true
-        sortButton.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -9).isActive = true
-        sortButton.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor).isActive = true
+        let backItem = UIBarButtonItem()
+        backItem.title = nil
+        navigationItem.backBarButtonItem = backItem
+        
+        let navBarSortButton = UIBarButtonItem(
+            image: .navBarIconSort,
+            style: .plain,
+            target: self,
+            action: #selector(sortButtonPressed)
+        )
+        
+        navBarSortButton.tintColor = .tabBarItemsTintColor
+        
+        self.navigationItem.rightBarButtonItem = navBarSortButton
     }
     
     private func setRatingTable() {
@@ -69,7 +76,7 @@ final class StatisticsViewController: UIViewController {
         ratingTable.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(ratingTable)
         
-        ratingTable.topAnchor.constraint(equalTo: sortButton.bottomAnchor, constant: 20).isActive = true
+        ratingTable.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20).isActive = true
         ratingTable.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: 0).isActive = true
         ratingTable.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16).isActive = true
         ratingTable.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16).isActive = true

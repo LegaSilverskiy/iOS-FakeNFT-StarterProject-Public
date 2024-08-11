@@ -43,8 +43,10 @@ final class StatisticsPresenter {
         )
     }
     
-    func switchToProfile(for: Int) {
-        
+    func switchToProfile(for index: Int) {
+        let vc = UserCardViewController(servicesAssembly: servicesAssembly)
+        view?.navigationController?.pushViewController(vc, animated: true)
+        print (index + 1)
     }
     
     // MARK: - Private Methods
