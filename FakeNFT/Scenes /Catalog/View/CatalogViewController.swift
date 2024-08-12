@@ -52,7 +52,7 @@ final class CatalogViewController: UIViewController {
     //MARK: - SORT BUTTON
     
     private func setupSortButton() {
-        sortButton.setImage(UIImage(named: "navBar.sort"), for: .normal)
+        sortButton.setImage( .navBarIconSort, for: .normal)
         sortButton.addTarget(self, action: #selector(sortButtonTapped), for: .touchUpInside)
     }
     
