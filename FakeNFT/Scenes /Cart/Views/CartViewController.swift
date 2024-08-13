@@ -2,10 +2,10 @@ import UIKit
 
 final class CartViewController: UIViewController {
     
-    let servicesAssembly: ServicesAssembly
+    private let presenter: CartPresenter
     
     init(servicesAssembly: ServicesAssembly) {
-        self.servicesAssembly = servicesAssembly
+        self.presenter = CartPresenter(servicesAssembly: servicesAssembly)
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -17,9 +17,6 @@ final class CartViewController: UIViewController {
         super.viewDidLoad()
         
         view.backgroundColor = .systemBackground
+        
     }
-    
-    
-    
-    
 }
