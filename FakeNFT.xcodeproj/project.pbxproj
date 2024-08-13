@@ -50,7 +50,8 @@
 		E19CD5AB2A98B56600CA39A5 /* NftImageCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = E19CD5AA2A98B56600CA39A5 /* NftImageCollectionViewCell.swift */; };
 		E1A1B9DA2AA01CE400C3AFBC /* TabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = E1A1B9D92AA01CE400C3AFBC /* TabBarController.swift */; };
 		EBEA4C872C6BD13300A10B44 /* CatalogMainScreenModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBEA4C862C6BD13300A10B44 /* CatalogMainScreenModel.swift */; };
-		EBEA4C8A2C6BD22400A10B44 /* CustomCellTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBEA4C892C6BD22400A10B44 /* CustomCellTableView.swift */; };
+		EBEA4C8A2C6BD22400A10B44 /* CustomCellForTableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBEA4C892C6BD22400A10B44 /* CustomCellForTableView.swift */; };
+		EBEA4C8C2C6BD2D600A10B44 /* CatalogViewController + TableView.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBEA4C8B2C6BD2D600A10B44 /* CatalogViewController + TableView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -117,7 +118,8 @@
 		E1A1B9D92AA01CE400C3AFBC /* TabBarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarController.swift; sourceTree = "<group>"; };
 		E1CD40D92A96BE7D00BE7FE8 /* ru */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = ru; path = ru.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
 		EBEA4C862C6BD13300A10B44 /* CatalogMainScreenModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CatalogMainScreenModel.swift; sourceTree = "<group>"; };
-		EBEA4C892C6BD22400A10B44 /* CustomCellTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCellTableView.swift; sourceTree = "<group>"; };
+		EBEA4C892C6BD22400A10B44 /* CustomCellForTableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomCellForTableView.swift; sourceTree = "<group>"; };
+		EBEA4C8B2C6BD2D600A10B44 /* CatalogViewController + TableView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CatalogViewController + TableView.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -412,6 +414,7 @@
 			isa = PBXGroup;
 			children = (
 				D486EF5A2C6396350023EF6F /* CatalogViewController.swift */,
+				EBEA4C8B2C6BD2D600A10B44 /* CatalogViewController + TableView.swift */,
 			);
 			path = CatalogViews;
 			sourceTree = "<group>";
@@ -426,7 +429,7 @@
 		EBEA4C882C6BD1FA00A10B44 /* CustomCells */ = {
 			isa = PBXGroup;
 			children = (
-				EBEA4C892C6BD22400A10B44 /* CustomCellTableView.swift */,
+				EBEA4C892C6BD22400A10B44 /* CustomCellForTableView.swift */,
 			);
 			path = CustomCells;
 			sourceTree = "<group>";
@@ -610,6 +613,7 @@
 				0CF2C2DB2A783C1B00FDC837 /* LoadingView.swift in Sources */,
 				3F68069729CBBAF100B4F915 /* AppDelegate.swift in Sources */,
 				D486EF5B2C6396350023EF6F /* CatalogViewController.swift in Sources */,
+				EBEA4C8C2C6BD2D600A10B44 /* CatalogViewController + TableView.swift in Sources */,
 				3F68069929CBBAF100B4F915 /* SceneDelegate.swift in Sources */,
 				0C79EE6C2A76DE2E00EE90EA /* ServicesAssemly.swift in Sources */,
 				EBEA4C872C6BD13300A10B44 /* CatalogMainScreenModel.swift in Sources */,
@@ -625,7 +629,7 @@
 				D486EF592C6395CA0023EF6F /* StatisticsViewController.swift in Sources */,
 				D486EF572C6395860023EF6F /* CartViewController.swift in Sources */,
 				3F6806D129CBBE6B00B4F915 /* NetworkClient.swift in Sources */,
-				EBEA4C8A2C6BD22400A10B44 /* CustomCellTableView.swift in Sources */,
+				EBEA4C8A2C6BD22400A10B44 /* CustomCellForTableView.swift in Sources */,
 				0CFCB7442A7802440009A829 /* NftDetailInput.swift in Sources */,
 				D4D5536C2C6608A800684EAC /* LocalizedStrings.swift in Sources */,
 				0C79EE632A76DD1900EE90EA /* RequestConstants.swift in Sources */,
