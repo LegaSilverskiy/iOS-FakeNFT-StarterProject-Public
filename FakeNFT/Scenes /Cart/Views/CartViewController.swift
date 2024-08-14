@@ -11,6 +11,53 @@ final class CartViewController: UIViewController {
         return tableView
     }()
     
+    private let footerPanel: UIStackView = {
+        let stackView = UIStackView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.axis = .horizontal
+        stackView.alignment = .center
+        stackView.spacing = 24
+        
+        return stackView
+    }()
+    
+    private let totalPriceContainer: UIStackView = {
+        let stackView = UIStackView()
+        stackView.translatesAutoresizingMaskIntoConstraints = false
+        stackView.axis = .vertical
+        stackView.spacing = 2
+        
+        return stackView
+    }()
+    
+    private let nftCount: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = UIFont.caption1
+        label.textColor = .tabBarItemsTintColor
+        label.text = "3 NFT"
+        
+        return label
+    }()
+    
+    private let nftTotalPrice: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = UIFont.bodyBold
+        label.textColor = .yaGreen
+        label.text = "5,34 ETH"
+
+        return label
+    }()
+    
+    private let payButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.backgroundColor = .tabBarItemsTintColor
+        button.translatesAutoresizingMaskIntoConstraints = false
+        
+        return button
+    }()
+    
     init(servicesAssembly: ServicesAssembly) {
         self.presenter = CartPresenter(servicesAssembly: servicesAssembly)
         super.init(nibName: nil, bundle: nil)
@@ -23,18 +70,19 @@ final class CartViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
-        
     }
     
     private func setupUI() {
         view.backgroundColor = .systemBackground
         setupViews()
-        
     }
     
     private func setupViews() {
         setupTableView()
         setupSortButton()
+        setupFooterPanel()
+        setupFooterPanelContainers()
+        setupPayButton()
     }
     
     private func setupSortButton() {
@@ -48,7 +96,7 @@ final class CartViewController: UIViewController {
         nftsTableView.dataSource = self
         
         nftsTableView.separatorStyle = .none
-        nftsTableView.contentInset = UIEdgeInsets(top: 20, left: 0, bottom: 0, right: 0)
+        nftsTableView.contentInset = UIEdgeInsets(top: 20, left: 0, bottom: 82, right: 0)
         nftsTableView.delaysContentTouches = false
 
         view.addSubview(nftsTableView)
@@ -57,6 +105,45 @@ final class CartViewController: UIViewController {
             nftsTableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             nftsTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             nftsTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ])
+    }
+    
+    private func setupFooterPanel() {
+        view.addSubview(footerPanel)
+        
+        footerPanel.backgroundColor = .segmentInactive
+        footerPanel.layer.cornerRadius = 12
+        footerPanel.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+        
+        NSLayoutConstraint.activate([
+            footerPanel.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
+            footerPanel.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            footerPanel.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            footerPanel.heightAnchor.constraint(equalToConstant: 76)
+        ])
+    }
+    
+    private func setupFooterPanelContainers() {
+        footerPanel.addArrangedSubview(totalPriceContainer)
+        footerPanel.addArrangedSubview(payButton)
+        
+        totalPriceContainer.addArrangedSubview(nftCount)
+        totalPriceContainer.addArrangedSubview(nftTotalPrice)
+        
+        NSLayoutConstraint.activate([
+            totalPriceContainer.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16)
+        ])
+    }
+    
+    private func setupPayButton() {
+        payButton.setTitle("К оплате", for: .normal)
+        payButton.titleLabel?.font = UIFont.bodyBold
+        payButton.setTitleColor(.textOnPrimary, for: .normal)
+        payButton.layer.cornerRadius = 16
+        
+        NSLayoutConstraint.activate([
+            payButton.heightAnchor.constraint(equalToConstant: 44),
+            payButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
         ])
     }
     

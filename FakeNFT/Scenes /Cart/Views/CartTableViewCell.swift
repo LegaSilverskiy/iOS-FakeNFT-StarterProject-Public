@@ -175,7 +175,7 @@ final class CartTableViewCell: UITableViewCell {
         star.image = UIImage(systemName: "star.fill", withConfiguration: UIImage.SymbolConfiguration(pointSize: 12))
         star.translatesAutoresizingMaskIntoConstraints = false
         star.contentMode = .scaleAspectFit
-        star.tintColor = index < rating ? .yellow : .lightGray
+        star.tintColor = index < rating ? .yaYellow : .segmentInactive
         
         return star
     }
