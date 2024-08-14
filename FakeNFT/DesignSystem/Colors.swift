@@ -45,6 +45,9 @@ extension UIColor {
     
     // epic Statistics
     static let avatarStubTintColor = UIColor(hexString: "#625C5C")
+    
+    // epic Profile
+    static let textFieldTintColor = UIColor(hexString: "#F7F7F8")
 
     // тут создаем константы для цветов с поддержкой темной темы
     static let tabBarItemsTintColor = UIColor { traits in

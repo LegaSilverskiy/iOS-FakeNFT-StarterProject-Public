@@ -2,15 +2,7 @@ import UIKit
 
 final class ProfileViewController: UIViewController {
     
-    let servicesAssembly: ServicesAssembly
-    
-    private let tableNames = ["Мои NFT", "Избранные NFT", "О разработчике"]
-    
-    private lazy var editButton: UIBarButtonItem = {
-        let button = UIBarButtonItem(image: UIImage(systemName: "square.and.pencil"), style: .plain, target: ProfileViewController.self, action: #selector(editButtonTapped))
-        button.tintColor = .tabBarItemsTintColor
-        return button
-    }()
+    private var presenter: ProfilePresenter!
     
     private lazy var containerView: UIView = {
         let view = UIView()
@@ -18,16 +10,16 @@ final class ProfileViewController: UIViewController {
         return view
     }()
     
-    private lazy var authorName: UILabel = {
+    lazy var authorName: UILabel = {
         let title = UILabel()
         title.translatesAutoresizingMaskIntoConstraints = false
         title.font = .headline3
         title.textColor = .textPrimary
-        title.text = "Joaquin Phoenix"
+        title.text = profileDescription[0]
         return title
     }()
     
-    private lazy var authorDescription: UITextView = {
+    lazy var authorDescription: UITextView = {
         let text = UITextView()
         text.translatesAutoresizingMaskIntoConstraints = false
         text.textColor = .textPrimary
@@ -35,7 +27,7 @@ final class ProfileViewController: UIViewController {
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineSpacing = 7
         let attributedString = NSAttributedString(
-            string: "Дизайнер из Казани, люблю цифровое искусство и бейглы. В моей коллекции уже 100+ NFT, и еще больше — на моём сайте. Открыт к коллаборациям.",
+            string: profileDescription[1],
             attributes: [
                 .font: UIFont.caption2,
                 .paragraphStyle: paragraphStyle
@@ -45,7 +37,7 @@ final class ProfileViewController: UIViewController {
         return text
     }()
     
-    private lazy var authorImage: UIImageView = {
+    lazy var authorImage: UIImageView = {
         let image = UIImageView()
         image.translatesAutoresizingMaskIntoConstraints = false
         image.layer.cornerRadius = 16
@@ -53,12 +45,12 @@ final class ProfileViewController: UIViewController {
         return image
     }()
     
-    private lazy var authorLink: UILabel = {
+    lazy var authorLink: UILabel = {
         let title = UILabel()
         title.translatesAutoresizingMaskIntoConstraints = false
         title.font = .caption1
         title.textColor = .primary
-        title.text = "Joaquin Phoenix.com"
+        title.text = profileDescription[2]
         return title
     }()
     
@@ -73,9 +65,13 @@ final class ProfileViewController: UIViewController {
         return tableView
     }()
     
+    private var textViewHeightConstraint: NSLayoutConstraint?
+    private var containerViewHeightConstraint: NSLayoutConstraint?
+    
     init(servicesAssembly: ServicesAssembly) {
-        self.servicesAssembly = servicesAssembly
         super.init(nibName: nil, bundle: nil)
+        self.presenter = ProfilePresenter(servicesAssembly: servicesAssembly)
+        presenter.view = self
     }
     
     required init?(coder: NSCoder) {
@@ -92,6 +88,8 @@ final class ProfileViewController: UIViewController {
     }
     
     private func setupUI() {
+        let editButton = UIBarButtonItem(image: UIImage(systemName: "square.and.pencil"), style: .plain, target: self, action: #selector(editButtonTapped))
+        editButton.tintColor = .tabBarItemsTintColor
         navigationItem.rightBarButtonItem = editButton
         
         view.addSubview(containerView)
@@ -104,11 +102,17 @@ final class ProfileViewController: UIViewController {
     }
     
     private func setupConstraints() {
+        textViewHeightConstraint = authorDescription.heightAnchor.constraint(lessThanOrEqualToConstant: 80)
+        textViewHeightConstraint?.isActive = true
+        
+        containerViewHeightConstraint = containerView.heightAnchor.constraint(lessThanOrEqualToConstant: 200)
+        containerViewHeightConstraint?.isActive = true
+        
+        
         NSLayoutConstraint.activate([
             containerView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             containerView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
             containerView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
-            containerView.heightAnchor.constraint(lessThanOrEqualToConstant: 200),
             
             authorName.leadingAnchor.constraint(equalTo: authorImage.trailingAnchor, constant: 16),
             authorName.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16),
@@ -132,14 +136,12 @@ final class ProfileViewController: UIViewController {
             tableView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor),
             tableView.heightAnchor.constraint(equalToConstant: 162)
-        
         ])
         
-        authorDescription.sizeToFit()
     }
     
     @objc private func editButtonTapped() {
-        
+        presenter.openEditScreen()
     }
 }
 
@@ -151,7 +153,7 @@ extension ProfileViewController: UITableViewDelegate {
 
 extension ProfileViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        tableNames.count
+        presenter.tableNames.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -159,8 +161,39 @@ extension ProfileViewController: UITableViewDataSource {
             return UITableViewCell()
         }
         
-        cell.title.text = tableNames[indexPath.row]
+        cell.title.text = presenter.tableNames[indexPath.row]
         
         return cell
+    }
+}
+
+extension ProfileViewController: SendProfileTextProtocol {
+    var profileDescription: [String] {
+        get {
+            presenter._profileDescription
+        }
+        
+        set {
+            presenter._profileDescription = newValue
+        }
+    }
+    
+    func sendText(_ text: [String]) {
+        presenter.updateProfileTexts(with: text)
+    }
+    
+    func updateConstraintsForTextView(_ textView: UITextView, estimatedSize: CGSize) {
+        textViewHeightConstraint?.isActive = false
+        containerViewHeightConstraint?.isActive = false
+        
+        textViewHeightConstraint = textView.heightAnchor.constraint(equalToConstant: estimatedSize.height + 8)
+        textViewHeightConstraint?.isActive = true
+        
+        containerViewHeightConstraint = containerView.heightAnchor.constraint(equalToConstant: estimatedSize.height + 137)
+        containerViewHeightConstraint?.isActive = true
+        
+        UIView.animate(withDuration: 0.2) {
+            self.view.layoutIfNeeded()
+        }
     }
 }
