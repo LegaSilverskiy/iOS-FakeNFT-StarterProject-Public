@@ -7,7 +7,7 @@ final class CartViewController: UIViewController {
     private let nftsTableView: UITableView = {
         let tableView = UITableView()
         tableView.translatesAutoresizingMaskIntoConstraints = false
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        tableView.register(CartTableViewCell.self, forCellReuseIdentifier: CartTableViewCell.reuseIdentifier)
         return tableView
     }()
     
@@ -49,7 +49,8 @@ final class CartViewController: UIViewController {
         
         nftsTableView.separatorStyle = .none
         nftsTableView.contentInset = UIEdgeInsets(top: 20, left: 0, bottom: 0, right: 0)
-        
+        nftsTableView.delaysContentTouches = false
+
         view.addSubview(nftsTableView)
         NSLayoutConstraint.activate([
             nftsTableView.topAnchor.constraint(equalTo: view.topAnchor),
