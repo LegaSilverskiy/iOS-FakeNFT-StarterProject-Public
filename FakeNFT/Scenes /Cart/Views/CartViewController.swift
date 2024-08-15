@@ -2,7 +2,7 @@ import UIKit
 
 final class CartViewController: UIViewController {
     
-    private let presenter: CartPresenter
+    let presenter: CartPresenter
     
     private let nftsTableView: UITableView = {
         let tableView = UITableView()
@@ -69,6 +69,8 @@ final class CartViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        presenter.delegate = self
         setupUI()
     }
     
@@ -152,3 +154,5 @@ final class CartViewController: UIViewController {
         
     }
 }
+
+

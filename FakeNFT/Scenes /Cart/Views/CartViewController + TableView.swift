@@ -10,8 +10,9 @@ extension CartViewController: UITableViewDelegate, UITableViewDataSource {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: CartTableViewCell.reuseIdentifier, for: indexPath) as? CartTableViewCell else { return UITableViewCell()
         }
         
+        cell.delegate = self
         cell.selectionStyle = .none
-     
+        
         return cell
     }
     

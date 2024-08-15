@@ -1,8 +1,13 @@
 import UIKit
 
+protocol CartTableViewCellDelegate: AnyObject {
+    func didTapButton(in cell: CartTableViewCell)
+}
+
 final class CartTableViewCell: UITableViewCell {
     
     static let reuseIdentifier = "CartTableViewCell"
+    weak var delegate: CartTableViewCellDelegate?
     
     private var stars: [UIView] = []
     
@@ -77,7 +82,7 @@ final class CartTableViewCell: UITableViewCell {
         button.tintColor = .tabBarItemsTintColor
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setImage(UIImage(named: "cart.delete"), for: .normal)
-        
+        button.addTarget(self, action: #selector(cartDeleteButtonPressed), for: .touchUpInside)
         return button
     }()
     
@@ -178,6 +183,11 @@ final class CartTableViewCell: UITableViewCell {
         star.tintColor = index < rating ? .yaYellow : .segmentInactive
         
         return star
+    }
+    
+    @objc
+    private func cartDeleteButtonPressed() {
+        delegate?.didTapButton(in: self)
     }
     
     required init?(coder: NSCoder) {
