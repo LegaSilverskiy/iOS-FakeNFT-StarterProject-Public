@@ -7,22 +7,17 @@
 
 import UIKit
 
-protocol SendProfileTextProtocol: AnyObject {
-    var profileDescription: [String] { get set }
-    func sendText(_ text: [String])
+protocol EditProfileViewProtocol: AnyObject {
+    func viewDidLoad()
 }
 
-final class EditProfileViewController: UIViewController {
+final class EditProfileViewController: UIViewController, EditProfileViewProtocol {
     
-    weak var delegate: SendProfileTextProtocol?
+    weak var delegate: SendTextDelegate?
     
-    private var text: [String] {
-        delegate?.profileDescription ?? []
-    }
+    var text = [String]()
     
-    private var editedText = [String]()
-    
-    private let tableHeaders = ["Имя", "Описание", "Сайт"]
+    var presenter: EditProfilePresenterProtocol?
     
     private let exitButton = {
         let exit = UIButton()
@@ -74,16 +69,27 @@ final class EditProfileViewController: UIViewController {
         return collectionView
     }()
     
+    init(presenter: EditProfilePresenterProtocol?) {
+        self.presenter = presenter
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        text = convertToString()
         
-        view.backgroundColor = .systemBackground
         setupUI()
         setupConstraints()
+        
     }
     
     private func setupUI() {
-        editedText = text
+        view.backgroundColor = .systemBackground
+        presenter?.editedText = text
         view.addSubview(exitButton)
         view.addSubview(authorImage)
         view.addSubview(collectionView)
@@ -108,8 +114,25 @@ final class EditProfileViewController: UIViewController {
     }
     
     @objc private func exitScreen() {
-        delegate?.sendText(editedText)
-        self.dismiss(animated: true)
+        guard let presenter = presenter else { return }
+        
+        presenter.updateAndNotify(text: presenter.editedText) { [weak self] in
+            self?.delegate?.loadPresenter()
+            self?.dismiss(animated: true)
+        }
+    }
+    
+    private func convertToString() -> [String] {
+        guard let presenter else { return [] }
+        return [presenter.profile.name, presenter.profile.description, presenter.profile.website]
+    }
+    
+    private func hideUIElements() {
+        view.isHidden = true
+    }
+    
+    private func showUIElements() {
+        view.isHidden = false
     }
 }
 
@@ -124,12 +147,12 @@ extension EditProfileViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as? TextEditorCollectionViewCell else { return UICollectionViewCell() }
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as? TextEditorCollectionViewCell, let presenter else { return UICollectionViewCell() }
         
-        cell.setText(text: editedText[indexPath.section])
+        cell.setText(text: presenter.editedText[indexPath.section])
         
         cell.textChangeHandler = { [weak self] text in
-            self?.editedText[indexPath.section] = text
+            self?.presenter?.editedText[indexPath.section] = text
         }
         
         return cell
@@ -142,7 +165,7 @@ extension EditProfileViewController: UICollectionViewDataSource {
     ) -> UICollectionReusableView {
         let view = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "header", for: indexPath) as! TextEditorHeaderCollectionViewCell
         
-        view.titleLabel.text = tableHeaders[indexPath.section]
+        view.titleLabel.text = presenter?.tableHeaders[indexPath.section]
         
         return view
     }
@@ -150,10 +173,8 @@ extension EditProfileViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if let cell = collectionView.cellForItem(at: indexPath) as? TextEditorCollectionViewCell {
             cell.textField.becomeFirstResponder()
-            editedText[indexPath.section] = cell.textField.text
-            
+            presenter?.editedText[indexPath.section] = cell.textField.text
         }
-        
     }
 }
 
@@ -167,7 +188,7 @@ extension EditProfileViewController: UICollectionViewDelegateFlowLayout {
         let maxSize = CGSize(width: width, height: .greatestFiniteMagnitude)
         
         let textView = UITextView()
-        textView.text = editedText[indexPath.section]
+        textView.text = presenter?.editedText[indexPath.section]
         textView.font = .bodyRegular
         let height = textView.sizeThatFits(maxSize).height
         

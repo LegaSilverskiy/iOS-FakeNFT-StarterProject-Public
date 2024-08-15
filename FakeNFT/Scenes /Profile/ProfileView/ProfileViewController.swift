@@ -3,13 +3,17 @@ import UIKit
 protocol ProfileViewProtocol: AnyObject {
     func viewDidLoad()
     func updateConstraintsForTextView(_ textView: UITextView, _ estimatedSize: CGSize)
-    func onProfileLoaded(_ profile: Profile)
+    func onProfileLoaded()
     var authorName: UILabel { get set }
     var authorDescription: UITextView { get set }
     var authorLink: UILabel { get set }
 }
 
-final class ProfileViewController: UIViewController, ProfileViewProtocol {
+protocol SendTextDelegate: AnyObject {
+    func loadPresenter()
+}
+
+final class ProfileViewController: UIViewController, ProfileViewProtocol, SendTextDelegate {
     
     private var presenter: ProfilePresenterProtocol
     
@@ -91,19 +95,22 @@ final class ProfileViewController: UIViewController, ProfileViewProtocol {
         
         setupConstraints()
         
-        hideUIElements()
-        
-        presenter.viewDidLoad()
-        
+        loadPresenter()
     }
     
-    func updateUI(with profile: Profile) {
+    func updateUI() {
         presenter.updateProfileTexts()
         showUIElements()
     }
     
-    func onProfileLoaded(_ profile: Profile) {
-        self.updateUI(with: profile)
+    func onProfileLoaded() {
+        
+        self.updateUI()
+    }
+    
+    func loadPresenter() {
+        hideUIElements()
+        presenter.viewDidLoad()
     }
     
     private func setupUI() {
@@ -164,18 +171,21 @@ final class ProfileViewController: UIViewController, ProfileViewProtocol {
     private func hideUIElements() {
         view.isHidden = true
     }
-
+    
     private func showUIElements() {
         view.isHidden = false
     }
     
     @objc private func editButtonTapped() {
-        let editProfileViewController = EditProfileViewController()
+        let networkClient = DefaultNetworkClient()
+        let networkService = EditProfileService(networkClient: networkClient)
+        let presenter = EditProfilePresenter(profileService: networkService, profile: presenter.profile!)
+        let editProfileViewController = EditProfileViewController(presenter: presenter)
+        presenter.view = editProfileViewController
         editProfileViewController.delegate = self
         let editNavController = UINavigationController(rootViewController: editProfileViewController)
         present(editNavController, animated: true)
     }
-    
 }
 
 extension ProfileViewController: UITableViewDelegate {
@@ -200,22 +210,7 @@ extension ProfileViewController: UITableViewDataSource {
     }
 }
 
-extension ProfileViewController: SendProfileTextProtocol {
-    var profileDescription: [String] {
-        get {
-            guard let profile = presenter.profile else { return [] }
-            return profileToArray(profile: profile)
-        }
-        
-        set {
-            presenter._profileDescription = newValue
-        }
-    }
-    
-    func sendText(_ text: [String]) {
-        presenter.updateProfileTexts()
-        profileDescription = text
-    }
+extension ProfileViewController {
     
     func updateConstraintsForTextView(_ textView: UITextView, _ estimatedSize: CGSize) {
         textViewHeightConstraint?.isActive = false
@@ -231,6 +226,6 @@ extension ProfileViewController: SendProfileTextProtocol {
     }
     
     func profileToArray(profile: Profile) -> [String] {
-        return [profile.name, profile.description, profile.website]
+        [profile.name, profile.description, profile.website]
     }
 }

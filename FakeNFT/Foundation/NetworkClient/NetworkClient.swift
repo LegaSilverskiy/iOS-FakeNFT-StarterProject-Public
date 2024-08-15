@@ -124,6 +124,12 @@ struct DefaultNetworkClient: NetworkClient {
            let dtoEncoded = try? encoder.encode(dto) {
             urlRequest.httpBody = dtoEncoded
         }
+        if request.httpMethod == .put {
+            if let body = request.body {
+                urlRequest.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
+                urlRequest.httpBody = body
+            }
+        }
 
         return urlRequest
     }

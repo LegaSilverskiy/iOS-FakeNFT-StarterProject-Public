@@ -10,16 +10,13 @@ import UIKit
 protocol ProfilePresenterProtocol {
     func viewDidLoad()
     func updateProfileTexts()
-    var _profileDescription: [String] { get set }
     var tableNames: [String] { get }
     var profile: Profile? { get set }
 }
 
-final class ProfilePresenter: ProfilePresenterProtocol {
+final class ProfilePresenter: ProfilePresenterProtocol/*, EditProfileDelegate*/ {
     
     weak var view: ProfileViewProtocol?
-    
-    var _profileDescription = ["Joaquin Phoenix", "Дизайнер из Казани, люблю цифровое искусство и бейглы. В моей коллекции уже 100+ NFT, и еще больше — на моём сайте. Открыт к коллаборациям.", "Joaquin Phoenix.com"]
     
     let tableNames = ["Мои NFT", "Избранные NFT", "О разработчике"]
     
@@ -32,7 +29,7 @@ final class ProfilePresenter: ProfilePresenterProtocol {
     }
     
     func viewDidLoad() {
-
+        
         loadData()
     }
     
@@ -79,13 +76,12 @@ final class ProfilePresenter: ProfilePresenterProtocol {
             switch result {
             case .success(let profileResult):
                 profile = convertIntoModel(model: profileResult)
-                view?.onProfileLoaded(profile!)
+                view?.onProfileLoaded()
             case .failure:
-                print(4)
+                print("error on loading profile")
             }
         }
     }
-    
     
     private func convertIntoModel(model: ProfileResult) -> Profile {
         Profile(
