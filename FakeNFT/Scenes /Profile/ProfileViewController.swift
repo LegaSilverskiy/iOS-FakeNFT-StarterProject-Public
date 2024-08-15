@@ -1,8 +1,17 @@
 import UIKit
 
-final class ProfileViewController: UIViewController {
+protocol ProfileViewProtocol: AnyObject {
+    func viewDidLoad()
+    func updateConstraintsForTextView(_ textView: UITextView, _ estimatedSize: CGSize)
+    func onProfileLoaded(_ profile: Profile)
+    var authorName: UILabel { get set }
+    var authorDescription: UITextView { get set }
+    var authorLink: UILabel { get set }
+}
+
+final class ProfileViewController: UIViewController, ProfileViewProtocol {
     
-    private var presenter: ProfilePresenter!
+    private var presenter: ProfilePresenterProtocol
     
     private lazy var containerView: UIView = {
         let view = UIView()
@@ -15,7 +24,6 @@ final class ProfileViewController: UIViewController {
         title.translatesAutoresizingMaskIntoConstraints = false
         title.font = .headline3
         title.textColor = .textPrimary
-        title.text = profileDescription[0]
         return title
     }()
     
@@ -27,7 +35,7 @@ final class ProfileViewController: UIViewController {
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineSpacing = 7
         let attributedString = NSAttributedString(
-            string: profileDescription[1],
+            string: "",
             attributes: [
                 .font: UIFont.caption2,
                 .paragraphStyle: paragraphStyle
@@ -50,7 +58,6 @@ final class ProfileViewController: UIViewController {
         title.translatesAutoresizingMaskIntoConstraints = false
         title.font = .caption1
         title.textColor = .primary
-        title.text = profileDescription[2]
         return title
     }()
     
@@ -68,10 +75,9 @@ final class ProfileViewController: UIViewController {
     private var textViewHeightConstraint: NSLayoutConstraint?
     private var containerViewHeightConstraint: NSLayoutConstraint?
     
-    init(servicesAssembly: ServicesAssembly) {
+    init(presenter: ProfilePresenterProtocol) {
+        self.presenter = presenter
         super.init(nibName: nil, bundle: nil)
-        self.presenter = ProfilePresenter(servicesAssembly: servicesAssembly)
-        presenter.view = self
     }
     
     required init?(coder: NSCoder) {
@@ -81,16 +87,31 @@ final class ProfileViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = .systemBackground
-        
         setupUI()
+        
         setupConstraints()
+        
+        hideUIElements()
+        
+        presenter.viewDidLoad()
+        
+    }
+    
+    func updateUI(with profile: Profile) {
+        presenter.updateProfileTexts()
+        showUIElements()
+    }
+    
+    func onProfileLoaded(_ profile: Profile) {
+        self.updateUI(with: profile)
     }
     
     private func setupUI() {
         let editButton = UIBarButtonItem(image: UIImage(systemName: "square.and.pencil"), style: .plain, target: self, action: #selector(editButtonTapped))
         editButton.tintColor = .tabBarItemsTintColor
         navigationItem.rightBarButtonItem = editButton
+        
+        view.backgroundColor = .systemBackground
         
         view.addSubview(containerView)
         containerView.addSubview(authorName)
@@ -140,9 +161,21 @@ final class ProfileViewController: UIViewController {
         
     }
     
-    @objc private func editButtonTapped() {
-        presenter.openEditScreen()
+    private func hideUIElements() {
+        view.isHidden = true
     }
+
+    private func showUIElements() {
+        view.isHidden = false
+    }
+    
+    @objc private func editButtonTapped() {
+        let editProfileViewController = EditProfileViewController()
+        editProfileViewController.delegate = self
+        let editNavController = UINavigationController(rootViewController: editProfileViewController)
+        present(editNavController, animated: true)
+    }
+    
 }
 
 extension ProfileViewController: UITableViewDelegate {
@@ -170,7 +203,8 @@ extension ProfileViewController: UITableViewDataSource {
 extension ProfileViewController: SendProfileTextProtocol {
     var profileDescription: [String] {
         get {
-            presenter._profileDescription
+            guard let profile = presenter.profile else { return [] }
+            return profileToArray(profile: profile)
         }
         
         set {
@@ -179,10 +213,11 @@ extension ProfileViewController: SendProfileTextProtocol {
     }
     
     func sendText(_ text: [String]) {
-        presenter.updateProfileTexts(with: text)
+        presenter.updateProfileTexts()
+        profileDescription = text
     }
     
-    func updateConstraintsForTextView(_ textView: UITextView, estimatedSize: CGSize) {
+    func updateConstraintsForTextView(_ textView: UITextView, _ estimatedSize: CGSize) {
         textViewHeightConstraint?.isActive = false
         containerViewHeightConstraint?.isActive = false
         
@@ -192,8 +227,10 @@ extension ProfileViewController: SendProfileTextProtocol {
         containerViewHeightConstraint = containerView.heightAnchor.constraint(equalToConstant: estimatedSize.height + 137)
         containerViewHeightConstraint?.isActive = true
         
-        UIView.animate(withDuration: 0.2) {
-            self.view.layoutIfNeeded()
-        }
+        self.view.layoutIfNeeded()
+    }
+    
+    func profileToArray(profile: Profile) -> [String] {
+        return [profile.name, profile.description, profile.website]
     }
 }

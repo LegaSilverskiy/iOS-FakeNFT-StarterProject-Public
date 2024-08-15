@@ -7,36 +7,44 @@
 
 import UIKit
 
-final class ProfilePresenter {
+protocol ProfilePresenterProtocol {
+    func viewDidLoad()
+    func updateProfileTexts()
+    var _profileDescription: [String] { get set }
+    var tableNames: [String] { get }
+    var profile: Profile? { get set }
+}
+
+final class ProfilePresenter: ProfilePresenterProtocol {
     
-    weak var view: ProfileViewController?
-    
-    let servicesAssembly: ServicesAssembly
+    weak var view: ProfileViewProtocol?
     
     var _profileDescription = ["Joaquin Phoenix", "Дизайнер из Казани, люблю цифровое искусство и бейглы. В моей коллекции уже 100+ NFT, и еще больше — на моём сайте. Открыт к коллаборациям.", "Joaquin Phoenix.com"]
     
     let tableNames = ["Мои NFT", "Избранные NFT", "О разработчике"]
     
-    init(servicesAssembly: ServicesAssembly) {
-        self.servicesAssembly = servicesAssembly
+    var profile: Profile?
+    
+    private let profileService: ProfileServiceProtocol
+    
+    init(profileService: ProfileServiceProtocol) {
+        self.profileService = profileService
     }
     
-    func openEditScreen() {
-        let editProfileViewController = EditProfileViewController()
-        editProfileViewController.delegate = view
-        let editNavController = UINavigationController(rootViewController: editProfileViewController)
-        view?.present(editNavController, animated: true)
+    func viewDidLoad() {
+
+        loadData()
     }
     
-    func updateProfileTexts(with text: [String]) {
-        guard let view = view else { return }
+    func updateProfileTexts() {
+        guard let view = view, let profile else { return }
         
-        view.authorName.text = text[0]
+        view.authorName.text = profile.name
         
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineSpacing = 7
         let attributedString = NSAttributedString(
-            string: text[1],
+            string: profile.description,
             attributes: [
                 .font: UIFont.caption2,
                 .paragraphStyle: paragraphStyle
@@ -44,9 +52,7 @@ final class ProfilePresenter {
         view.authorDescription.attributedText = attributedString
         adjustTextViewHeight(view.authorDescription)
         
-        view.authorLink.text = text[2]
-        
-        view.profileDescription = text
+        view.authorLink.text = profile.website
     }
     
     func adjustTextViewHeight(_ textView: UITextView) {
@@ -61,7 +67,31 @@ final class ProfilePresenter {
         frame.size.height = estimatedSize.height
         textView.frame = frame
         
-        // Обновление ограничений
-        view?.updateConstraintsForTextView(textView, estimatedSize: estimatedSize)
+        view?.updateConstraintsForTextView(textView, estimatedSize)
+    }
+    
+    private func loadData() {
+        
+        profileService.loadProfile { [weak self] result in
+            
+            guard let self else { return }
+            
+            switch result {
+            case .success(let profileResult):
+                profile = convertIntoModel(model: profileResult)
+                view?.onProfileLoaded(profile!)
+            case .failure:
+                print(4)
+            }
+        }
+    }
+    
+    
+    private func convertIntoModel(model: ProfileResult) -> Profile {
+        Profile(
+            name: model.name,
+            description: model.description,
+            website: model.website
+        )
     }
 }

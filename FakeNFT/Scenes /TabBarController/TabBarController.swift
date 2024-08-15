@@ -48,9 +48,10 @@ final class TabBarController: UITabBarController {
     
     private func setTabs() {
         
-        let profileController = ProfileViewController(
-            servicesAssembly: servicesAssembly
+        let profileAssembly = ProfileAssembly(
+            servicesAssembler: servicesAssembly
         )
+        let profileController = profileAssembly.build()
         profileController.tabBarItem = profileTabBarItem
         
         let catalogController = CatalogViewController(
