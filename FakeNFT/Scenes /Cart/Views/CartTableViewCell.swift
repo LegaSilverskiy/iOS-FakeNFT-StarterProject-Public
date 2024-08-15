@@ -107,7 +107,6 @@ final class CartTableViewCell: UITableViewCell {
         let label = UILabel()
         label.font = UIFont.bodyBold
         label.textColor = .tabBarItemsTintColor
-        label.text = "1,78 ETH"
         
         return label
     }()
@@ -119,6 +118,14 @@ final class CartTableViewCell: UITableViewCell {
         setupNftImage()
         setupCartDeleteButton()
         setupRatingStars()
+    }
+    
+    func configCell(with model: CartNftModel) {
+        nftTitle.text = model.title
+        nftPrice.text = model.price
+        nftImage.image = model.image
+        
+        updateRatingStars(with: model.rating)
     }
     
     private func setupContainers() {
@@ -147,9 +154,6 @@ final class CartTableViewCell: UITableViewCell {
     }
     
     private func setupNftImage() {
-        nftTitle.text = "Greena"
-        nftImage.image = UIImage(named: "nft-1")
-        
         NSLayoutConstraint.activate([
             nftImage.heightAnchor.constraint(equalToConstant: 108),
             nftImage.widthAnchor.constraint(equalToConstant: 108)
@@ -165,24 +169,25 @@ final class CartTableViewCell: UITableViewCell {
         ])
     }
     
+    
     private func setupRatingStars() {
-        stars = (0...4).map { index in
-            createRatingStar(index: index, rating: 2)
-        }
-        
-        stars.forEach {
-            nftRatingContainer.addArrangedSubview($0)
+        stars = (0..<5).map { _ in
+            let star = UIImageView()
+            
+            star.image = UIImage(systemName: "star.fill", withConfiguration: UIImage.SymbolConfiguration(pointSize: 12))
+            star.translatesAutoresizingMaskIntoConstraints = false
+            star.contentMode = .scaleAspectFit
+            star.tintColor = .segmentInactive
+            nftRatingContainer.addArrangedSubview(star)
+            
+            return star
         }
     }
     
-    private func createRatingStar(index: Int, rating: Int) -> UIImageView {
-        let star = UIImageView()
-        star.image = UIImage(systemName: "star.fill", withConfiguration: UIImage.SymbolConfiguration(pointSize: 12))
-        star.translatesAutoresizingMaskIntoConstraints = false
-        star.contentMode = .scaleAspectFit
-        star.tintColor = index < rating ? .yaYellow : .segmentInactive
-        
-        return star
+    private func updateRatingStars(with rating: Int) {
+        for (index, star) in stars.enumerated() {
+            star.tintColor = index < rating ? .yaYellow : .segmentInactive
+        }
     }
     
     @objc

@@ -59,7 +59,7 @@ final class TabBarController: UITabBarController {
         catalogController.tabBarItem = catalogTabBarItem
         
         let cartController = CartViewController(
-            servicesAssembly: servicesAssembly
+//            servicesAssembly: servicesAssembly
         )
         cartController.tabBarItem = cartTabBarItem
         
