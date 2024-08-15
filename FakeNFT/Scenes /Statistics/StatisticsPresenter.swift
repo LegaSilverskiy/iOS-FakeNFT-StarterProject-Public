@@ -36,6 +36,8 @@ final class StatisticsPresenter {
     private var sortingOption = SortingOptions.rating
     private var sortingOrder = SortingOrder.asc
     private var dataIsLoading = false
+    private var isFirstLoad = true
+    private var alertIsPresented = false
     
     // MARK: - Initializers
     init(servicesAssembly: ServicesAssembly) {
@@ -110,11 +112,14 @@ final class StatisticsPresenter {
             )
             
         case .loadNextPage:
-            dataIsLoading = true
-            loadUsers(page: pagesLoaded + 1,
-                      pageSize: pageSize,
-                      reloadMode: false
-            )
+            if !dataIsLoading {
+                print("запрошена загрузка следующей страницы")
+                dataIsLoading = true
+                loadUsers(page: pagesLoaded + 1,
+                          pageSize: pageSize,
+                          reloadMode: false
+                )
+            }
             
         case .reloadList:
             dataIsLoading = true
@@ -128,16 +133,20 @@ final class StatisticsPresenter {
             view?.hideLoading()
             self.users = users
             self.pagesLoaded = self.users.count / self.pageSize
-            if pagesLoaded == 1 {
+            if isFirstLoad {
+                isFirstLoad.toggle()
                 sortUsers()
             }
             view?.updatetable()
             
         case .failed(let error):
-            dataIsLoading = false
-            let errorModel = makeErrorModel(error)
+            
             view?.hideLoading()
-            view?.showError(errorModel)
+            if !alertIsPresented {
+                alertIsPresented.toggle()
+                let errorModel = makeErrorModel(error)
+                view?.showError(errorModel)
+            }
             
         case .none:
             assertionFailure("StatisticsPresenter can't move to initial state")
@@ -162,7 +171,7 @@ final class StatisticsPresenter {
     }
     
     private func endOfListCheck(for row: Int) {
-        if row == users.count - 3 && !dataIsLoading {
+        if row >= users.count - 5 {
             state = .loadNextPage
         }
     }
@@ -170,15 +179,20 @@ final class StatisticsPresenter {
     private func makeErrorModel(_ error: Error) -> ErrorModel {
         let message: String
         switch error {
+            
         case is NetworkClientError:
             message = NSLocalizedString("Error.network", comment: "")
+            
         default:
             message = NSLocalizedString("Error.unknown", comment: "")
         }
         
         let actionText = NSLocalizedString("Error.repeat", comment: "")
+        
         return ErrorModel(message: message, actionText: actionText) { [weak self] in
-            self?.state = .loadNextPage
+            self?.alertIsPresented = false
+            self?.dataIsLoading = false
+            //            self?.state = .loadNextPage
         }
     }
     
