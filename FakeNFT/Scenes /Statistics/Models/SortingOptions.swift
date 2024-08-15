@@ -7,7 +7,7 @@
 
 import Foundation
 
-enum SortingOptions {
+enum SortingOptions: String {
 
     case name
     case rating
@@ -21,5 +21,10 @@ enum SortingOptions {
         case .rating:
             return .sortingOptionsRating
         }
+    }
+    
+    func asParameter() -> String {
+        
+        return ("sortBy=\(self.rawValue)")
     }
 }

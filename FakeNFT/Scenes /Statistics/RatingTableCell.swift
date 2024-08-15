@@ -4,7 +4,9 @@
 //
 //  Created by Andrey Zhelev on 09.08.2024.
 //
+import Kingfisher
 import UIKit
+
 
 final class RatingTableCell: UITableViewCell {
     
@@ -31,14 +33,29 @@ final class RatingTableCell: UITableViewCell {
         
         ratingLabel.text = String(params.rating)
         
-        if let image = params.avatar {
-            avatarImageView.image = image
+//        avatarImageView.kf.setImage(with: URL(string: params.avatar))
+        if let url = URL(string: params.avatar) {
+            updateUserImage(url: url)
         }
-        nameLabel.text = params.name
+        
+        nameLabel.text = String(params.name.prefix(18))
         nftCountLabel.text = String(params.NFTCount)
     }
     
     // MARK: - Private Methods
+    private func updateUserImage(url: URL) {
+        avatarImageView.kf.indicatorType = .activity
+        let processor = RoundCornerImageProcessor(
+            cornerRadius: CGFloat(UInt.max),
+            backgroundColor: .segmentInactive
+        )
+        avatarImageView.kf.setImage(
+            with: url,
+            placeholder: UIImage.tabBarIconsProfile?.withTintColor(.avatarStubTintColor),
+            options: [.processor(processor)]
+        )
+    }
+    
     private func setUIElements() {
 
         selectionStyle = .none
@@ -47,18 +64,15 @@ final class RatingTableCell: UITableViewCell {
         bgView.layer.cornerRadius = 12
         bgView.layer.masksToBounds = true
 
-        ratingLabel.text = "0"
         ratingLabel.font = .caption1
         ratingLabel.textColor = .tabBarItemsTintColor
         
         avatarImageView = UIImageView(image: UIImage.tabBarIconsProfile?.withTintColor(.avatarStubTintColor))
         
-        nameLabel.text = "John Doe"
         nameLabel.font = .headline3
         nameLabel.textAlignment = .left
         nameLabel.textColor = .tabBarItemsTintColor
         
-        nftCountLabel.text = "10"
         nftCountLabel.font = .headline3
         nftCountLabel.textAlignment = .right
         nftCountLabel.textColor = .tabBarItemsTintColor

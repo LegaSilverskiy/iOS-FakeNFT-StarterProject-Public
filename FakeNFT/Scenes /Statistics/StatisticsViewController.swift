@@ -1,6 +1,6 @@
 import UIKit
 
-final class StatisticsViewController: UIViewController {
+final class StatisticsViewController: UIViewController, ErrorView {
     
     // MARK: - Private Properties
     private let ratingTableRowHeight = 88.0
@@ -8,12 +8,13 @@ final class StatisticsViewController: UIViewController {
     private var presenter: StatisticsPresenter
     private var sortButton = UIButton()
     private var ratingTable = UITableView()
+    internal lazy var activityIndicator = UIActivityIndicatorView()
     
     // MARK: - Initializers
     init(servicesAssembly: ServicesAssembly) {
         
         self.presenter = StatisticsPresenter(servicesAssembly: servicesAssembly)
-                
+        
         super.init(nibName: nil, bundle: nil)
         self.navigationController?.isNavigationBarHidden = true
     }
@@ -27,11 +28,24 @@ final class StatisticsViewController: UIViewController {
         super.viewDidLoad()
         
         presenter.view = self
+        presenter.viewDidLoad()
         
         setUI()
     }
     
     // MARK: - Public Methods
+    
+    func showLoading() {
+        UIBlockingProgressHUD.show()
+    }
+    
+    func hideLoading() {
+        UIBlockingProgressHUD.dismiss()
+    }
+    
+    func updatetable() {
+        ratingTable.reloadData()
+    }
     
     // MARK: - IBAction
     @objc private func sortButtonPressed() {
@@ -42,13 +56,13 @@ final class StatisticsViewController: UIViewController {
     private func setUI() {
         
         view.backgroundColor = .systemBackground
-
+        
         setNavBarButtons()
         setRatingTable()
     }
     
     private func setNavBarButtons () {
-
+        
         let backItem = UIBarButtonItem()
         backItem.title = nil
         backItem.tintColor = .tabBarItemsTintColor

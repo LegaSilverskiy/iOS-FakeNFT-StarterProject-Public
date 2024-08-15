@@ -8,7 +8,7 @@ import UIKit
 
 struct RatingCellParams {    
     let rating: Int
-    let avatar: UIImage?
+    let avatar: String
     let name: String
     let NFTCount: Int
 }

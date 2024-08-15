@@ -7,7 +7,7 @@
 import UIKit
 
 protocol ActionSheetPresenterDelegate: AnyObject {
-    func performSortig(with option: SortingOptions)
+    func sortingParametersUpdated(with option: SortingOptions)
 }
 
 final class ActionSheetPresenter {
@@ -25,7 +25,7 @@ final class ActionSheetPresenter {
         for option in options {
             alert.addAction(UIAlertAction(title: option.localizedTitle(),
                                           style: .default) {_ in
-                delegate.performSortig(with: option)
+                delegate.sortingParametersUpdated(with: option)
             })
         }
         
