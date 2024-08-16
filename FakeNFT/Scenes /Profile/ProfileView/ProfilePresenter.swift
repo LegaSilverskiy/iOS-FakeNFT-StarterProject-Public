@@ -6,10 +6,12 @@
 //
 
 import UIKit
+import Kingfisher
 
 protocol ProfilePresenterProtocol {
     func viewDidLoad()
     func updateProfileTexts()
+    func loadPhoto()
     var tableNames: [String] { get }
     var profile: Profile? { get set }
 }
@@ -83,11 +85,23 @@ final class ProfilePresenter: ProfilePresenterProtocol/*, EditProfileDelegate*/ 
         }
     }
     
+    func loadPhoto() {
+        guard
+            let profileImageURL = profile?.avatar,
+            let url = URL(string: profileImageURL),
+            let view = view
+        else { return }
+        
+        view.authorImage.kf.setImage(with: url)
+        
+    }
+    
     private func convertIntoModel(model: ProfileResult) -> Profile {
         Profile(
             name: model.name,
             description: model.description,
-            website: model.website
+            website: model.website,
+            avatar: model.avatar
         )
     }
 }

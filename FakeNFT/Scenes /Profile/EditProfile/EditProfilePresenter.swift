@@ -56,7 +56,8 @@ final class EditProfilePresenter: EditProfilePresenterProtocol {
                 self.profile = Profile(
                     name: profileResult.name,
                     description: profileResult.description,
-                    website: profileResult.website
+                    website: profileResult.website,
+                    avatar: profileResult.avatar
                 )
                 completion()
                 
@@ -71,7 +72,8 @@ final class EditProfilePresenter: EditProfilePresenterProtocol {
         Profile(
             name: text[0],
             description: text[1],
-            website: text[2]
+            website: text[2],
+            avatar: ""
         )
     }
 }

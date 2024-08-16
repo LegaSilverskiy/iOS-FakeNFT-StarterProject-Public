@@ -7,6 +7,7 @@ protocol ProfileViewProtocol: AnyObject {
     var authorName: UILabel { get set }
     var authorDescription: UITextView { get set }
     var authorLink: UILabel { get set }
+    var authorImage: UIImageView { get set }
 }
 
 protocol SendTextDelegate: AnyObject {
@@ -51,9 +52,9 @@ final class ProfileViewController: UIViewController, ProfileViewProtocol, SendTe
     
     lazy var authorImage: UIImageView = {
         let image = UIImageView()
+        image.layer.cornerRadius = 35
         image.translatesAutoresizingMaskIntoConstraints = false
-        image.layer.cornerRadius = 16
-        image.image = UIImage(named: "User Pic")
+        image.clipsToBounds = true
         return image
     }()
     
@@ -100,6 +101,7 @@ final class ProfileViewController: UIViewController, ProfileViewProtocol, SendTe
     
     func updateUI() {
         presenter.updateProfileTexts()
+        presenter.loadPhoto()
         showUIElements()
     }
     
