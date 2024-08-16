@@ -33,7 +33,6 @@ final class RatingTableCell: UITableViewCell {
         
         ratingLabel.text = String(params.rating)
         
-//        avatarImageView.kf.setImage(with: URL(string: params.avatar))
         if let url = URL(string: params.avatar) {
             updateUserImage(url: url)
         }
@@ -45,30 +44,28 @@ final class RatingTableCell: UITableViewCell {
     // MARK: - Private Methods
     private func updateUserImage(url: URL) {
         avatarImageView.kf.indicatorType = .activity
-        let processor = RoundCornerImageProcessor(
-            cornerRadius: CGFloat(UInt.max),
-            backgroundColor: .segmentInactive
-        )
+        
         avatarImageView.kf.setImage(
             with: url,
-            placeholder: UIImage.tabBarIconsProfile?.withTintColor(.avatarStubTintColor),
-            options: [.processor(processor)]
+            placeholder: UIImage.tabBarIconsProfile?.withTintColor(.avatarStubTintColor)
         )
     }
     
     private func setUIElements() {
-
+        
         selectionStyle = .none
         
         bgView.backgroundColor = .segmentInactive
         bgView.layer.cornerRadius = 12
         bgView.layer.masksToBounds = true
-
+        
         ratingLabel.font = .caption1
         ratingLabel.textColor = .tabBarItemsTintColor
         
         avatarImageView = UIImageView(image: UIImage.tabBarIconsProfile?.withTintColor(.avatarStubTintColor))
         avatarImageView.backgroundColor = .segmentInactive
+        avatarImageView.layer.cornerRadius = 14
+        avatarImageView.layer.masksToBounds = true
         
         nameLabel.font = .headline3
         nameLabel.textAlignment = .left
@@ -82,26 +79,26 @@ final class RatingTableCell: UITableViewCell {
             $0.translatesAutoresizingMaskIntoConstraints = false
             self.contentView.addSubview($0)
         }
-                
+        
         NSLayoutConstraint.activate([
-        bgView.heightAnchor.constraint(equalToConstant: 80),
-        bgView.topAnchor.constraint(equalTo: topAnchor),
-        bgView.trailingAnchor.constraint(equalTo: trailingAnchor),
-        bgView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 35),
-        
-        ratingLabel.centerYAnchor.constraint(equalTo: bgView.centerYAnchor),
-        ratingLabel.centerXAnchor.constraint(equalTo: leadingAnchor, constant: 17),
-        
-        avatarImageView.heightAnchor.constraint(equalToConstant: 28),
-        avatarImageView.widthAnchor.constraint(equalToConstant: 28),
-        avatarImageView.centerYAnchor.constraint(equalTo: bgView.centerYAnchor),
-        avatarImageView.leadingAnchor.constraint(equalTo: bgView.leadingAnchor, constant: 16),
-        
-        nameLabel.centerYAnchor.constraint(equalTo: bgView.centerYAnchor),
-        nameLabel.leadingAnchor.constraint(equalTo: avatarImageView.trailingAnchor, constant: 8),
-        
-        nftCountLabel.centerYAnchor.constraint(equalTo: bgView.centerYAnchor),
-        nftCountLabel.trailingAnchor.constraint(equalTo: bgView.trailingAnchor, constant: -16)
+            bgView.heightAnchor.constraint(equalToConstant: 80),
+            bgView.topAnchor.constraint(equalTo: topAnchor),
+            bgView.trailingAnchor.constraint(equalTo: trailingAnchor),
+            bgView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 35),
+            
+            ratingLabel.centerYAnchor.constraint(equalTo: bgView.centerYAnchor),
+            ratingLabel.centerXAnchor.constraint(equalTo: leadingAnchor, constant: 17),
+            
+            avatarImageView.heightAnchor.constraint(equalToConstant: 28),
+            avatarImageView.widthAnchor.constraint(equalToConstant: 28),
+            avatarImageView.centerYAnchor.constraint(equalTo: bgView.centerYAnchor),
+            avatarImageView.leadingAnchor.constraint(equalTo: bgView.leadingAnchor, constant: 16),
+            
+            nameLabel.centerYAnchor.constraint(equalTo: bgView.centerYAnchor),
+            nameLabel.leadingAnchor.constraint(equalTo: avatarImageView.trailingAnchor, constant: 8),
+            
+            nftCountLabel.centerYAnchor.constraint(equalTo: bgView.centerYAnchor),
+            nftCountLabel.trailingAnchor.constraint(equalTo: bgView.trailingAnchor, constant: -16)
         ])
     }
 }
