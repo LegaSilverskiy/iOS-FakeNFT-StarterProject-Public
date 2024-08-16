@@ -33,6 +33,12 @@ final class StatisticsViewController: UIViewController, ErrorView {
         setUI()
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(true)
+        
+        presenter.viewWllAppear()
+    }
+    
     // MARK: - Public Methods
     
     func showLoading() {

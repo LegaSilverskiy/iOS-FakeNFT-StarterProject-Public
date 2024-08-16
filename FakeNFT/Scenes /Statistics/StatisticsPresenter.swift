@@ -9,7 +9,7 @@ import Foundation
 // MARK: - State
 
 enum StatisticsState {
-    case start, loadNextPage, reloadList, failed(Error), data([User])
+    case show, loadNextPage, failed(Error), data([User])
 }
 
 enum UserDefaultsKeys: String {
@@ -26,7 +26,6 @@ final class StatisticsPresenter {
     private let servicesAssembly: ServicesAssembly
     private let service: UsersService
     private var users: [User] = []
-    private var pagesLoaded = 0
     private var pageSize = 15
     private var state: StatisticsState? {
         didSet {
@@ -36,7 +35,8 @@ final class StatisticsPresenter {
     private var sortingOption = SortingOptions.rating
     private var sortingOrder = SortingOrder.asc
     private var dataIsLoading = false
-    private var isFirstLoad = true
+    private var loadIndicatorNeeded = true
+    private var sortingNeeded = true
     private var alertIsPresented = false
     
     // MARK: - Initializers
@@ -48,7 +48,19 @@ final class StatisticsPresenter {
     // MARK: - Public Methods
     
     func viewDidLoad() {
-        state = .start
+        
+        getSavedSortingOptions()
+    }
+    
+    func viewWllAppear() {
+        
+        if self.users.isEmpty {
+            loadIndicatorNeeded = true
+            sortingNeeded = true
+            state = .loadNextPage
+        } else {
+            state = .show
+        }
     }
     
     func sortButtonPressed() {
@@ -76,7 +88,6 @@ final class StatisticsPresenter {
     func switchToProfile(for index: Int) {
         let vc = UserCardViewController(servicesAssembly: servicesAssembly)
         view?.navigationController?.pushViewController(vc, animated: true)
-        print (index + 1)
     }
     
     // MARK: - Private Methods
@@ -101,46 +112,33 @@ final class StatisticsPresenter {
     private func stateDidChanged() {
         switch state {
             
-        case .start:
-            view?.showLoading()
-            dataIsLoading = true
-            getSavedSortingOptions()
-            print(sortingOption)
-            loadUsers(page: 1,
-                      pageSize: pageSize,
-                      reloadMode: false
-            )
+        case .show:
+            sortUsers()
+            view?.updatetable()
             
         case .loadNextPage:
             if !dataIsLoading {
-                print("запрошена загрузка следующей страницы")
+                if loadIndicatorNeeded {
+                    view?.showLoading()
+                }
+                print("запрошена загрузка следующей страницы") // удалить
                 dataIsLoading = true
-                loadUsers(page: pagesLoaded + 1,
-                          pageSize: pageSize,
-                          reloadMode: false
-                )
+                loadUsers()
             }
-            
-        case .reloadList:
-            dataIsLoading = true
-            loadUsers(page: 1,
-                      pageSize: pageSize,
-                      reloadMode: true
-            )
             
         case .data(let users):
             dataIsLoading = false
             view?.hideLoading()
-            self.users = users
-            self.pagesLoaded = self.users.count / self.pageSize
-            if isFirstLoad {
-                isFirstLoad.toggle()
+            self.users.append(contentsOf: users)
+            loadIndicatorNeeded = false
+            if sortingNeeded {
+                sortingNeeded.toggle()
                 sortUsers()
+                print("сортировка с опцией", sortingOption)   // удалить
             }
             view?.updatetable()
             
         case .failed(let error):
-            
             view?.hideLoading()
             if !alertIsPresented {
                 alertIsPresented.toggle()
@@ -153,14 +151,11 @@ final class StatisticsPresenter {
         }
     }
     
-    private func loadUsers(page: Int,
-                           pageSize: Int,
-                           reloadMode: Bool
-    ) {
-        service.loadUsers(page: page,
-                          pageSize: pageSize,
-                          reloadMode: reloadMode
-        ) { [weak self] result in
+    private func loadUsers() {
+        service.loadUsers(
+            itemsLoaded: users.count,
+            pageSize: pageSize
+        ) {[weak self] result in
             switch result {
             case .success(let users):
                 self?.state = .data(users)
@@ -181,19 +176,26 @@ final class StatisticsPresenter {
         switch error {
             
         case is NetworkClientError:
-            message = NSLocalizedString("Error.network", comment: "")
+            message = .errorNetwork
             
         default:
-            message = NSLocalizedString("Error.unknown", comment: "")
+            message = .errorUnknown
         }
         
-        let actionText = NSLocalizedString("Error.repeat", comment: "")
-        
-        return ErrorModel(message: message, actionText: actionText) { [weak self] in
-            self?.alertIsPresented = false
-            self?.dataIsLoading = false
-            //            self?.state = .loadNextPage
-        }
+        return ErrorModel(
+            message: message,
+            actionText: .buttonsRepeat,
+            action: { [weak self] in
+                self?.alertIsPresented = false
+                self?.dataIsLoading = false
+                self?.state = .loadNextPage
+            },
+            secondaryActionText: .buttonsCancel,
+            secondaryAction: { [weak self] in
+                self?.alertIsPresented = false
+                self?.dataIsLoading = false
+            }
+        )
     }
     
     private func sortUsers() {
@@ -212,7 +214,6 @@ final class StatisticsPresenter {
             })
         }
     }
-    
 }
 
 // MARK: - ActionSheetPresenterDelegate

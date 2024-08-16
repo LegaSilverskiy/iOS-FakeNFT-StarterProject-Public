@@ -18,31 +18,29 @@ final class UsersService {
         self.networkClient = networkClient
     }
     
-    func loadUsers(page: Int,
+    func loadUsers(itemsLoaded: Int,
                    pageSize: Int,
-                   reloadMode: Bool,
                    completion: @escaping UsersCompletion
     ) {
         
-        if page == 1 && !reloadMode {
-            let storedUsers = storage.getUsers()
-            if storedUsers.count > 0 {
-                completion(.success(storedUsers))
-                return
-            }
-        } else if reloadMode {
-            storage.clearData()
+        let storedUsers = storage.getUsers()
+        
+        if storedUsers.count > itemsLoaded {
+            completion(.success(storedUsers))
+            return
         }
         
-        let request = UsersRequest(page: page,
-                                   size: pageSize
+        let pageForLoad = storedUsers.count / max(pageSize, 1) + 1
+        
+        let request = UsersRequest(page: pageForLoad,
+                                   size: max(pageSize, 1)
         )
         
         networkClient.send(request: request, type: [User].self) { [weak storage] result in
             switch result {
             case .success(let users):
                 storage?.saveUsers(users)
-                completion(.success(storage?.getUsers() ?? []))
+                completion(.success(users))
             case .failure(let error):
                 completion(.failure(error))
             }
