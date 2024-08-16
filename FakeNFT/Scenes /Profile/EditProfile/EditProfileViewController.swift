@@ -9,6 +9,7 @@ import UIKit
 
 protocol EditProfileViewProtocol: AnyObject {
     func viewDidLoad()
+    var authorImage: UIImageView { get set }
 }
 
 final class EditProfileViewController: UIViewController, EditProfileViewProtocol {
@@ -28,16 +29,16 @@ final class EditProfileViewController: UIViewController, EditProfileViewProtocol
         return exit
     }()
     
-    private lazy var authorImage: UIButton = {
-        let image = UIButton()
+    lazy var authorImage: UIImageView = {
+        let image = UIImageView()
         image.translatesAutoresizingMaskIntoConstraints = false
-        image.layer.cornerRadius = 32
-        image.setBackgroundImage(UIImage(named: "User Pic"), for: .normal)
+        image.clipsToBounds = true
+        image.layer.cornerRadius = 35
         
         let overlay = UIView()
         overlay.translatesAutoresizingMaskIntoConstraints = false
         overlay.backgroundColor = .black.withAlphaComponent(0.6)
-        overlay.layer.cornerRadius = 32
+        overlay.layer.cornerRadius = 35
         overlay.isUserInteractionEnabled = false
         overlay.clipsToBounds = true
         
@@ -50,12 +51,18 @@ final class EditProfileViewController: UIViewController, EditProfileViewProtocol
             overlay.bottomAnchor.constraint(equalTo: image.bottomAnchor)
         ])
         
-        image.setTitle("Сменить фото", for: .normal)
-        image.setTitleColor(.textOnPrimary, for: .normal)
-        image.titleLabel?.font = .caption3
-        image.titleLabel?.numberOfLines = 2
-        image.titleLabel?.textAlignment = .center
         return image
+    }()
+    
+    private lazy var titleForImage =  {
+        let title = UILabel()
+        title.text = "Сменить \nфото"
+        title.textColor = .textOnPrimary
+        title.font = .caption3
+        title.numberOfLines = 2
+        title.textAlignment = .center
+        title.translatesAutoresizingMaskIntoConstraints = false
+        return title
     }()
     
     lazy var collectionView = {
@@ -88,11 +95,15 @@ final class EditProfileViewController: UIViewController, EditProfileViewProtocol
     }
     
     private func setupUI() {
+        
+        presenter?.loadPhoto()
+        
         view.backgroundColor = .systemBackground
         presenter?.editedText = text
         view.addSubview(exitButton)
         view.addSubview(authorImage)
         view.addSubview(collectionView)
+        authorImage.addSubview(titleForImage)
     }
     
     private func setupConstraints() {
@@ -109,7 +120,10 @@ final class EditProfileViewController: UIViewController, EditProfileViewProtocol
             authorImage.centerXAnchor.constraint(equalTo: view.safeAreaLayoutGuide.centerXAnchor),
             authorImage.topAnchor.constraint(equalTo: exitButton.bottomAnchor, constant: 22),
             authorImage.heightAnchor.constraint(equalToConstant: 70),
-            authorImage.widthAnchor.constraint(equalToConstant: 70)
+            authorImage.widthAnchor.constraint(equalToConstant: 70),
+            
+            titleForImage.centerXAnchor.constraint(equalTo: authorImage.centerXAnchor),
+            titleForImage.centerYAnchor.constraint(equalTo: authorImage.centerYAnchor)
         ])
     }
     
@@ -125,14 +139,6 @@ final class EditProfileViewController: UIViewController, EditProfileViewProtocol
     private func convertToString() -> [String] {
         guard let presenter else { return [] }
         return [presenter.profile.name, presenter.profile.description, presenter.profile.website]
-    }
-    
-    private func hideUIElements() {
-        view.isHidden = true
-    }
-    
-    private func showUIElements() {
-        view.isHidden = false
     }
 }
 

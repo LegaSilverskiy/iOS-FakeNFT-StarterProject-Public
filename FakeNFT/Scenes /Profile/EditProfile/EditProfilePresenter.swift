@@ -6,9 +6,11 @@
 //
 
 import UIKit
+import Kingfisher
 
 protocol EditProfilePresenterProtocol {
     func updateAndNotify(text: [String], completion: @escaping () -> Void)
+    func loadPhoto()
     var editedText: [String] { get set }
     var tableHeaders: [String] { get }
     var profile: Profile { get set }
@@ -66,6 +68,16 @@ final class EditProfilePresenter: EditProfilePresenterProtocol {
                 completion()
             }
         }
+    }
+    
+    func loadPhoto() {
+        guard
+            let url = URL(string: profile.avatar),
+            let view = view
+        else { return }
+        
+        view.authorImage.kf.setImage(with: url)
+        
     }
     
     private func convertStringToProfile(text: [String]) -> Profile {

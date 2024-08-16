@@ -1,4 +1,5 @@
 import UIKit
+import ProgressHUD
 
 protocol ProfileViewProtocol: AnyObject {
     func viewDidLoad()
@@ -171,10 +172,14 @@ final class ProfileViewController: UIViewController, ProfileViewProtocol, SendTe
     }
     
     private func hideUIElements() {
+        navigationController?.isNavigationBarHidden = true
+        ProgressHUD.show()
         view.isHidden = true
     }
     
     private func showUIElements() {
+        navigationController?.isNavigationBarHidden = false
+        ProgressHUD.dismiss()
         view.isHidden = false
     }
     
