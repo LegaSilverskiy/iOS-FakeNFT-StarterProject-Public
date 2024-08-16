@@ -68,6 +68,7 @@ final class RatingTableCell: UITableViewCell {
         ratingLabel.textColor = .tabBarItemsTintColor
         
         avatarImageView = UIImageView(image: UIImage.tabBarIconsProfile?.withTintColor(.avatarStubTintColor))
+        avatarImageView.backgroundColor = .segmentInactive
         
         nameLabel.font = .headline3
         nameLabel.textAlignment = .left
