@@ -64,6 +64,9 @@ final class ProfileViewController: UIViewController, ProfileViewProtocol, SendTe
         title.translatesAutoresizingMaskIntoConstraints = false
         title.font = .caption1
         title.textColor = .primary
+        title.isUserInteractionEnabled = true
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(webviewTapped))
+        title.addGestureRecognizer(tapGesture)
         return title
     }()
     
@@ -192,6 +195,12 @@ final class ProfileViewController: UIViewController, ProfileViewProtocol, SendTe
         editProfileViewController.delegate = self
         let editNavController = UINavigationController(rootViewController: editProfileViewController)
         present(editNavController, animated: true)
+    }
+    
+    @objc private func webviewTapped() {
+        let webViewVC = WebViewController()
+        webViewVC.urlString = authorLink.text
+                navigationController?.pushViewController(webViewVC, animated: true)
     }
 }
 
