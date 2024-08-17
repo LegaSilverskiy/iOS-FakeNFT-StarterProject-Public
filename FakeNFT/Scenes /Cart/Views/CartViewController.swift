@@ -60,8 +60,11 @@ final class CartViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         presenter = CartPresenter(viewController: self)
         presenter?.delegate = self
+        presenter?.loadNfts()
+    
         setupUI()
     }
     
