@@ -3,12 +3,9 @@ import UIKit
 final class StatisticsViewController: UIViewController, ErrorView {
     
     // MARK: - Private Properties
-    private let ratingTableRowHeight = 88.0
-    
     private var presenter: StatisticsPresenter
     private var sortButton = UIButton()
     private var ratingTable = UITableView()
-    internal lazy var activityIndicator = UIActivityIndicatorView()
     
     // MARK: - Initializers
     init(servicesAssembly: ServicesAssembly) {
@@ -130,7 +127,7 @@ extension StatisticsViewController: UITableViewDataSource {
 extension StatisticsViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return ratingTableRowHeight
+        return presenter.getRatingTableRowHeight()
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -138,4 +135,3 @@ extension StatisticsViewController: UITableViewDelegate {
         presenter.switchToProfile(for: indexPath.row)
     }
 }
-

@@ -25,8 +25,9 @@ final class StatisticsPresenter {
     // MARK: - Private Properties
     private let servicesAssembly: ServicesAssembly
     private let service: UsersService
+    private let pageSize = 15
+    private let ratingTableRowHeight = 88.0
     private var users: [User] = []
-    private var pageSize = 15
     private var state: StatisticsState? {
         didSet {
             stateDidChanged()
@@ -69,6 +70,10 @@ final class StatisticsPresenter {
         }
         
         ActionSheetPresenter.show(actionSheet: .actionSheetTitleSorting, with: [.name, .rating], on: view, delegate: self)
+    }
+    
+    func getRatingTableRowHeight() -> CGFloat{
+        ratingTableRowHeight
     }
     
     func getRatingMembersCount() -> Int {
