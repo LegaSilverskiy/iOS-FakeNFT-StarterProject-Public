@@ -5,6 +5,7 @@ protocol ProfileViewProtocol: AnyObject {
     func viewDidLoad()
     func updateConstraintsForTextView(_ textView: UITextView, _ estimatedSize: CGSize)
     func onProfileLoaded()
+    func showAlert()
     var authorName: UILabel { get set }
     var authorDescription: UITextView { get set }
     var authorLink: UILabel { get set }
@@ -15,15 +16,7 @@ protocol SendTextDelegate: AnyObject {
     func loadPresenter()
 }
 
-final class ProfileViewController: UIViewController, ProfileViewProtocol, SendTextDelegate {
-    
-    private var presenter: ProfilePresenterProtocol
-    
-    private lazy var containerView: UIView = {
-        let view = UIView()
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
-    }()
+final class ProfileViewController: UIViewController, ProfileViewProtocol {
     
     lazy var authorName: UILabel = {
         let title = UILabel()
@@ -81,6 +74,13 @@ final class ProfileViewController: UIViewController, ProfileViewProtocol, SendTe
         return tableView
     }()
     
+    private lazy var containerView: UIView = {
+        let view = UIView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+    
+    private var presenter: ProfilePresenterProtocol
     private var textViewHeightConstraint: NSLayoutConstraint?
     private var containerViewHeightConstraint: NSLayoutConstraint?
     
@@ -103,6 +103,28 @@ final class ProfileViewController: UIViewController, ProfileViewProtocol, SendTe
         loadPresenter()
     }
     
+    func showAlert() {
+        let alertController = UIAlertController(title: "Что-то пошло не так(", message: "Не удалось загрузить профиль", preferredStyle: .alert)
+        let okAction = UIAlertAction(title: "Повторить", style: .default) { _ in
+            self.loadPresenter()
+        }
+        alertController.addAction(okAction)
+        present(alertController, animated: true)
+    }
+    
+    func updateConstraintsForTextView(_ textView: UITextView, _ estimatedSize: CGSize) {
+        textViewHeightConstraint?.isActive = false
+        containerViewHeightConstraint?.isActive = false
+        
+        textViewHeightConstraint = textView.heightAnchor.constraint(equalToConstant: estimatedSize.height + 8)
+        textViewHeightConstraint?.isActive = true
+        
+        containerViewHeightConstraint = containerView.heightAnchor.constraint(equalToConstant: estimatedSize.height + 137)
+        containerViewHeightConstraint?.isActive = true
+        
+        self.view.layoutIfNeeded()
+    }
+    
     func updateUI() {
         presenter.updateProfileTexts()
         presenter.loadPhoto()
@@ -114,10 +136,11 @@ final class ProfileViewController: UIViewController, ProfileViewProtocol, SendTe
         self.updateUI()
     }
     
-    func loadPresenter() {
-        hideUIElements()
-        presenter.viewDidLoad()
+    func profileToArray(profile: Profile) -> [String] {
+        [profile.name, profile.description, profile.website]
     }
+    
+    // MARK: - Private
     
     private func setupUI() {
         let editButton = UIBarButtonItem(image: UIImage(systemName: "square.and.pencil"), style: .plain, target: self, action: #selector(editButtonTapped))
@@ -204,6 +227,8 @@ final class ProfileViewController: UIViewController, ProfileViewProtocol, SendTe
     }
 }
 
+// MARK: - TableView
+
 extension ProfileViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: false)
@@ -226,22 +251,13 @@ extension ProfileViewController: UITableViewDataSource {
     }
 }
 
-extension ProfileViewController {
+// MARK: - SendTextDelegate
+
+extension ProfileViewController: SendTextDelegate {
     
-    func updateConstraintsForTextView(_ textView: UITextView, _ estimatedSize: CGSize) {
-        textViewHeightConstraint?.isActive = false
-        containerViewHeightConstraint?.isActive = false
-        
-        textViewHeightConstraint = textView.heightAnchor.constraint(equalToConstant: estimatedSize.height + 8)
-        textViewHeightConstraint?.isActive = true
-        
-        containerViewHeightConstraint = containerView.heightAnchor.constraint(equalToConstant: estimatedSize.height + 137)
-        containerViewHeightConstraint?.isActive = true
-        
-        self.view.layoutIfNeeded()
-    }
-    
-    func profileToArray(profile: Profile) -> [String] {
-        [profile.name, profile.description, profile.website]
+    func loadPresenter() {
+        hideUIElements()
+        presenter.viewDidLoad()
     }
 }
+

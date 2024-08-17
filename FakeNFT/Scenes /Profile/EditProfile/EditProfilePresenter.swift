@@ -50,27 +50,6 @@ final class EditProfilePresenter: EditProfilePresenterProtocol {
         }
     }
     
-    private func updateData(profile: Profile, completion: @escaping () -> Void) {
-        profileService.updateProfile(profile: profile) { [weak self] result in
-            guard let self = self else { return }
-            
-            switch result {
-            case .success(let profileResult):
-                self.profile = Profile(
-                    name: profileResult.name,
-                    description: profileResult.description,
-                    website: profileResult.website,
-                    avatar: profileResult.avatar
-                )
-                completion()
-                
-            case .failure:
-                print("Update failed")
-                completion()
-            }
-        }
-    }
-    
     func updatePhoto() -> UIAlertController {
         let alertController = UIAlertController(title: "Введите URL нового фото", message: nil, preferredStyle: .alert)
         alertController.addTextField { textField in
@@ -103,6 +82,8 @@ final class EditProfilePresenter: EditProfilePresenterProtocol {
         
     }
     
+    // MARK: - Private
+    
     private func convertStringToProfile(text: [String]) -> Profile {
         Profile(
             name: text[0],
@@ -110,5 +91,26 @@ final class EditProfilePresenter: EditProfilePresenterProtocol {
             website: text[2],
             avatar: text[3]
         )
+    }
+    
+    private func updateData(profile: Profile, completion: @escaping () -> Void) {
+        profileService.updateProfile(profile: profile) { [weak self] result in
+            guard let self = self else { return }
+            
+            switch result {
+            case .success(let profileResult):
+                self.profile = Profile(
+                    name: profileResult.name,
+                    description: profileResult.description,
+                    website: profileResult.website,
+                    avatar: profileResult.avatar
+                )
+                completion()
+                
+            case .failure:
+                print("Update failed")
+                completion()
+            }
+        }
     }
 }

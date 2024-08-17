@@ -16,13 +16,13 @@ protocol ProfilePresenterProtocol {
     var profile: Profile? { get set }
 }
 
-final class ProfilePresenter: ProfilePresenterProtocol/*, EditProfileDelegate*/ {
+final class ProfilePresenter: ProfilePresenterProtocol {
     
     weak var view: ProfileViewProtocol?
     
-    let tableNames = ["Мои NFT", "Избранные NFT", "О разработчике"]
-    
     var profile: Profile?
+    
+    let tableNames = ["Мои NFT", "Избранные NFT", "О разработчике"]
     
     private let profileService: ProfileServiceProtocol
     
@@ -69,6 +69,19 @@ final class ProfilePresenter: ProfilePresenterProtocol/*, EditProfileDelegate*/ 
         view?.updateConstraintsForTextView(textView, estimatedSize)
     }
     
+    func loadPhoto() {
+        guard
+            let profileImageURL = profile?.avatar,
+            let url = URL(string: profileImageURL),
+            let view = view
+        else { return }
+        
+        view.authorImage.kf.setImage(with: url)
+        
+    }
+    
+    // MARK: - Private
+    
     private func loadData() {
         
         profileService.loadProfile { [weak self] result in
@@ -80,20 +93,9 @@ final class ProfilePresenter: ProfilePresenterProtocol/*, EditProfileDelegate*/ 
                 profile = convertIntoModel(model: profileResult)
                 view?.onProfileLoaded()
             case .failure:
-                print("error on loading profile")
+                view?.showAlert()
             }
         }
-    }
-    
-    func loadPhoto() {
-        guard
-            let profileImageURL = profile?.avatar,
-            let url = URL(string: profileImageURL),
-            let view = view
-        else { return }
-        
-        view.authorImage.kf.setImage(with: url)
-        
     }
     
     private func convertIntoModel(model: ProfileResult) -> Profile {

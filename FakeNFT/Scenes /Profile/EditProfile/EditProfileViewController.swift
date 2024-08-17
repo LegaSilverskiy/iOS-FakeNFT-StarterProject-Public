@@ -20,15 +20,6 @@ final class EditProfileViewController: UIViewController, EditProfileViewProtocol
     
     var presenter: EditProfilePresenterProtocol?
     
-    private let exitButton = {
-        let exit = UIButton()
-        exit.setImage(UIImage(named: "Cross"), for: .normal)
-        exit.translatesAutoresizingMaskIntoConstraints = false
-        exit.imageView?.tintColor = .textPrimary
-        exit.addTarget(self, action: #selector(exitScreen), for: .touchUpInside)
-        return exit
-    }()
-    
     lazy var authorImage: UIImageView = {
         let image = UIImageView()
         image.translatesAutoresizingMaskIntoConstraints = false
@@ -56,6 +47,17 @@ final class EditProfileViewController: UIViewController, EditProfileViewProtocol
         return image
     }()
     
+    lazy var collectionView = {
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
+        collectionView.backgroundColor = .systemBackground
+        collectionView.dataSource = self
+        collectionView.delegate = self
+        collectionView.register(TextEditorCollectionViewCell.self, forCellWithReuseIdentifier: "cell")
+        collectionView.register(TextEditorHeaderCollectionViewCell.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "header")
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        return collectionView
+    }()
+    
     private lazy var titleForImage =  {
         let title = UILabel()
         title.text = "Сменить \nфото"
@@ -67,16 +69,15 @@ final class EditProfileViewController: UIViewController, EditProfileViewProtocol
         return title
     }()
     
-    lazy var collectionView = {
-        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
-        collectionView.backgroundColor = .systemBackground
-        collectionView.dataSource = self
-        collectionView.delegate = self
-        collectionView.register(TextEditorCollectionViewCell.self, forCellWithReuseIdentifier: "cell")
-        collectionView.register(TextEditorHeaderCollectionViewCell.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "header")
-        collectionView.translatesAutoresizingMaskIntoConstraints = false
-        return collectionView
+    private let exitButton = {
+        let exit = UIButton()
+        exit.setImage(UIImage(named: "Cross"), for: .normal)
+        exit.translatesAutoresizingMaskIntoConstraints = false
+        exit.imageView?.tintColor = .textPrimary
+        exit.addTarget(self, action: #selector(exitScreen), for: .touchUpInside)
+        return exit
     }()
+    
     
     init(presenter: EditProfilePresenterProtocol?) {
         self.presenter = presenter
@@ -94,6 +95,13 @@ final class EditProfileViewController: UIViewController, EditProfileViewProtocol
         setupUI()
         setupConstraints()
         
+    }
+    
+    // MARK: - Private
+    
+    private func convertToString() -> [String] {
+        guard let presenter else { return [] }
+        return [presenter.profile.name, presenter.profile.description, presenter.profile.website, presenter.profile.avatar]
     }
     
     private func setupUI() {
@@ -142,12 +150,9 @@ final class EditProfileViewController: UIViewController, EditProfileViewProtocol
         guard let alert = presenter?.updatePhoto() else { return }
         present(alert, animated: true)
     }
-    
-    private func convertToString() -> [String] {
-        guard let presenter else { return [] }
-        return [presenter.profile.name, presenter.profile.description, presenter.profile.website, presenter.profile.avatar]
-    }
 }
+
+// MARK: - CollectionView
 
 extension EditProfileViewController: UICollectionViewDataSource {
     

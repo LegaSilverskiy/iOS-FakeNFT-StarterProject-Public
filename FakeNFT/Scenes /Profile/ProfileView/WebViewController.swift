@@ -11,7 +11,7 @@ import WebKit
 final class WebViewController: UIViewController {
     var urlString: String?
 
-    let webView = WKWebView()
+    private let webView = WKWebView()
 
     override func viewDidLoad() {
         super.viewDidLoad()
