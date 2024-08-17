@@ -81,7 +81,7 @@ final class EditProfilePresenter: EditProfilePresenterProtocol {
                 return
             }
             self.loadPhoto(with: text)
-            self.editedText.append(text)
+            self.editedText.insert(text, at: 3)
         }
         let dismissAction = UIAlertAction(title: "Отмена", style: .default) { _ in
             

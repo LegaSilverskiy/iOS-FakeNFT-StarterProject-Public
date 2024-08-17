@@ -145,14 +145,15 @@ final class EditProfileViewController: UIViewController, EditProfileViewProtocol
     
     private func convertToString() -> [String] {
         guard let presenter else { return [] }
-        return [presenter.profile.name, presenter.profile.description, presenter.profile.website]
+        return [presenter.profile.name, presenter.profile.description, presenter.profile.website, presenter.profile.avatar]
     }
 }
 
 extension EditProfileViewController: UICollectionViewDataSource {
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        3
+        guard let headers = presenter?.tableHeaders else { return 0}
+        return headers.count
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
