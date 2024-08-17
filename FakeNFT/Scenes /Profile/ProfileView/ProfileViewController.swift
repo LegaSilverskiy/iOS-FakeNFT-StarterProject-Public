@@ -200,7 +200,7 @@ final class ProfileViewController: UIViewController, ProfileViewProtocol, SendTe
     @objc private func webviewTapped() {
         let webViewVC = WebViewController()
         webViewVC.urlString = authorLink.text
-                navigationController?.pushViewController(webViewVC, animated: true)
+        navigationController?.pushViewController(webViewVC, animated: true)
     }
 }
 

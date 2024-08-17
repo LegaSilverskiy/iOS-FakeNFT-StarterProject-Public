@@ -34,6 +34,7 @@ final class EditProfileViewController: UIViewController, EditProfileViewProtocol
         image.translatesAutoresizingMaskIntoConstraints = false
         image.clipsToBounds = true
         image.layer.cornerRadius = 35
+        image.isUserInteractionEnabled = true
         
         let overlay = UIView()
         overlay.translatesAutoresizingMaskIntoConstraints = false
@@ -50,7 +51,8 @@ final class EditProfileViewController: UIViewController, EditProfileViewProtocol
             overlay.topAnchor.constraint(equalTo: image.topAnchor),
             overlay.bottomAnchor.constraint(equalTo: image.bottomAnchor)
         ])
-        
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(imageTapped))
+        image.addGestureRecognizer(tapGesture)
         return image
     }()
     
@@ -96,8 +98,8 @@ final class EditProfileViewController: UIViewController, EditProfileViewProtocol
     
     private func setupUI() {
         
-        presenter?.loadPhoto()
-        
+        presenter?.loadPhoto(with: presenter?.profile.avatar)
+        isModalInPresentation = true
         view.backgroundColor = .systemBackground
         presenter?.editedText = text
         view.addSubview(exitButton)
@@ -134,6 +136,11 @@ final class EditProfileViewController: UIViewController, EditProfileViewProtocol
             self?.delegate?.loadPresenter()
             self?.dismiss(animated: true)
         }
+    }
+    
+    @objc private func imageTapped() {
+        guard let alert = presenter?.updatePhoto() else { return }
+        present(alert, animated: true)
     }
     
     private func convertToString() -> [String] {

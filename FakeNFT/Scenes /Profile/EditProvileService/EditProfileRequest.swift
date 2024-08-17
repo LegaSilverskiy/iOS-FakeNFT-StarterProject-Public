@@ -22,7 +22,8 @@ struct EditProfileRequest: NetworkRequest {
         components.queryItems = [
             URLQueryItem(name: "name", value: profile.name),
             URLQueryItem(name: "description", value: profile.description),
-            URLQueryItem(name: "website", value: profile.website)
+            URLQueryItem(name: "website", value: profile.website),
+            URLQueryItem(name: "avatar", value: profile.avatar)
         ]
         
         if let queryString = components.percentEncodedQuery {

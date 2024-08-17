@@ -10,7 +10,8 @@ import Kingfisher
 
 protocol EditProfilePresenterProtocol {
     func updateAndNotify(text: [String], completion: @escaping () -> Void)
-    func loadPhoto()
+    func loadPhoto(with urlString: String?)
+    func updatePhoto() -> UIAlertController
     var editedText: [String] { get set }
     var tableHeaders: [String] { get }
     var profile: Profile { get set }
@@ -70,10 +71,32 @@ final class EditProfilePresenter: EditProfilePresenterProtocol {
         }
     }
     
-    func loadPhoto() {
+    func updatePhoto() -> UIAlertController {
+        let alertController = UIAlertController(title: "Введите URL нового фото", message: nil, preferredStyle: .alert)
+        alertController.addTextField { textField in
+            textField.placeholder = "Вставьте ссылку"
+        }
+        let okAction = UIAlertAction(title: "Ок", style: .default) { _ in
+            guard let text = alertController.textFields?.first?.text else {
+                return
+            }
+            self.loadPhoto(with: text)
+            self.editedText.append(text)
+        }
+        let dismissAction = UIAlertAction(title: "Отмена", style: .default) { _ in
+            
+            alertController.dismiss(animated: true)
+        }
+        alertController.addAction(okAction)
+        alertController.addAction(dismissAction)
+        return alertController
+    }
+    
+    func loadPhoto(with urlString: String?) {
         guard
-            let url = URL(string: profile.avatar),
-            let view = view
+            let urlString,
+            let url = URL(string: urlString),
+            let view
         else { return }
         
         view.authorImage.kf.setImage(with: url)
@@ -85,7 +108,7 @@ final class EditProfilePresenter: EditProfilePresenterProtocol {
             name: text[0],
             description: text[1],
             website: text[2],
-            avatar: ""
+            avatar: text[3]
         )
     }
 }
