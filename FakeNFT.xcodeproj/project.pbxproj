@@ -296,8 +296,8 @@
 		3F6806C629CBBC4E00B4F915 /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				9AEF3EE82C7211A0009331FC /* CartServices */,
 				3FC8C38F29D245250081F015 /* Requests */,
-				9A43E0712C70001800F2A9E6 /* OrderService.swift */,
 				0C79EE6B2A76DE2E00EE90EA /* ServicesAssemly.swift */,
 				0CFCB73F2A78002A0009A829 /* NftService.swift */,
 			);
@@ -361,10 +361,8 @@
 		3F6806D829CC979D00B4F915 /* Network */ = {
 			isa = PBXGroup;
 			children = (
+				9AEF3EE52C7210AE009331FC /* Cart */,
 				0CFCB7412A78013E0009A829 /* Nft.swift */,
-				9A43E06F2C6FBF1700F2A9E6 /* Order.swift */,
-				9A43E0732C70038100F2A9E6 /* CartNft.swift */,
-				9A9117EA2C7180C800774E64 /* CartInteractor.swift */,
 			);
 			path = Network;
 			sourceTree = "<group>";
@@ -383,11 +381,8 @@
 			isa = PBXGroup;
 			children = (
 				D486EF562C6395860023EF6F /* CartViewController.swift */,
-				9A238E5D2C6BA26000D75687 /* CartViewController + TableView.swift */,
 				9A238E5F2C6BA85100D75687 /* CartTableViewCell.swift */,
 				9A238E612C6D606F00D75687 /* CartDeleteViewController.swift */,
-				9A238E632C6D648900D75687 /* CartViewController + CartPresenterDelegate.swift */,
-				9A238E652C6D660F00D75687 /* CartViewController + CartTableViewCellDelegate.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -396,7 +391,6 @@
 			isa = PBXGroup;
 			children = (
 				9A238E5B2C6B93EB00D75687 /* CartPresenter.swift */,
-				9AE020AD2C6E2511008A52BF /* AlertController + extension.swift */,
 			);
 			path = Presenters;
 			sourceTree = "<group>";
@@ -411,6 +405,42 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
+		9AEF3EE52C7210AE009331FC /* Cart */ = {
+			isa = PBXGroup;
+			children = (
+				9A43E0732C70038100F2A9E6 /* CartNft.swift */,
+				9A9117EA2C7180C800774E64 /* CartInteractor.swift */,
+				9A43E06F2C6FBF1700F2A9E6 /* Order.swift */,
+			);
+			path = Cart;
+			sourceTree = "<group>";
+		};
+		9AEF3EE62C7210F4009331FC /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				9AE020AD2C6E2511008A52BF /* AlertController + extension.swift */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
+		9AEF3EE72C72111F009331FC /* Extensions */ = {
+			isa = PBXGroup;
+			children = (
+				9A238E5D2C6BA26000D75687 /* CartViewController + TableView.swift */,
+				9A238E632C6D648900D75687 /* CartViewController + CartPresenterDelegate.swift */,
+				9A238E652C6D660F00D75687 /* CartViewController + CartTableViewCellDelegate.swift */,
+			);
+			path = Extensions;
+			sourceTree = "<group>";
+		};
+		9AEF3EE82C7211A0009331FC /* CartServices */ = {
+			isa = PBXGroup;
+			children = (
+				9A43E0712C70001800F2A9E6 /* OrderService.swift */,
+			);
+			path = CartServices;
+			sourceTree = "<group>";
+		};
 		D486EF512C63933C0023EF6F /* Profile */ = {
 			isa = PBXGroup;
 			children = (
@@ -422,9 +452,11 @@
 		D486EF522C6393490023EF6F /* Cart */ = {
 			isa = PBXGroup;
 			children = (
+				9AEF3EE62C7210F4009331FC /* Helpers */,
 				9A238E5A2C6B93B000D75687 /* Models */,
 				9A238E592C6B93A200D75687 /* Presenters */,
 				9A238E582C6B939B00D75687 /* Views */,
+				9AEF3EE72C72111F009331FC /* Extensions */,
 			);
 			path = Cart;
 			sourceTree = "<group>";
