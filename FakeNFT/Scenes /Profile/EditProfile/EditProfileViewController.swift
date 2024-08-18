@@ -80,6 +80,10 @@ final class EditProfileViewController: UIViewController, EditProfileViewProtocol
         super.init(nibName: nil, bundle: nil)
     }
     
+    deinit {
+        removeObserver()
+    }
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -103,6 +107,19 @@ final class EditProfileViewController: UIViewController, EditProfileViewProtocol
     private func makeObserversForKeyboard() {
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+    
+    private func removeObserver() {
+        
+        NotificationCenter.default.removeObserver(
+            self,
+            name: UIResponder.keyboardWillShowNotification,
+            object: nil)
+        
+        NotificationCenter.default.removeObserver(
+            self,
+            name: UIResponder.keyboardWillHideNotification,
+            object: nil)
     }
     
     private func convertToString() -> [String] {
