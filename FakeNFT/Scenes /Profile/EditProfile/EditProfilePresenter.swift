@@ -21,7 +21,7 @@ protocol EditProfilePresenterProtocol {
     func viewDidLoad()
     func updateEditedText(at index: Int, with text: String)
     func updatePhoto() -> AlertModel
-    func initializeEditedText(with data: [String]) 
+    func initializeEditedText(with data: [String])
     func loadPhoto(with urlString: String?)
     var editedText: [String] { get }
     var tableHeaders: [String] { get }
@@ -80,8 +80,14 @@ final class EditProfilePresenter: EditProfilePresenterProtocol {
             let view
         else { return }
         
-        view.authorImage.kf.setImage(with: url)
-        
+        KingfisherManager.shared.retrieveImage(with: url, options: nil, progressBlock: nil) { result in
+            switch result {
+            case .success(let image):
+                self.view?.updateAuthorImage(with: image.image)
+            case .failure(let error):
+                print("Ошибка загрузки фото: \(error)")
+            }
+        }
     }
     
     func didTapExit() {

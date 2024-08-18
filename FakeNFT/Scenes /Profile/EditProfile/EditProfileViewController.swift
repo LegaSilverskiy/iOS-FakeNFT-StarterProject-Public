@@ -8,15 +8,14 @@
 import UIKit
 
 protocol EditProfileViewProtocol: AnyObject {
-    var authorImage: UIImageView { get set }
+    func updateAuthorImage(with image: UIImage)
 }
 
 final class EditProfileViewController: UIViewController, EditProfileViewProtocol {
     
     private let presenter: EditProfilePresenterProtocol
     
-    // не понимаю как сделать элемент приватным тк в презентере он используется для загрузки фото
-    lazy var authorImage: UIImageView = {
+    private lazy var authorImage: UIImageView = {
         let image = UIImageView()
         image.translatesAutoresizingMaskIntoConstraints = false
         image.clipsToBounds = true
@@ -95,6 +94,10 @@ final class EditProfileViewController: UIViewController, EditProfileViewProtocol
         makeObserversForKeyboard()
     }
     
+    func updateAuthorImage(with image: UIImage) {
+        authorImage.image = image
+    }
+    
     // MARK: - Private
     
     private func makeObserversForKeyboard() {
@@ -103,15 +106,22 @@ final class EditProfileViewController: UIViewController, EditProfileViewProtocol
     }
     
     private func convertToString() -> [String] {
-        [presenter.profile.name, presenter.profile.description, presenter.profile.website, presenter.profile.avatar]
+        [
+            presenter.profile.name,
+            presenter.profile.description,
+            presenter.profile.website,
+            presenter.profile.avatar
+        ]
     }
     
     private func setupUI() {
         
         isModalInPresentation = true
         view.backgroundColor = .systemBackground
+        
         presenter.viewDidLoad()
         presenter.initializeEditedText(with: convertToString())
+        
         view.addSubview(exitButton)
         view.addSubview(authorImage)
         view.addSubview(collectionView)
