@@ -11,11 +11,11 @@ import UIKit
 final class RatingTableCell: UITableViewCell {
     
     // MARK: - Private Properties
-    private var ratingLabel = UILabel()
+    private let ratingLabel = UILabel()
     private var avatarImageView = UIImageView()
-    private var nameLabel = UILabel()
-    private var nftCountLabel = UILabel()
-    private var bgView = UIView()
+    private let nameLabel = UILabel()
+    private let nftCountLabel = UILabel()
+    private let bgView = UIView()
     
     // MARK: - Initializers
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {

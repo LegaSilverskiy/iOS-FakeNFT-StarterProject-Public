@@ -1,11 +1,12 @@
 import UIKit
 
-final class StatisticsViewController: UIViewController, ErrorView {
+final class StatisticsViewController: UIViewController {
     
     // MARK: - Private Properties
-    private var presenter: StatisticsPresenter
-    private var sortButton = UIButton()
-    private var ratingTable = UITableView()
+    private let presenter: StatisticsPresenter
+    private let sortButton = UIButton()
+    private let ratingTable = UITableView()
+    private let ratingTableRowHeight = 88.0
     
     // MARK: - Initializers
     init(servicesAssembly: ServicesAssembly) {
@@ -46,7 +47,11 @@ final class StatisticsViewController: UIViewController, ErrorView {
         UIBlockingProgressHUD.dismiss()
     }
     
-    func updatetable() {
+    func showSortMenu() {
+        ActionSheetPresenter.show(actionSheet: .actionSheetTitleSorting, with: [.name, .rating], on: self, delegate: presenter)
+    }
+    
+    func updateTable() {
         ratingTable.reloadData()
     }
     
@@ -127,11 +132,15 @@ extension StatisticsViewController: UITableViewDataSource {
 extension StatisticsViewController: UITableViewDelegate {
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return presenter.getRatingTableRowHeight()
+        return ratingTableRowHeight
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         
         presenter.switchToProfile(for: indexPath.row)
     }
+}
+
+extension StatisticsViewController: ErrorView {
+    
 }

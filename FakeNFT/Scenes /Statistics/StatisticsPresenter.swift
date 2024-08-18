@@ -7,7 +7,12 @@
 import Foundation
 
 // MARK: - State
-
+/*
+ show          - стейт показа таблицы если на момент открытия вью, есть данные в переменной users
+ loadNextPage  - стейт запроса данных из хранилища или сети
+ failed        - стейт обработки ошибки при неудачной загрузке данных
+ data          - стейт обработки данных при удачной загрузке из хранилища или сети
+*/
 enum StatisticsState {
     case show, loadNextPage, failed(Error), data([User])
 }
@@ -24,9 +29,8 @@ final class StatisticsPresenter {
     
     // MARK: - Private Properties
     private let servicesAssembly: ServicesAssembly
-    private let service: UsersService
+    private let usersService: UsersService
     private let pageSize = 15
-    private let ratingTableRowHeight = 88.0
     private var users: [User] = []
     private var state: StatisticsState? {
         didSet {
@@ -43,7 +47,7 @@ final class StatisticsPresenter {
     // MARK: - Initializers
     init(servicesAssembly: ServicesAssembly) {
         self.servicesAssembly = servicesAssembly
-        self.service = servicesAssembly.usersService
+        self.usersService = servicesAssembly.usersService
     }
     
     // MARK: - Public Methods
@@ -65,15 +69,7 @@ final class StatisticsPresenter {
     }
     
     func sortButtonPressed() {
-        guard let view else {
-            return
-        }
-        
-        ActionSheetPresenter.show(actionSheet: .actionSheetTitleSorting, with: [.name, .rating], on: view, delegate: self)
-    }
-    
-    func getRatingTableRowHeight() -> CGFloat{
-        ratingTableRowHeight
+        view?.showSortMenu()
     }
     
     func getRatingMembersCount() -> Int {
@@ -119,14 +115,13 @@ final class StatisticsPresenter {
             
         case .show:
             sortUsers()
-            view?.updatetable()
+            view?.updateTable()
             
         case .loadNextPage:
             if !dataIsLoading {
                 if loadIndicatorNeeded {
                     view?.showLoading()
                 }
-                print("запрошена загрузка следующей страницы") // удалить
                 dataIsLoading = true
                 loadUsers()
             }
@@ -139,9 +134,8 @@ final class StatisticsPresenter {
             if sortingNeeded {
                 sortingNeeded.toggle()
                 sortUsers()
-                print("сортировка с опцией", sortingOption)   // удалить
             }
-            view?.updatetable()
+            view?.updateTable()
             
         case .failed(let error):
             view?.hideLoading()
@@ -157,7 +151,7 @@ final class StatisticsPresenter {
     }
     
     private func loadUsers() {
-        service.loadUsers(
+        usersService.loadUsers(
             itemsLoaded: users.count,
             pageSize: pageSize
         ) {[weak self] result in
@@ -229,6 +223,6 @@ extension StatisticsPresenter: ActionSheetPresenterDelegate {
         self.sortingOption = option
         self.sortingOrder = .asc
         sortUsers()
-        view?.updatetable()
+        view?.updateTable()
     }
 }

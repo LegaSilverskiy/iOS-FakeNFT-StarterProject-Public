@@ -26,11 +26,6 @@ final class UserCardViewController: UIViewController {
     }
     
     private func setUI() {
-        
         view.backgroundColor = .systemBackground
-        
-        
     }
-    
-    
 }

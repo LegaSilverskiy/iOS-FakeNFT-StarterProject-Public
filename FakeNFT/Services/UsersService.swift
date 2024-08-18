@@ -27,7 +27,6 @@ final class UsersService {
         
         if storedUsers.count > itemsLoaded {
             completion(.success(storedUsers))
-            return
         }
         
         let pageForLoad = storedUsers.count / max(pageSize, 1) + 1
