@@ -16,6 +16,7 @@ final class WebViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.addSubview(webView)
+        tabBarController?.tabBar.isHidden = true
         webView.frame = view.frame
         
         if let urlString = urlString, let url = URL(string: urlString) {

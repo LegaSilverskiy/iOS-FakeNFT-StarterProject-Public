@@ -37,6 +37,11 @@ final class TextEditorCollectionViewCell: UICollectionViewCell {
         ])
     }
     
+    override func awakeFromNib() {
+        super.awakeFromNib()
+        textField.delegate = self
+    }
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

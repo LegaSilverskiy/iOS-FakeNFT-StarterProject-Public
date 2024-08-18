@@ -8,11 +8,22 @@
 import UIKit
 import Kingfisher
 
+struct AlertModel {
+    let title: String
+    let message: String?
+    let placeholder: String?
+    let okTitle: String
+    let cancelTitle: String
+}
+
 protocol EditProfilePresenterProtocol {
-    func updateAndNotify(text: [String], completion: @escaping () -> Void)
+    func didTapExit()
+    func viewDidLoad()
+    func updateEditedText(at index: Int, with text: String)
+    func updatePhoto() -> AlertModel
+    func initializeEditedText(with data: [String]) 
     func loadPhoto(with urlString: String?)
-    func updatePhoto() -> UIAlertController
-    var editedText: [String] { get set }
+    var editedText: [String] { get }
     var tableHeaders: [String] { get }
     var profile: Profile { get set }
 }
@@ -21,54 +32,45 @@ final class EditProfilePresenter: EditProfilePresenterProtocol {
     
     weak var view: EditProfileViewProtocol?
     
-    var editedText = [String]()
+    weak var delegate: SendTextDelegate?
+    
+    var editedText: [String] {
+        _editedText
+    }
     
     var tableHeaders = ["Имя", "Описание", "Сайт"]
     
     var profile: Profile
     
-    private var profileService: EditProfileServiceProtocol
+    private let profileService: EditProfileServiceProtocol
+    
+    private var _editedText = [String]()
     
     init(profileService: EditProfileServiceProtocol, profile: Profile) {
         self.profileService = profileService
         self.profile = profile
     }
     
-    func updateAndNotify(text: [String], completion: @escaping () -> Void) {
-        let updatedProfile = convertStringToProfile(text: text)
-        
-        let group = DispatchGroup()
-        
-        group.enter()
-        
-        updateData(profile: updatedProfile, completion: {
-            group.leave()
-        })
-        
-        group.notify(queue: .main) {
-            completion()
-        }
+    func viewDidLoad() {
+        loadPhoto(with: profile.avatar)
     }
     
-    func updatePhoto() -> UIAlertController {
-        let alertController = UIAlertController(title: "Введите URL нового фото", message: nil, preferredStyle: .alert)
-        alertController.addTextField { textField in
-            textField.placeholder = "Вставьте ссылку"
-        }
-        let okAction = UIAlertAction(title: "Ок", style: .default) { _ in
-            guard let text = alertController.textFields?.first?.text else {
-                return
-            }
-            self.loadPhoto(with: text)
-            self.editedText.insert(text, at: 3)
-        }
-        let dismissAction = UIAlertAction(title: "Отмена", style: .default) { _ in
-            
-            alertController.dismiss(animated: true)
-        }
-        alertController.addAction(okAction)
-        alertController.addAction(dismissAction)
-        return alertController
+    func initializeEditedText(with data: [String]) {
+        _editedText = data
+    }
+    
+    func updateEditedText(at index: Int, with text: String) {
+        _editedText[index] = text
+    }
+    
+    func updatePhoto() -> AlertModel {
+        AlertModel(
+            title: "Введите URL нового фото",
+            message: nil,
+            placeholder: "Вставьте ссылку",
+            okTitle: "Ок",
+            cancelTitle: "Отмена"
+        )
     }
     
     func loadPhoto(with urlString: String?) {
@@ -82,6 +84,12 @@ final class EditProfilePresenter: EditProfilePresenterProtocol {
         
     }
     
+    func didTapExit() {
+        updateAndNotify(text: editedText) { [weak self] in
+            self?.delegate?.loadPresenter()
+        }
+    }
+    
     // MARK: - Private
     
     private func convertStringToProfile(text: [String]) -> Profile {
@@ -91,6 +99,14 @@ final class EditProfilePresenter: EditProfilePresenterProtocol {
             website: text[2],
             avatar: text[3]
         )
+    }
+    
+    private func updateAndNotify(text: [String], completion: @escaping () -> Void) {
+        let updatedProfile = convertStringToProfile(text: text)
+        
+        updateData(profile: updatedProfile) {
+            completion()
+        }
     }
     
     private func updateData(profile: Profile, completion: @escaping () -> Void) {
@@ -113,4 +129,5 @@ final class EditProfilePresenter: EditProfilePresenterProtocol {
             }
         }
     }
+    
 }

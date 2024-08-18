@@ -10,8 +10,6 @@ import Kingfisher
 
 protocol ProfilePresenterProtocol {
     func viewDidLoad()
-    func updateProfileTexts()
-    func loadPhoto()
     var tableNames: [String] { get }
     var profile: Profile? { get set }
 }
@@ -49,24 +47,9 @@ final class ProfilePresenter: ProfilePresenterProtocol {
                 .paragraphStyle: paragraphStyle
             ])
         view.authorDescription.attributedText = attributedString
-        adjustTextViewHeight(view.authorDescription)
+        view.adjustTextViewHeight(view.authorDescription)
         
         view.authorLink.text = profile.website
-    }
-    
-    func adjustTextViewHeight(_ textView: UITextView) {
-        let size = CGSize(width: textView.frame.width, height: .greatestFiniteMagnitude)
-        var estimatedSize = textView.sizeThatFits(size)
-        
-        if estimatedSize.width == 0 {
-            estimatedSize.height = 0
-        }
-        
-        var frame = textView.frame
-        frame.size.height = estimatedSize.height
-        textView.frame = frame
-        
-        view?.updateConstraintsForTextView(textView, estimatedSize)
     }
     
     func loadPhoto() {
@@ -91,7 +74,7 @@ final class ProfilePresenter: ProfilePresenterProtocol {
             switch result {
             case .success(let profileResult):
                 profile = convertIntoModel(model: profileResult)
-                view?.onProfileLoaded()
+                updateView()
             case .failure:
                 view?.showAlert()
             }
@@ -105,5 +88,11 @@ final class ProfilePresenter: ProfilePresenterProtocol {
             website: model.website,
             avatar: model.avatar
         )
+    }
+    
+    private func updateView() {
+        updateProfileTexts()
+        loadPhoto()
+        view?.showUIElements()
     }
 }

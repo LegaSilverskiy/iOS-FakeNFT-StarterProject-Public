@@ -2,10 +2,9 @@ import UIKit
 import ProgressHUD
 
 protocol ProfileViewProtocol: AnyObject {
-    func viewDidLoad()
-    func updateConstraintsForTextView(_ textView: UITextView, _ estimatedSize: CGSize)
-    func onProfileLoaded()
+    func showUIElements()
     func showAlert()
+    func adjustTextViewHeight(_ textView: UITextView)
     var authorName: UILabel { get set }
     var authorDescription: UITextView { get set }
     var authorLink: UILabel { get set }
@@ -80,7 +79,7 @@ final class ProfileViewController: UIViewController, ProfileViewProtocol {
         return view
     }()
     
-    private var presenter: ProfilePresenterProtocol
+    private let presenter: ProfilePresenterProtocol
     private var textViewHeightConstraint: NSLayoutConstraint?
     private var containerViewHeightConstraint: NSLayoutConstraint?
     
@@ -125,25 +124,10 @@ final class ProfileViewController: UIViewController, ProfileViewProtocol {
         self.view.layoutIfNeeded()
     }
     
-    func updateUI() {
-        presenter.updateProfileTexts()
-        presenter.loadPhoto()
-        showUIElements()
-    }
-    
-    func onProfileLoaded() {
-        
-        self.updateUI()
-    }
-    
-    func profileToArray(profile: Profile) -> [String] {
-        [profile.name, profile.description, profile.website]
-    }
-    
     // MARK: - Private
     
     private func setupUI() {
-        let editButton = UIBarButtonItem(image: UIImage(systemName: "square.and.pencil"), style: .plain, target: self, action: #selector(editButtonTapped))
+        let editButton = UIBarButtonItem(image: UIImage(named: "Edit"), style: .plain, target: self, action: #selector(editButtonTapped))
         editButton.tintColor = .tabBarItemsTintColor
         navigationItem.rightBarButtonItem = editButton
         
@@ -203,10 +187,25 @@ final class ProfileViewController: UIViewController, ProfileViewProtocol {
         view.isHidden = true
     }
     
-    private func showUIElements() {
+    func showUIElements() {
         navigationController?.isNavigationBarHidden = false
         ProgressHUD.dismiss()
         view.isHidden = false
+    }
+    
+    func adjustTextViewHeight(_ textView: UITextView) {
+        let size = CGSize(width: textView.frame.width, height: .greatestFiniteMagnitude)
+        var estimatedSize = textView.sizeThatFits(size)
+        
+        if estimatedSize.width == 0 {
+            estimatedSize.height = 0
+        }
+        
+        var frame = textView.frame
+        frame.size.height = estimatedSize.height
+        textView.frame = frame
+        
+        updateConstraintsForTextView(textView, estimatedSize)
     }
     
     @objc private func editButtonTapped() {
@@ -215,7 +214,7 @@ final class ProfileViewController: UIViewController, ProfileViewProtocol {
         let presenter = EditProfilePresenter(profileService: networkService, profile: presenter.profile!)
         let editProfileViewController = EditProfileViewController(presenter: presenter)
         presenter.view = editProfileViewController
-        editProfileViewController.delegate = self
+        presenter.delegate = self
         let editNavController = UINavigationController(rootViewController: editProfileViewController)
         present(editNavController, animated: true)
     }

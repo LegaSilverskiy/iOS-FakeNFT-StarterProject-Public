@@ -8,18 +8,14 @@
 import UIKit
 
 protocol EditProfileViewProtocol: AnyObject {
-    func viewDidLoad()
     var authorImage: UIImageView { get set }
 }
 
 final class EditProfileViewController: UIViewController, EditProfileViewProtocol {
     
-    weak var delegate: SendTextDelegate?
+    private let presenter: EditProfilePresenterProtocol
     
-    var text = [String]()
-    
-    var presenter: EditProfilePresenterProtocol?
-    
+    // не понимаю как сделать элемент приватным тк в презентере он используется для загрузки фото
     lazy var authorImage: UIImageView = {
         let image = UIImageView()
         image.translatesAutoresizingMaskIntoConstraints = false
@@ -47,7 +43,7 @@ final class EditProfileViewController: UIViewController, EditProfileViewProtocol
         return image
     }()
     
-    lazy var collectionView = {
+    private lazy var collectionView = {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
         collectionView.backgroundColor = .systemBackground
         collectionView.dataSource = self
@@ -69,7 +65,7 @@ final class EditProfileViewController: UIViewController, EditProfileViewProtocol
         return title
     }()
     
-    private let exitButton = {
+    private lazy var exitButton = {
         let exit = UIButton()
         exit.setImage(UIImage(named: "Cross"), for: .normal)
         exit.translatesAutoresizingMaskIntoConstraints = false
@@ -78,8 +74,9 @@ final class EditProfileViewController: UIViewController, EditProfileViewProtocol
         return exit
     }()
     
+    private var focusedTextField: UITextView?
     
-    init(presenter: EditProfilePresenterProtocol?) {
+    init(presenter: EditProfilePresenterProtocol) {
         self.presenter = presenter
         super.init(nibName: nil, bundle: nil)
     }
@@ -90,26 +87,31 @@ final class EditProfileViewController: UIViewController, EditProfileViewProtocol
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        text = convertToString()
         
         setupUI()
         setupConstraints()
+        hideKeyboard()
         
+        makeObserversForKeyboard()
     }
     
     // MARK: - Private
     
+    private func makeObserversForKeyboard() {
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+    }
+    
     private func convertToString() -> [String] {
-        guard let presenter else { return [] }
-        return [presenter.profile.name, presenter.profile.description, presenter.profile.website, presenter.profile.avatar]
+        [presenter.profile.name, presenter.profile.description, presenter.profile.website, presenter.profile.avatar]
     }
     
     private func setupUI() {
         
-        presenter?.loadPhoto(with: presenter?.profile.avatar)
         isModalInPresentation = true
         view.backgroundColor = .systemBackground
-        presenter?.editedText = text
+        presenter.viewDidLoad()
+        presenter.initializeEditedText(with: convertToString())
         view.addSubview(exitButton)
         view.addSubview(authorImage)
         view.addSubview(collectionView)
@@ -137,18 +139,76 @@ final class EditProfileViewController: UIViewController, EditProfileViewProtocol
         ])
     }
     
-    @objc private func exitScreen() {
-        guard let presenter = presenter else { return }
+    private func hideKeyboard() {
         
-        presenter.updateAndNotify(text: presenter.editedText) { [weak self] in
-            self?.delegate?.loadPresenter()
-            self?.dismiss(animated: true)
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        tapGesture.cancelsTouchesInView = false
+        view.addGestureRecognizer(tapGesture)
+    }
+    
+    private func showPhotoAlert(alertModel: AlertModel) {
+        let alertController = UIAlertController(
+            title: alertModel.title,
+            message: alertModel.message,
+            preferredStyle: .alert
+        )
+        alertController.addTextField { textField in
+            textField.placeholder = alertModel.placeholder
         }
+        let okAction = UIAlertAction(title: alertModel.okTitle, style: .default) { [weak self] _ in
+            guard let text = alertController.textFields?.first?.text else {
+                return
+            }
+            self?.presenter.loadPhoto(with: text)
+            self?.presenter.updateEditedText(at: 3, with: text)
+        }
+        let dismissAction = UIAlertAction(title: alertModel.cancelTitle, style: .default) { _ in
+            alertController.dismiss(animated: true)
+        }
+        alertController.addAction(okAction)
+        alertController.addAction(dismissAction)
+        self.present(alertController, animated: true)
+    }
+    
+    @objc func dismissKeyboard() {
+        
+        view.endEditing(true)
+    }
+    
+    @objc private func exitScreen() {
+        
+        presenter.didTapExit()
+        dismiss(animated: true)
     }
     
     @objc private func imageTapped() {
-        guard let alert = presenter?.updatePhoto() else { return }
-        present(alert, animated: true)
+        
+        showPhotoAlert(alertModel: presenter.updatePhoto())
+    }
+    
+    @objc private func keyboardWillShow(notification: NSNotification) {
+        guard let userInfo = notification.userInfo,
+              let keyboardSize = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue,
+              let focusedTextField = focusedTextField else {
+            return
+        }
+        
+        let keyboardFrame = keyboardSize.cgRectValue
+        let keyboardHeight = keyboardFrame.height
+        
+        let textFieldY = focusedTextField.convert(focusedTextField.frame.origin, to: view).y
+        
+        let offsetY = min(0, keyboardHeight - textFieldY)
+        
+        UIView.animate(withDuration: 0.3) {
+            self.view.transform = CGAffineTransform(translationX: 0, y: offsetY)
+        }
+    }
+    
+    @objc private func keyboardWillHide(notification: NSNotification) {
+        UIView.animate(withDuration: 0.3) {
+            self.view.transform = .identity
+        }
     }
 }
 
@@ -157,8 +217,7 @@ final class EditProfileViewController: UIViewController, EditProfileViewProtocol
 extension EditProfileViewController: UICollectionViewDataSource {
     
     func numberOfSections(in collectionView: UICollectionView) -> Int {
-        guard let headers = presenter?.tableHeaders else { return 0}
-        return headers.count
+        presenter.tableHeaders.count
     }
     
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
@@ -166,12 +225,12 @@ extension EditProfileViewController: UICollectionViewDataSource {
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as? TextEditorCollectionViewCell, let presenter else { return UICollectionViewCell() }
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as? TextEditorCollectionViewCell else { return UICollectionViewCell() }
         
         cell.setText(text: presenter.editedText[indexPath.section])
         
         cell.textChangeHandler = { [weak self] text in
-            self?.presenter?.editedText[indexPath.section] = text
+            self?.presenter.updateEditedText(at: indexPath.section, with: text)
         }
         
         return cell
@@ -182,9 +241,9 @@ extension EditProfileViewController: UICollectionViewDataSource {
         viewForSupplementaryElementOfKind kind: String,
         at indexPath: IndexPath
     ) -> UICollectionReusableView {
-        let view = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "header", for: indexPath) as! TextEditorHeaderCollectionViewCell
+        guard let view = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "header", for: indexPath) as? TextEditorHeaderCollectionViewCell else { return UICollectionReusableView() }
         
-        view.titleLabel.text = presenter?.tableHeaders[indexPath.section]
+        view.titleLabel.text = presenter.tableHeaders[indexPath.section]
         
         return view
     }
@@ -192,7 +251,8 @@ extension EditProfileViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if let cell = collectionView.cellForItem(at: indexPath) as? TextEditorCollectionViewCell {
             cell.textField.becomeFirstResponder()
-            presenter?.editedText[indexPath.section] = cell.textField.text
+            focusedTextField = cell.textField
+            presenter.updateEditedText(at: indexPath.section, with: cell.textField.text)
         }
     }
 }
@@ -207,7 +267,7 @@ extension EditProfileViewController: UICollectionViewDelegateFlowLayout {
         let maxSize = CGSize(width: width, height: .greatestFiniteMagnitude)
         
         let textView = UITextView()
-        textView.text = presenter?.editedText[indexPath.section]
+        textView.text = presenter.editedText[indexPath.section]
         textView.font = .bodyRegular
         let height = textView.sizeThatFits(maxSize).height
         
