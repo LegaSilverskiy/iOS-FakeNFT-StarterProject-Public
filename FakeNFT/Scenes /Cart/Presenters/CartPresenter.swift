@@ -2,14 +2,13 @@ import Foundation
 import UIKit
 
 protocol CartPresenterDelegate: AnyObject {
-    func presentBlurredScreen(with indexPath: IndexPath)
+    func presentBlurredScreen(with indexPath: IndexPath, imageURL: String)
     func deleteFromCart(at indexPath: IndexPath)
 }
 
 protocol CartView: AnyObject {
     func reloadData()
     func deleteRows(at indexPath: IndexPath)
-    func presentBlurredScreen(with indexPath: IndexPath)
 }
 
 final class CartPresenter {
@@ -44,8 +43,8 @@ final class CartPresenter {
         }
     }
     
-    func didTapButtonInCell(at indexPath: IndexPath) {
-        delegate?.presentBlurredScreen(with: indexPath)
+    func didTapButtonInCell(at indexPath: IndexPath, with image: String) {
+        delegate?.presentBlurredScreen(with: indexPath, imageURL: image)
     }
     
     func deleteFromCart(at indexPath: IndexPath) {

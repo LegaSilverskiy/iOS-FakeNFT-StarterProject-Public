@@ -1,7 +1,8 @@
 import UIKit
+import Kingfisher
 
 protocol CartTableViewCellDelegate: AnyObject {
-    func didTapButton(in cell: CartTableViewCell, at indexPath: IndexPath)
+    func didTapButton(in cell: CartTableViewCell, at indexPath: IndexPath, with image: String)
 }
 
 final class CartTableViewCell: UITableViewCell {
@@ -9,13 +10,13 @@ final class CartTableViewCell: UITableViewCell {
     static let reuseIdentifier = "CartTableViewCell"
     weak var delegate: CartTableViewCellDelegate?
     private var indexPath: IndexPath?
+    var imageURL: String?
     
     private var stars: [UIView] = []
     
     private let nftImage: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.layer.cornerRadius = 12
         
         return imageView
     }()
@@ -125,7 +126,14 @@ final class CartTableViewCell: UITableViewCell {
         self.indexPath = indexPath
         nftTitle.text = model.title
         nftPrice.text = model.price
-        nftImage.image = model.image
+        imageURL = model.image
+        
+        guard let url = URL(string: model.image) else { return }
+        nftImage.kf.indicatorType = .activity
+        (nftImage.kf.indicator?.view as? UIActivityIndicatorView)?.color = .textSecondary
+        nftImage.kf.setImage(with: url, placeholder: UIImage(named: "cart.placeholder"))
+        nftImage.layer.cornerRadius = 12
+        nftImage.clipsToBounds = true
         
         updateRatingStars(with: model.rating)
     }
@@ -194,11 +202,16 @@ final class CartTableViewCell: UITableViewCell {
     
     @objc
     private func cartDeleteButtonPressed() {
-        guard let indexPath = indexPath else { return }
-        delegate?.didTapButton(in: self, at: indexPath)
+        guard let indexPath = indexPath, let imageURL = imageURL else { return }
+        delegate?.didTapButton(in: self, at: indexPath, with: imageURL)
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        nftImage.kf.cancelDownloadTask()
     }
 }

@@ -3,6 +3,7 @@ import UIKit
 final class CartDeleteViewController: UIViewController {
     weak var delegate: CartPresenterDelegate?
     var indexPath: IndexPath?
+    var imageURL: String?
     
     private let mainContainer: UIStackView = {
         let stackView = UIStackView()
@@ -18,7 +19,7 @@ final class CartDeleteViewController: UIViewController {
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .vertical
         stackView.alignment = .center
-        stackView.distribution = .fillProportionally
+        stackView.distribution = .fill
         stackView.spacing = 12
         
         return stackView
@@ -37,8 +38,6 @@ final class CartDeleteViewController: UIViewController {
     private let nftImage: UIImageView = {
         let imageView = UIImageView()
         imageView.translatesAutoresizingMaskIntoConstraints = false
-        imageView.image = UIImage(named: "nft-2")
-        imageView.layer.cornerRadius = 12
 
         return imageView
     }()
@@ -89,13 +88,14 @@ final class CartDeleteViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
         setupUI()
     }
     
     private func setupUI() {
         setBlurEffect()
+        setupNftImage()
         setupContainers()
+        
     }
     
     private func setBlurEffect() {
@@ -125,6 +125,24 @@ final class CartDeleteViewController: UIViewController {
             mainContainer.centerYAnchor.constraint(equalTo: view.centerYAnchor),
             mainContainer.centerXAnchor.constraint(equalTo: view.centerXAnchor)
         ])
+        
+        
+        NSLayoutConstraint.activate([
+            nftImage.widthAnchor.constraint(equalToConstant: 108),
+            nftImage.heightAnchor.constraint(equalToConstant: 108)
+        ])
+        
+    }
+    
+    private func setupNftImage() {
+        if let imageURL = imageURL {
+            guard let url = URL(string: imageURL) else { return }
+            nftImage.kf.indicatorType = .activity
+            (nftImage.kf.indicator?.view as? UIActivityIndicatorView)?.color = .textSecondary
+            nftImage.kf.setImage(with: url, placeholder: UIImage(named: "cart.placeholder"))
+            nftImage.layer.cornerRadius = 12
+            nftImage.clipsToBounds = true
+        }
     }
     
     @objc private func deleteFromCart() {

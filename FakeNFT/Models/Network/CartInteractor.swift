@@ -32,7 +32,7 @@ final class CartInteractor: CartInteractorProtocol {
                                 title: nft.name,
                                 price: priceString + " ETH",
                                 rating: nft.rating,
-                                image: UIImage(named: "nft-1") ?? UIImage()
+                                image: nft.images.first ?? "cart.placeholder"
                             )
                             fetchedNfts.append(cartNftModel)
                         case .failure(let error):

@@ -9,7 +9,7 @@ final class NftsMock {
             title: "April",
             price: "1,78 ETH",
             rating: 1,
-            image: UIImage(named: "nft-1") ?? UIImage()
+            image: "nft-1"
         ),
         
         CartNftModel(
@@ -17,7 +17,7 @@ final class NftsMock {
             title: "Greena",
             price: "3 ETH",
             rating: 3,
-            image: UIImage(named: "nft-2") ?? UIImage()
+            image: "nft-2"
         ),
         
         CartNftModel(
@@ -25,7 +25,7 @@ final class NftsMock {
             title: "Spring",
             price: "2 ETH",
             rating: 5,
-            image: UIImage(named: "nft-3") ?? UIImage()
+            image: "nft-3"
         )
     ]
 }
