@@ -56,6 +56,16 @@ final class CartViewController: UIViewController, CartView {
         return button
     }()
     
+    private let emptyCartState: UILabel = {
+        let label = UILabel()
+        label.translatesAutoresizingMaskIntoConstraints = false
+        label.font = UIFont.bodyBold
+        label.textColor = .tabBarItemsTintColor
+        label.text = "Корзина пуста"
+
+        return label
+    }()
+    
     init(presenter: CartPresenter) {
         self.presenter = presenter
         super.init(nibName: nil, bundle: nil)
@@ -75,6 +85,7 @@ final class CartViewController: UIViewController, CartView {
     }
     
     func reloadData() {
+        setupDefaultState()
         nftCount.text = "\(presenter.getNftsCount()) NFT"
         nftTotalPrice.text = presenter.formattedTotalPrice()
         nftsTableView.reloadData()
@@ -90,11 +101,21 @@ final class CartViewController: UIViewController, CartView {
     }
     
     private func setupViews() {
-        setupTableView()
+        setupDefaultState()
         setupSortButton()
-        setupFooterPanel()
-        setupFooterPanelContainers()
-        setupPayButton()
+    }
+    
+    private func setupDefaultState() {
+        presenter.getNftsCount() == 0 ? setupEmptyCartInfo() : setupTableView()
+    }
+    
+    private func setupEmptyCartInfo() {
+        footerPanel.isHidden = true
+        view.addSubview(emptyCartState)
+        NSLayoutConstraint.activate([
+            emptyCartState.centerXAnchor.constraint(equalTo: view.centerXAnchor),
+            emptyCartState.centerYAnchor.constraint(equalTo: view.centerYAnchor)
+        ])
     }
     
     private func setupSortButton() {
@@ -118,6 +139,12 @@ final class CartViewController: UIViewController, CartView {
             nftsTableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             nftsTableView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
+        
+        setupFooterPanel()
+        setupFooterPanelContainers()
+        setupPayButton()
+        
+        footerPanel.isHidden = false
     }
     
     private func setupFooterPanel() {
