@@ -1,8 +1,8 @@
 import UIKit
 
-final class CartViewController: UIViewController {
+final class CartViewController: UIViewController, CartView {
     
-    var presenter: CartPresenter?
+    let presenter: CartPresenter
     
     private let nftsTableView: UITableView = {
         let tableView = UITableView()
@@ -58,18 +58,30 @@ final class CartViewController: UIViewController {
         return button
     }()
     
+    init(presenter: CartPresenter) {
+        self.presenter = presenter
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        presenter = CartPresenter(viewController: self)
-        presenter?.delegate = self
-        presenter?.loadNfts()
-    
+        presenter.delegate = self
+        presenter.setView(self)
+        presenter.loadNfts()
         setupUI()
     }
     
     func reloadData() {
         nftsTableView.reloadData()
+    }
+    
+    func deleteRows(at indexPath: IndexPath) {
+        nftsTableView.deleteRows(at: [indexPath], with: .automatic)
     }
     
     private func setupUI() {
@@ -152,17 +164,17 @@ final class CartViewController: UIViewController {
 
         let sortByPrice = AlertButtonAction(buttonTitle: "По цене", style: .default) { [weak self] _ in
             guard let self = self else { return }
-            presenter?.sortNft(by: .price)
+            presenter.sortNft(by: .price)
         }
         
         let sortByRating = AlertButtonAction(buttonTitle: "По рейтингу", style: .default) { [weak self] _ in
             guard let self = self else { return }
-            presenter?.sortNft(by: .rating)
+            presenter.sortNft(by: .rating)
         }
         
         let sortByName = AlertButtonAction(buttonTitle: "По названию", style: .default) { [weak self] _ in
             guard let self = self else { return }
-            presenter?.sortNft(by: .name)
+            presenter.sortNft(by: .name)
         }
         
         let cancelAction = AlertButtonAction(buttonTitle: "Закрыть", style: .cancel, action: nil)

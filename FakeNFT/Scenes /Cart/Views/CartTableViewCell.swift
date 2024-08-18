@@ -1,13 +1,14 @@
 import UIKit
 
 protocol CartTableViewCellDelegate: AnyObject {
-    func didTapButton(in cell: CartTableViewCell)
+    func didTapButton(in cell: CartTableViewCell, at indexPath: IndexPath)
 }
 
 final class CartTableViewCell: UITableViewCell {
     
     static let reuseIdentifier = "CartTableViewCell"
     weak var delegate: CartTableViewCellDelegate?
+    private var indexPath: IndexPath?
     
     private var stars: [UIView] = []
     
@@ -120,7 +121,8 @@ final class CartTableViewCell: UITableViewCell {
         setupRatingStars()
     }
     
-    func configCell(with model: CartNftModel) {
+    func configCell(with model: CartNftModel, at indexPath: IndexPath) {
+        self.indexPath = indexPath
         nftTitle.text = model.title
         nftPrice.text = model.price
         nftImage.image = model.image
@@ -192,7 +194,8 @@ final class CartTableViewCell: UITableViewCell {
     
     @objc
     private func cartDeleteButtonPressed() {
-        delegate?.didTapButton(in: self)
+        guard let indexPath = indexPath else { return }
+        delegate?.didTapButton(in: self, at: indexPath)
     }
     
     required init?(coder: NSCoder) {

@@ -1,6 +1,8 @@
 import UIKit
 
 final class CartDeleteViewController: UIViewController {
+    weak var delegate: CartPresenterDelegate?
+    var indexPath: IndexPath?
     
     private let mainContainer: UIStackView = {
         let stackView = UIStackView()
@@ -64,7 +66,7 @@ final class CartDeleteViewController: UIViewController {
         
         button.setTitleColor(.red, for: .normal)
         button.setTitle("Удалить", for: .normal)
-        button.addTarget(self, action: #selector(closeScreen), for: .touchUpInside)
+        button.addTarget(self, action: #selector(deleteFromCart), for: .touchUpInside)
         
         return button
     }()
@@ -87,6 +89,7 @@ final class CartDeleteViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         setupUI()
     }
     
@@ -123,9 +126,14 @@ final class CartDeleteViewController: UIViewController {
             mainContainer.centerXAnchor.constraint(equalTo: view.centerXAnchor)
         ])
     }
+    
+    @objc private func deleteFromCart() {
+        guard let indexPath = indexPath else { return }
+        delegate?.deleteFromCart(at: indexPath)
+        dismiss(animated: true, completion: nil)
+    }
 
     @objc private func closeScreen() {
         dismiss(animated: true, completion: nil)
-        
     }
 }

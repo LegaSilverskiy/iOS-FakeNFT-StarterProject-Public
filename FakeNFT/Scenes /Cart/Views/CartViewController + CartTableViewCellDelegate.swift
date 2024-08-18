@@ -1,7 +1,7 @@
 import UIKit
 
 extension CartViewController: CartTableViewCellDelegate {
-    func didTapButton(in cell: CartTableViewCell) {
-        presenter?.didTapButtonInCell()
+    func didTapButton(in cell: CartTableViewCell, at indexPath: IndexPath) {
+        presenter.didTapButtonInCell(at: indexPath)
     }
 }

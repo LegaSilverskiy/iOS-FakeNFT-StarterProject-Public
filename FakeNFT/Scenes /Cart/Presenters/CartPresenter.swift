@@ -2,60 +2,40 @@ import Foundation
 import UIKit
 
 protocol CartPresenterDelegate: AnyObject {
-    func presentBlurredScreen()
+    func presentBlurredScreen(with indexPath: IndexPath)
+    func deleteFromCart(at indexPath: IndexPath)
+}
+
+protocol CartView: AnyObject {
+    func reloadData()
+    func deleteRows(at indexPath: IndexPath)
+    func presentBlurredScreen(with indexPath: IndexPath)
 }
 
 final class CartPresenter {
-    private weak var viewController: CartViewController?
+    weak var view: CartView?
     weak var delegate: CartPresenterDelegate?
+    private let interactor: CartInteractorProtocol
     
     private var nftsl: [CartNftModel] = []
     private var filteredNfts: [CartNftModel] = []
     
-    init(viewController: CartViewController) {
-        self.viewController = viewController
-        filteredNfts = nftsl
+    init(interactor: CartInteractorProtocol) {
+        self.interactor = interactor
+    }
+    
+    func setView(_ view: CartView) {
+        self.view = view
     }
     
     func loadNfts() {
-        OrderService.shared.fetchOrders { [weak self] result in
+        interactor.fetchNfts { [weak self] result in
+            guard let self = self else { return }
             switch result {
-            case .success(let order):
-                let nftIds = order.nfts
-                
-                let dispatchGroup = DispatchGroup()
-                var fetchedNfts: [CartNftModel] = []
-                
-                for nftId in nftIds {
-                    dispatchGroup.enter()
-                    OrderService.shared.fetchNFTByID(nftID: nftId) { result in
-                        switch result {
-                        case .success(let nft):
-                            let numberFormatter = NumberFormatter()
-                            numberFormatter.numberStyle = .decimal
-                            numberFormatter.locale = Locale(identifier: "ru_RU")
-                            
-                            let priceString = numberFormatter.string(from: NSNumber(value: nft.price)) ?? "0,00"
-                            
-                            let cartNftModel = CartNftModel(
-                                title: nft.name,
-                                price: priceString + " ETH",
-                                rating: nft.rating,
-                                image: UIImage(named: "nft-1") ?? UIImage() 
-                            )
-                            fetchedNfts.append(cartNftModel)
-                        case .failure(let error):
-                            print("Failed to fetch NFT by ID: \(error)")
-                        }
-                        dispatchGroup.leave()
-                    }
-                }
-                
-                dispatchGroup.notify(queue: .main) {
-                    self?.nftsl = fetchedNfts
-                    self?.filteredNfts = fetchedNfts
-                    self?.viewController?.reloadData()
-                }
+            case .success(let fetchedNfts):
+                self.nftsl = fetchedNfts
+                self.filteredNfts = fetchedNfts
+                self.view?.reloadData()
                 
             case .failure(let error):
                 print("Failed to fetch orders: \(error)")
@@ -63,12 +43,24 @@ final class CartPresenter {
         }
     }
     
-    func didTapButtonInCell() {
-        delegate?.presentBlurredScreen()
+    func didTapButtonInCell(at indexPath: IndexPath) {
+        delegate?.presentBlurredScreen(with: indexPath)
     }
     
-    func removeNft(at index: Int) {
-        nftsl.remove(at: index)
+    func deleteFromCart(at indexPath: IndexPath) {
+        filteredNfts.remove(at: indexPath.row)
+        view?.deleteRows(at: indexPath)
+        
+        let nftsIDs = filteredNfts.map { $0.id }
+        
+        interactor.updateOrder(with: nftsIDs) { [weak self] result in
+            switch result {
+            case .success:
+                self?.loadNfts()
+            case .failure(let error):
+                print("Ошибка: \(error.localizedDescription)")
+            }
+        }
     }
     
     func sortNft(by option: SortOption) {
@@ -81,13 +73,14 @@ final class CartPresenter {
             filteredNfts = nftsl.sorted(by: { $0.title < $1.title })
         }
         
-        viewController?.reloadData()
+        view?.reloadData()
     }
     
     func getNft(at indexPath: IndexPath) -> CartNftModel{
         let nft = filteredNfts[indexPath.row]
         
         let cartNftModel = CartNftModel(
+            id: nft.id,
             title: nft.title,
             price: nft.price,
             rating: nft.rating,
@@ -100,4 +93,5 @@ final class CartPresenter {
     func getNftsCount() -> Int {
         return filteredNfts.count
     }
+        
 }

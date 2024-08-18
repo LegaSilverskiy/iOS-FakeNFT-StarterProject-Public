@@ -5,6 +5,7 @@ final class NftsMock {
     
     var nfts: [CartNftModel] = [
         CartNftModel(
+            id: "1",
             title: "April",
             price: "1,78 ETH",
             rating: 1,
@@ -12,6 +13,7 @@ final class NftsMock {
         ),
         
         CartNftModel(
+            id: "2",
             title: "Greena",
             price: "3 ETH",
             rating: 3,
@@ -19,6 +21,7 @@ final class NftsMock {
         ),
         
         CartNftModel(
+            id: "3",
             title: "Spring",
             price: "2 ETH",
             rating: 5,
