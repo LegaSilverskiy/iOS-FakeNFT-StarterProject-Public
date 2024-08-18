@@ -101,7 +101,6 @@ final class CartViewController: UIViewController, CartView {
     }
     
     private func setupViews() {
-        setupDefaultState()
         setupSortButton()
     }
     

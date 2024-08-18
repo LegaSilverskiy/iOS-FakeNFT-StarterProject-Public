@@ -51,6 +51,7 @@
 		9A43E0722C70001800F2A9E6 /* OrderService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A43E0712C70001800F2A9E6 /* OrderService.swift */; };
 		9A43E0742C70038100F2A9E6 /* CartNft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A43E0732C70038100F2A9E6 /* CartNft.swift */; };
 		9A9117EB2C7180C800774E64 /* CartInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A9117EA2C7180C800774E64 /* CartInteractor.swift */; };
+		9A9117ED2C71A04300774E64 /* UIBlockingProgressHUD.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A9117EC2C71A04300774E64 /* UIBlockingProgressHUD.swift */; };
 		9AE020AE2C6E2511008A52BF /* AlertController + extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AE020AD2C6E2511008A52BF /* AlertController + extension.swift */; };
 		9AE020B02C6E2521008A52BF /* AlertModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AE020AF2C6E2521008A52BF /* AlertModel.swift */; };
 		9AE020B42C6E3053008A52BF /* NftsMock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9AE020B32C6E3053008A52BF /* NftsMock.swift */; };
@@ -130,6 +131,7 @@
 		9A43E0712C70001800F2A9E6 /* OrderService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderService.swift; sourceTree = "<group>"; };
 		9A43E0732C70038100F2A9E6 /* CartNft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartNft.swift; sourceTree = "<group>"; };
 		9A9117EA2C7180C800774E64 /* CartInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartInteractor.swift; sourceTree = "<group>"; };
+		9A9117EC2C71A04300774E64 /* UIBlockingProgressHUD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIBlockingProgressHUD.swift; sourceTree = "<group>"; };
 		9AE020AD2C6E2511008A52BF /* AlertController + extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AlertController + extension.swift"; sourceTree = "<group>"; };
 		9AE020AF2C6E2521008A52BF /* AlertModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertModel.swift; sourceTree = "<group>"; };
 		9AE020B32C6E3053008A52BF /* NftsMock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NftsMock.swift; sourceTree = "<group>"; };
@@ -458,6 +460,7 @@
 				3F68069F29CBBAF200B4F915 /* Assets.xcassets */,
 				D4D5536F2C660B0600684EAC /* Localizable.strings */,
 				3F6806A129CBBAF200B4F915 /* LaunchScreen.storyboard */,
+				9A9117EC2C71A04300774E64 /* UIBlockingProgressHUD.swift */,
 			);
 			path = Resources;
 			sourceTree = "<group>";
@@ -663,6 +666,7 @@
 				0C79EE612A76DCD600EE90EA /* NftByIdRequest.swift in Sources */,
 				E19CD5AB2A98B56600CA39A5 /* NftImageCollectionViewCell.swift in Sources */,
 				0CF2C2E12A784C7000FDC837 /* LinePageControl.swift in Sources */,
+				9A9117ED2C71A04300774E64 /* UIBlockingProgressHUD.swift in Sources */,
 				3F6806D329CBBE9600B4F915 /* NetworkRequest.swift in Sources */,
 				D486EF592C6395CA0023EF6F /* StatisticsViewController.swift in Sources */,
 				9A9117EB2C7180C800774E64 /* CartInteractor.swift in Sources */,

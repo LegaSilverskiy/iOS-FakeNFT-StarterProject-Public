@@ -29,6 +29,7 @@ final class CartPresenter {
     }
     
     func loadNfts() {
+        UIBlockingProgressHUD.show()
         interactor.fetchNfts { [weak self] result in
             guard let self = self else { return }
             switch result {
@@ -36,7 +37,7 @@ final class CartPresenter {
                 self.nftsl = fetchedNfts
                 self.filteredNfts = fetchedNfts
                 self.view?.reloadData()
-                
+                UIBlockingProgressHUD.dismiss()
             case .failure(let error):
                 print("Failed to fetch orders: \(error)")
             }
