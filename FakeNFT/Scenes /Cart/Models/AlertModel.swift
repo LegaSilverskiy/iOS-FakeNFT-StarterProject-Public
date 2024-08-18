@@ -1,9 +1,9 @@
 import UIKit
 
-enum SortOption {
-    case name
-    case rating
-    case price
+enum SortOption: String {
+    case price = "price"
+    case rating = "rating"
+    case name = "name"
 }
 
 struct AlertModel {

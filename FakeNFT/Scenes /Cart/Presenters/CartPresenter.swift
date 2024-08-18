@@ -16,8 +16,10 @@ final class CartPresenter {
     weak var delegate: CartPresenterDelegate?
     private let interactor: CartInteractorProtocol
     
+    private let sortOptionKey = "selectedCartSortOption"
     private var nftsl: [CartNftModel] = []
     private var filteredNfts: [CartNftModel] = []
+    
     
     init(interactor: CartInteractorProtocol) {
         self.interactor = interactor
@@ -33,8 +35,13 @@ final class CartPresenter {
             guard let self = self else { return }
             switch result {
             case .success(let fetchedNfts):
+                
                 self.nftsl = fetchedNfts
                 self.filteredNfts = fetchedNfts
+                
+                let savedSortOption = self.loadSortOption()
+                self.sortNft(by: savedSortOption)
+                
                 self.view?.reloadData()
                 UIBlockingProgressHUD.dismiss()
             case .failure(let error):
@@ -64,9 +71,18 @@ final class CartPresenter {
     }
     
     func sortNft(by option: SortOption) {
+        saveSortOption(option)
         switch option {
         case .price:
-            filteredNfts = nftsl.sorted(by: { $0.price < $1.price })
+            filteredNfts = nftsl.sorted { nft1, nft2 in
+                let price1 = nft1.price.replacingOccurrences(of: " ETH", with: "").replacingOccurrences(of: ",", with: ".")
+                let price2 = nft2.price.replacingOccurrences(of: " ETH", with: "").replacingOccurrences(of: ",", with: ".")
+                
+                let priceValue1 = Double(price1) ?? 0.0
+                let priceValue2 = Double(price2) ?? 0.0
+                
+                return priceValue1 < priceValue2
+            }
         case .rating:
             filteredNfts = nftsl.sorted(by: { $0.rating > $1.rating })
         case .name:
@@ -74,6 +90,15 @@ final class CartPresenter {
         }
         
         view?.reloadData()
+    }
+    
+    func saveSortOption(_ option: SortOption) {
+        UserDefaults.standard.set(option.rawValue, forKey: sortOptionKey)
+    }
+
+    func loadSortOption() -> SortOption {
+        let savedOption = UserDefaults.standard.string(forKey: sortOptionKey) ?? SortOption.name.rawValue
+        return SortOption(rawValue: savedOption) ?? .name
     }
     
     func getNft(at indexPath: IndexPath) -> CartNftModel{

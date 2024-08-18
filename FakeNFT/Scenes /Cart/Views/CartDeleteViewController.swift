@@ -63,7 +63,7 @@ final class CartDeleteViewController: UIViewController {
         button.backgroundColor = .tabBarItemsTintColor
         button.titleLabel?.font = UIFont.bodyRegular
         
-        button.setTitleColor(.red, for: .normal)
+        button.setTitleColor(.yaRed, for: .normal)
         button.setTitle("Удалить", for: .normal)
         button.addTarget(self, action: #selector(deleteFromCart), for: .touchUpInside)
         

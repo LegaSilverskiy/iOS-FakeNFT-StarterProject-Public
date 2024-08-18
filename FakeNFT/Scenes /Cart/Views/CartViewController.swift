@@ -81,6 +81,8 @@ final class CartViewController: UIViewController, CartView {
         presenter.delegate = self
         presenter.setView(self)
         presenter.loadNfts()
+        
+    
         setupUI()
     }
     
@@ -118,6 +120,7 @@ final class CartViewController: UIViewController, CartView {
     }
     
     private func setupSortButton() {
+        presenter.saveSortOption(.name)
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "navBarItem.sort"), style: .plain, target: self, action: #selector(sortButtonPressed))
         navigationItem.rightBarButtonItem?.tintColor = .tabBarItemsTintColor
         navigationItem.rightBarButtonItem?.width = 44
