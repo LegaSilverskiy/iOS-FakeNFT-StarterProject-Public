@@ -93,5 +93,33 @@ final class CartPresenter {
     func getNftsCount() -> Int {
         return filteredNfts.count
     }
+    
+    func getNftsTotalPrice() -> Double {
+        let numberFormatter = NumberFormatter()
+        numberFormatter.numberStyle = .decimal
+        numberFormatter.locale = Locale(identifier: "ru_RU")
         
+        let totalPrice = filteredNfts.reduce(0.0) { (result, nft) -> Double in
+            let priceString = nft.price
+            let priceNumber = numberFormatter.number(from: priceString.replacingOccurrences(of: " ETH", with: ""))?.doubleValue ?? 0.0
+            
+            return result + priceNumber
+        }
+        return totalPrice
+    }
+
+    func formattedTotalPrice() -> String {
+        let totalPrice = getNftsTotalPrice()
+        
+        let numberFormatter = NumberFormatter()
+        numberFormatter.numberStyle = .decimal
+        numberFormatter.locale = Locale(identifier: "ru_RU")
+        numberFormatter.maximumFractionDigits = 2
+        numberFormatter.minimumFractionDigits = 2
+
+        let formattedPrice = numberFormatter.string(from: NSNumber(value: totalPrice)) ?? "0,00"
+        
+        return formattedPrice + " ETH"
+    }
+
 }

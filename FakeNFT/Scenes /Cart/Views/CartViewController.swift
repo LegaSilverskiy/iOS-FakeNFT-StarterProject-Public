@@ -35,7 +35,6 @@ final class CartViewController: UIViewController, CartView {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.caption1
         label.textColor = .tabBarItemsTintColor
-        label.text = "3 NFT"
         
         return label
     }()
@@ -45,7 +44,6 @@ final class CartViewController: UIViewController, CartView {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.bodyBold
         label.textColor = .yaGreen
-        label.text = "5,34 ETH"
 
         return label
     }()
@@ -77,6 +75,8 @@ final class CartViewController: UIViewController, CartView {
     }
     
     func reloadData() {
+        nftCount.text = "\(presenter.getNftsCount()) NFT"
+        nftTotalPrice.text = presenter.formattedTotalPrice()
         nftsTableView.reloadData()
     }
     
