@@ -404,20 +404,20 @@
 			path = ProfileView;
 			sourceTree = "<group>";
 		};
-		6B1BA4CD2C6E2ABC00F012EF /* EditProvileService */ = {
+		6B1BA4CD2C6E2ABC00F012EF /* EditProfileService */ = {
 			isa = PBXGroup;
 			children = (
 				6B1BA4CE2C6E2ACF00F012EF /* EditProfileService.swift */,
 				6B1BA4D02C6E2ADB00F012EF /* EditProfileRequest.swift */,
 			);
-			path = EditProvileService;
+			path = EditProfileService;
 			sourceTree = "<group>";
 		};
 		D486EF512C63933C0023EF6F /* Profile */ = {
 			isa = PBXGroup;
 			children = (
 				6B1B6CAE2C6B852D00F012EF /* EditProfile */,
-				6B1BA4CD2C6E2ABC00F012EF /* EditProvileService */,
+				6B1BA4CD2C6E2ABC00F012EF /* EditProfileService */,
 				6B1BA4CC2C6E2A8E00F012EF /* ProfileView */,
 				6B1BA4C12C6D511B00F012EF /* ProfileService */,
 			);
