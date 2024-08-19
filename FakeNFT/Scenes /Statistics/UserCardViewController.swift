@@ -8,10 +8,10 @@ import UIKit
 
 final class UserCardViewController: UIViewController {
     
-    let servicesAssembly: ServicesAssembly
+    let usersService: UsersServiceProtocol
     
-    init(servicesAssembly: ServicesAssembly) {
-        self.servicesAssembly = servicesAssembly
+    init(usersService: UsersServiceProtocol) {
+        self.usersService = usersService
         super.init(nibName: nil, bundle: nil)
     }
     

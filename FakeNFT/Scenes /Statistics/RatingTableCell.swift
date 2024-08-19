@@ -37,7 +37,7 @@ final class RatingTableCell: UITableViewCell {
             updateUserImage(url: url)
         }
         
-        nameLabel.text = String(params.name.prefix(18))
+        nameLabel.text = params.name
         nftCountLabel.text = String(params.NFTCount)
     }
     
@@ -96,6 +96,7 @@ final class RatingTableCell: UITableViewCell {
             
             nameLabel.centerYAnchor.constraint(equalTo: bgView.centerYAnchor),
             nameLabel.leadingAnchor.constraint(equalTo: avatarImageView.trailingAnchor, constant: 8),
+            nameLabel.trailingAnchor.constraint(equalTo: bgView.trailingAnchor, constant: -70),
             
             nftCountLabel.centerYAnchor.constraint(equalTo: bgView.centerYAnchor),
             nftCountLabel.trailingAnchor.constraint(equalTo: bgView.trailingAnchor, constant: -16)

@@ -53,6 +53,7 @@
 		D43869182C6BE24C0035DFC2 /* UsersService.swift in Sources */ = {isa = PBXBuildFile; fileRef = D43869172C6BE24C0035DFC2 /* UsersService.swift */; };
 		D438691A2C6C03900035DFC2 /* UsersStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = D43869192C6C03900035DFC2 /* UsersStorage.swift */; };
 		D438691C2C6E36E40035DFC2 /* UIBlockingProgressHUD.swift in Sources */ = {isa = PBXBuildFile; fileRef = D438691B2C6E36E40035DFC2 /* UIBlockingProgressHUD.swift */; };
+		D468FA792C73922300B28B37 /* StatisticsAssembly.swift in Sources */ = {isa = PBXBuildFile; fileRef = D468FA782C73922300B28B37 /* StatisticsAssembly.swift */; };
 		D486EF552C6394E30023EF6F /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D486EF542C6394E30023EF6F /* ProfileViewController.swift */; };
 		D486EF572C6395860023EF6F /* CartViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D486EF562C6395860023EF6F /* CartViewController.swift */; };
 		D486EF592C6395CA0023EF6F /* StatisticsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = D486EF582C6395CA0023EF6F /* StatisticsViewController.swift */; };
@@ -130,6 +131,7 @@
 		D43869172C6BE24C0035DFC2 /* UsersService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsersService.swift; sourceTree = "<group>"; };
 		D43869192C6C03900035DFC2 /* UsersStorage.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UsersStorage.swift; sourceTree = "<group>"; };
 		D438691B2C6E36E40035DFC2 /* UIBlockingProgressHUD.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UIBlockingProgressHUD.swift; sourceTree = "<group>"; };
+		D468FA782C73922300B28B37 /* StatisticsAssembly.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsAssembly.swift; sourceTree = "<group>"; };
 		D486EF542C6394E30023EF6F /* ProfileViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		D486EF562C6395860023EF6F /* CartViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartViewController.swift; sourceTree = "<group>"; };
 		D486EF582C6395CA0023EF6F /* StatisticsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = StatisticsViewController.swift; sourceTree = "<group>"; };
@@ -292,10 +294,10 @@
 		3F6806C629CBBC4E00B4F915 /* Services */ = {
 			isa = PBXGroup;
 			children = (
+				D468FA752C737FB500B28B37 /* StatisticsServices */,
 				3FC8C38F29D245250081F015 /* Requests */,
 				0C79EE6B2A76DE2E00EE90EA /* ServicesAssemly.swift */,
 				0CFCB73F2A78002A0009A829 /* NftService.swift */,
-				D43869172C6BE24C0035DFC2 /* UsersService.swift */,
 			);
 			path = Services;
 			sourceTree = "<group>";
@@ -368,7 +370,6 @@
 			children = (
 				3FC8C39029D2453B0081F015 /* ExampleRequest.swift */,
 				0C79EE602A76DCD600EE90EA /* NftByIdRequest.swift */,
-				D43869132C6BD5E30035DFC2 /* UsersRequest.swift */,
 				0C79EE622A76DD1900EE90EA /* RequestConstants.swift */,
 			);
 			path = Requests;
@@ -382,6 +383,16 @@
 				D43869152C6BD8370035DFC2 /* SortingOrder.swift */,
 			);
 			path = Models;
+			sourceTree = "<group>";
+		};
+		D468FA752C737FB500B28B37 /* StatisticsServices */ = {
+			isa = PBXGroup;
+			children = (
+				D43869172C6BE24C0035DFC2 /* UsersService.swift */,
+				D43869132C6BD5E30035DFC2 /* UsersRequest.swift */,
+				D468FA782C73922300B28B37 /* StatisticsAssembly.swift */,
+			);
+			path = StatisticsServices;
 			sourceTree = "<group>";
 		};
 		D486EF512C63933C0023EF6F /* Profile */ = {
@@ -630,6 +641,7 @@
 				3FC8C39129D2453B0081F015 /* ExampleRequest.swift in Sources */,
 				D40BB87F2C679F5C00CCD8D7 /* UserCardViewController.swift in Sources */,
 				0CFCB7462A78064B0009A829 /* NftDetailCellModel.swift in Sources */,
+				D468FA792C73922300B28B37 /* StatisticsAssembly.swift in Sources */,
 				D41EBD1D2C66371400EE966F /* StatisticsPresenter.swift in Sources */,
 				0CFCB74B2A780EA80009A829 /* UIView+Constraints.swift in Sources */,
 				3F6806D729CBC50A00B4F915 /* CellsReusingUtils.swift in Sources */,

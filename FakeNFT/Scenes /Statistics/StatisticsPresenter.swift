@@ -6,13 +6,22 @@
 //
 import Foundation
 
+protocol StatisticsPresenterProtocol: ActionSheetPresenterDelegate {
+    func viewDidLoad()
+    func viewWllAppear()
+    func sortButtonPressed()
+    func getRatingMembersCount() -> Int
+    func getParams(for index: Int) -> RatingCellParams
+    func switchToProfile(for index: Int)
+}
+
 // MARK: - State
 /*
  show          - стейт показа таблицы если на момент открытия вью, есть данные в переменной users
  loadNextPage  - стейт запроса данных из хранилища или сети
  failed        - стейт обработки ошибки при неудачной загрузке данных
  data          - стейт обработки данных при удачной загрузке из хранилища или сети
-*/
+ */
 enum StatisticsState {
     case show, loadNextPage, failed(Error), data([User])
 }
@@ -22,14 +31,13 @@ enum UserDefaultsKeys: String {
     case ratingSortingOrder
 }
 
-final class StatisticsPresenter {
+final class StatisticsPresenter: StatisticsPresenterProtocol {
     
     // MARK: - Public Properties
-    weak var view: StatisticsViewController?
+    weak var view: StatisticsViewProtocol?
     
     // MARK: - Private Properties
-    private let servicesAssembly: ServicesAssembly
-    private let usersService: UsersService
+    private let usersService: UsersServiceProtocol
     private let pageSize = 15
     private var users: [User] = []
     private var state: StatisticsState? {
@@ -45,9 +53,8 @@ final class StatisticsPresenter {
     private var alertIsPresented = false
     
     // MARK: - Initializers
-    init(servicesAssembly: ServicesAssembly) {
-        self.servicesAssembly = servicesAssembly
-        self.usersService = servicesAssembly.usersService
+    init(usersService: UsersServiceProtocol) {
+        self.usersService = usersService
     }
     
     // MARK: - Public Methods
@@ -87,8 +94,7 @@ final class StatisticsPresenter {
     }
     
     func switchToProfile(for index: Int) {
-        let vc = UserCardViewController(servicesAssembly: servicesAssembly)
-        view?.navigationController?.pushViewController(vc, animated: true)
+        view?.switchToUserCard(usersService: usersService)
     }
     
     // MARK: - Private Methods

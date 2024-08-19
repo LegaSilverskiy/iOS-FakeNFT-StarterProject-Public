@@ -6,9 +6,16 @@
 //
 import Foundation
 
+protocol UsersServiceProtocol {
+    func loadUsers(itemsLoaded: Int,
+                   pageSize: Int,
+                   completion: @escaping UsersCompletion
+    )
+}
+
 typealias UsersCompletion = (Result<[User], Error>) -> Void
 
-final class UsersService {
+final class UsersService: UsersServiceProtocol {
     
     private let networkClient: NetworkClient
     private let storage: UsersStorage

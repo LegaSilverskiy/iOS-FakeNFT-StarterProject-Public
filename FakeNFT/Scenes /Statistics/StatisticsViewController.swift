@@ -1,17 +1,25 @@
 import UIKit
 
-final class StatisticsViewController: UIViewController {
+protocol StatisticsViewProtocol: AnyObject, ErrorView {
+    func showSortMenu()
+    func showLoading()
+    func hideLoading()
+    func updateTable()
+    func switchToUserCard(usersService: UsersServiceProtocol)
+    func showError(_ model: ErrorModel)
+}
+
+final class StatisticsViewController: UIViewController, StatisticsViewProtocol {
     
     // MARK: - Private Properties
-    private let presenter: StatisticsPresenter
+    private let presenter: StatisticsPresenterProtocol
     private let sortButton = UIButton()
     private let ratingTable = UITableView()
     private let ratingTableRowHeight = 88.0
     
     // MARK: - Initializers
-    init(servicesAssembly: ServicesAssembly) {
-        
-        self.presenter = StatisticsPresenter(servicesAssembly: servicesAssembly)
+    init(presenter: StatisticsPresenterProtocol) {
+        self.presenter = presenter
         
         super.init(nibName: nil, bundle: nil)
         self.navigationController?.isNavigationBarHidden = true
@@ -25,9 +33,7 @@ final class StatisticsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        presenter.view = self
         presenter.viewDidLoad()
-        
         setUI()
     }
     
@@ -38,7 +44,6 @@ final class StatisticsViewController: UIViewController {
     }
     
     // MARK: - Public Methods
-    
     func showLoading() {
         UIBlockingProgressHUD.show()
     }
@@ -48,7 +53,16 @@ final class StatisticsViewController: UIViewController {
     }
     
     func showSortMenu() {
-        ActionSheetPresenter.show(actionSheet: .actionSheetTitleSorting, with: [.name, .rating], on: self, delegate: presenter)
+        ActionSheetPresenter.show(actionSheet: .actionSheetTitleSorting, 
+                                  with: [.name, .rating],
+                                  on: self,
+                                  delegate: presenter
+        )
+    }
+    
+    func switchToUserCard(usersService: UsersServiceProtocol) {
+        let vc = UserCardViewController(usersService: usersService)
+        self.navigationController?.pushViewController(vc, animated: true)
     }
     
     func updateTable() {
@@ -139,8 +153,4 @@ extension StatisticsViewController: UITableViewDelegate {
         
         presenter.switchToProfile(for: indexPath.row)
     }
-}
-
-extension StatisticsViewController: ErrorView {
-    
 }
