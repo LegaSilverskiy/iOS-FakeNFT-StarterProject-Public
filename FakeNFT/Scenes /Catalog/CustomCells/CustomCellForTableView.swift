@@ -8,16 +8,9 @@
 import UIKit
 import Kingfisher
 
-protocol CustomCellForTableViewDelegate: AnyObject {
-    func avx(_ cell: CustomCellForTableView)
-}
-
 final class CustomCellForTableView: UITableViewCell, ReuseIdentifying {
     
     static let reUseIdentifier = "TableInCatalogCustomViewCell"
-    
-    //MARK: - DELEGATE
-    weak var delegate: CustomCellForTableViewDelegate?
     
     //MARK: - PRIVATE UI PROPERTIES
 //    private lazy var frameViewForTable = UIView()

@@ -24,6 +24,12 @@ final class CatalogPresenter {
         }
     }
     
+    //MARK: - VIEW_DID_LOAD
+    
+    func viewDidLoad() {
+        state = .loading
+    }
+    
     //MARK: - VIEW_WILL_APPEARE
     func viewWllAppear() {
         state = .loading
@@ -44,7 +50,6 @@ final class CatalogPresenter {
     
     //MARK: - GET_ALL_CATALOGS_FOR_COUNT
     func getAllCatalogs() -> Int {
-        print(catalogs)
         return catalogs.count
     }
     
@@ -98,15 +103,5 @@ final class CatalogPresenter {
         return ErrorModel(message: message, actionText: actionText) { [weak self] in
             self?.state = .loading
         }
-    }
-    
-    
-    private func getSaveSort() {
-        let sortByName = UserDefaults.standard.string(forKey: "SaveName")
-        let sortBynumberOfNFTs = UserDefaults.standard.string(forKey: "SaveNFT")
-    }
-    
-    private func SaveSort() {
-        
     }
 }

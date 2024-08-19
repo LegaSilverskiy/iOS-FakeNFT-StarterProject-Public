@@ -29,7 +29,6 @@ final class CatalogServiceImpl {
             case .failure(let error):
                 completion(.failure(error))
             }
-            print(result)
         }
     }
 
