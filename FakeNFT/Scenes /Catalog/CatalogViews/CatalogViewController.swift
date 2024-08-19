@@ -11,7 +11,7 @@ final class CatalogViewController: UIViewController, ErrorView, LoadingView {
     
     //MARK: - ACTIVITY_INDICATOR
     internal lazy var activityIndicator = UIActivityIndicatorView()
-    //MARK: - UI PROPERTIES
+    //MARK: - UI_PROPERTIES
     
     let tableForCollectionsNft = UITableView()
     lazy var sortButton = UIButton()
@@ -26,11 +26,11 @@ final class CatalogViewController: UIViewController, ErrorView, LoadingView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    //MARK: - VIEW LIFE CIRCLE
+    //MARK: - VIEW_LIFE_CIRCLE
     override func viewDidLoad() {
         super.viewDidLoad()
+        presenter.view?.viewDidLoad()
         presenter.view = self
-        presenter.loadCatalogs()
         configureUI()
         setupSortButton()
         setupTableForCollectionsNft()
@@ -93,30 +93,19 @@ extension CatalogViewController {
     }
 }
 
-
-extension CatalogViewController: CustomCellForTableViewDelegate {
-    func avx(_ cell: CustomCellForTableView) {
-        
-    }
-    
-    private func configCell(for cell: CustomCellForTableView, with indexPath: IndexPath) {
-        cell.delegate = self
-    }
-}
-
     //MARK: - UI_TABLE_VIEW_DATA_SOURCE
 
 extension CatalogViewController: UITableViewDataSource {
-    //TODO: Сделать расчет колличества ячеек после получения доступа к АПИ
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return presenter.getAllCatalogs()
     }
-    //TODO: Заполнить данными после получения АПИ
+    
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         if let cell = tableView.dequeueReusableCell(withIdentifier: CustomCellForTableView.reUseIdentifier, for: indexPath) as? CustomCellForTableView {
             let params = presenter.getParamsForCell(for: indexPath.row)
             cell.configure(with: params)
+            cell.selectionStyle = .none
             return cell
         }
         debugPrint("@@@ StatisticsViewController: Ошибка подготовки ячейки для таблицы рейтинга.")
@@ -139,7 +128,7 @@ extension CatalogViewController: UITableViewDelegate {
 }
 
 private extension CatalogViewController {
-    // MARK: - CONFIGURE UI
+    // MARK: - CONFIGURE_UI
     
     func configureUI() {
         setupNavigationBar()
@@ -156,7 +145,7 @@ private extension CatalogViewController {
         view.addSubview(tableForCollectionsNft)
     }
     
-    //MARK: - SORT BUTTON
+    //MARK: - SORT_BUTTON
     func setupSortButton() {
         sortButton.setImage(UIImage.navBarIconsSort, for: .normal)
         sortButton.addTarget(self, action: #selector(sortButtonTapped), for: .touchUpInside)
@@ -166,14 +155,16 @@ private extension CatalogViewController {
         sortButton.translatesAutoresizingMaskIntoConstraints = false
     }
     
-    // MARK: - TABLE VIEW WITH COLLECTIONS NFT
+    // MARK: - TABLE_VIEW_WITH_COLLECTIONS_NFT
     func setupTableForCollectionsNft()  {
         tableForCollectionsNft.register(CustomCellForTableView.self, forCellReuseIdentifier: CustomCellForTableView.reUseIdentifier)
         tableForCollectionsNft.separatorStyle = .none
         tableForCollectionsNft.dataSource = self
         tableForCollectionsNft.delegate = self
+
     }
     
+    //MARK: - SETUP_TABLE_VIEW_CONSTRAINT
     func setupTableForCollectionsNftConstraint() {
         
         tableForCollectionsNft.translatesAutoresizingMaskIntoConstraints = false

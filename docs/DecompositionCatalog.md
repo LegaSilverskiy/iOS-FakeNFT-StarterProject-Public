@@ -13,19 +13,18 @@
 ## Основной экран каталога с таблицами и фильтром
 
 #### Верстка
-- Кнопка с фильтрами (est: 30 min; fact: x min)
-- Всплывающее окно(Alert?) с фильтами (est: 120 min; fact: x min)
-- Таблица с коллекциями (est: 120 min; fact: x min).
-- Ячейки (est: 120 min; fact: x min).
-- Индикатор загрузки (est: 120 min; fact: x min)
+- Кнопка с фильтрами (est: 30 min; fact: 30 min)
+- Всплывающее окно(Alert?) с фильтами (est: 120 min; fact: 20 min)
+- Таблица с коллекциями (est: 120 min; fact: 600 min).
+- Ячейки (est: 120 min; fact: 240 min).
+- Индикатор загрузки (est: 120 min; fact: 15 min)
 
 
 
 #### Логика
-- Сохранить способ сортировки (est: 240 min; fact: x min).
-- Переход на экран выбранной коллекции (est: 60 min; fact: x min)
-- Индикатор загрузки (est: 120 min; fact: x min)
-`Total:` est: 810 min; fact: x min.
+- Переход на экран выбранной коллекции (est: 60 min; fact: 10 min)
+- Индикатор загрузки (est: 120 min; fact: 10 min)
+`Total:` est: 810 min; fact: 925 min.
 
 
 # Module 2:
@@ -55,5 +54,6 @@
 - Добавить NFT в избранное (est: 240 min; fact: x min)
 - Добавить NFT в корзину (est: 240 min; fact: x min)
 - Смёрджить проект с командой (est: 240 min; fact: x min)
+- Сохранить способ сортировки (est: 120 min; fact: x min).
 
-`Total:` est: 820 min; fact: x min.
+`Total:` est: 940 min; fact: x min.
