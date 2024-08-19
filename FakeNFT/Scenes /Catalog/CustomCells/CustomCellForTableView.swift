@@ -6,29 +6,50 @@
 //
 
 import UIKit
+import Kingfisher
 
-final class CustomCellForTableView: UITableViewCell {
+protocol CustomCellForTableViewDelegate: AnyObject {
+    func avx(_ cell: CustomCellForTableView)
+}
+
+final class CustomCellForTableView: UITableViewCell, ReuseIdentifying {
     
-    static let identiferForCellInTableView = "TableInCatalogCustomViewCell"
+    static let reUseIdentifier = "TableInCatalogCustomViewCell"
+    
+    //MARK: - DELEGATE
+    weak var delegate: CustomCellForTableViewDelegate?
     
     //MARK: - PRIVATE UI PROPERTIES
-    private let frameViewForTable = UIView()
-    private let imageCollectionNFT = UIImageView()
-    private let titleLabelForCollectionNFT = UILabel()
+//    private lazy var frameViewForTable = UIView()
+    private lazy var imageCollectionNFT = UIImageView()
+    private lazy var titleLabelForCollectionNFT = UILabel()
     
-//    // MARK: - INIT
-//    override init(frame: CGRect) {
-//        super.init(frame: frame)
-//        configureUI()
-//    }
-//
-//    required init?(coder: NSCoder) {
-//        fatalError("init(coder:) has not been implemented")
-//    }
+    // MARK: - INIT
+    override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
+        super.init(style: style, reuseIdentifier: reuseIdentifier)
+        configureUI()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     //MARK: - PUBLIC METHODS
-    func configure() {
-        
+    func configure(with params: CatalogCell) {
+        titleLabelForCollectionNFT.text = String("\(params.name.prefix(18))"+" (\(params.nfts.count))")
+        if let url = URL(string: params.cover) {
+            setupImageWithKf(with: url)
+        }
+    }
+    
+    func setupImageWithKf(with url: URL) {
+        imageCollectionNFT.kf.setImage(with: url, placeholder: UIImage.tabBarIconsCatalog?.withTintColor(.black))
+    }
+    
+    //MARK: - OVERRIDE METHODS
+    public override func prepareForReuse() {
+        super.prepareForReuse()
+        imageCollectionNFT.kf.cancelDownloadTask()
     }
     
     // MARK: - CONFIGURE UI
@@ -37,13 +58,17 @@ final class CustomCellForTableView: UITableViewCell {
         addSubviews()
         setupConstraints()
         configureTitleLabel()
-        configureFrameView()
+        configImageView()
+    }
+    
+    private func configImageView() {
+        imageCollectionNFT.layer.cornerRadius = 14
+        imageCollectionNFT.layer.masksToBounds = true
     }
     
     private func addSubviews() {
-        contentView.addSubview(frameViewForTable)
-        frameViewForTable.addSubview(imageCollectionNFT)
-        frameViewForTable.addSubview(titleLabelForCollectionNFT)
+        addSubview(imageCollectionNFT)
+        addSubview(titleLabelForCollectionNFT)
     }
     
     private func configureView() {
@@ -59,39 +84,25 @@ final class CustomCellForTableView: UITableViewCell {
     private func setTitleLabelText(with text: String) {
         titleLabelForCollectionNFT.text = text
     }
-    
-    // MARK: - FRAME VIEW
-    private func configureFrameView() {
-        frameViewForTable.layer.masksToBounds = true
-        frameViewForTable.layer.cornerRadius = 10
-        frameViewForTable.layer.cornerCurve = .continuous
-    }
-    
 }
 
-    //MARK: - CONSTRAINTS
+//MARK: - CONSTRAINTS
 extension CustomCellForTableView {
     
     private func setupConstraints() {
-        frameViewForTable.translatesAutoresizingMaskIntoConstraints = false
         imageCollectionNFT.translatesAutoresizingMaskIntoConstraints = false
         titleLabelForCollectionNFT.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            frameViewForTable.topAnchor.constraint(equalTo: contentView.topAnchor),
-            frameViewForTable.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            frameViewForTable.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            frameViewForTable.heightAnchor.constraint(equalToConstant: 179),
+            imageCollectionNFT.topAnchor.constraint(equalTo: topAnchor, constant: 20),
+            imageCollectionNFT.leadingAnchor.constraint(equalTo: leadingAnchor),
+            imageCollectionNFT.trailingAnchor.constraint(equalTo: trailingAnchor),
+            imageCollectionNFT.heightAnchor.constraint(equalToConstant: 179),
             
-            imageCollectionNFT.topAnchor.constraint(equalTo: frameViewForTable.topAnchor),
-            imageCollectionNFT.leadingAnchor.constraint(equalTo: frameViewForTable.leadingAnchor),
-            imageCollectionNFT.trailingAnchor.constraint(equalTo: frameViewForTable.trailingAnchor),
-            imageCollectionNFT.bottomAnchor.constraint(equalTo: titleLabelForCollectionNFT.topAnchor, constant: 4),
+            imageCollectionNFT.bottomAnchor.constraint(equalTo: titleLabelForCollectionNFT.topAnchor, constant: -4),
             
-            titleLabelForCollectionNFT.topAnchor.constraint(equalTo: imageCollectionNFT.bottomAnchor, constant: 4),
-            titleLabelForCollectionNFT.leadingAnchor.constraint(equalTo: frameViewForTable.leadingAnchor),
-            titleLabelForCollectionNFT.trailingAnchor.constraint(equalTo: frameViewForTable.trailingAnchor),
-            titleLabelForCollectionNFT.bottomAnchor.constraint(equalTo: frameViewForTable.bottomAnchor)
+            titleLabelForCollectionNFT.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
+            titleLabelForCollectionNFT.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -21)
         ])
     }
 }

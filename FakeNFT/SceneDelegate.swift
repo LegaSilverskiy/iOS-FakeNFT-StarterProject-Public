@@ -6,7 +6,8 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     
     let servicesAssembly = ServicesAssembly(
         networkClient: DefaultNetworkClient(),
-        nftStorage: NftStorageImpl()
+        nftStorage: NftStorageImpl(),
+        catalogStorage: CatalogStorage()
     )
     
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {

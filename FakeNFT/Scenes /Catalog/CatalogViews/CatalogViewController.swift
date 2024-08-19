@@ -1,20 +1,25 @@
 import UIKit
+import ProgressHUD
 
-final class CatalogViewController: UIViewController {
+final class CatalogViewController: UIViewController, ErrorView, LoadingView {
     
+    //MARK: - PRESENTER
+    var presenter: CatalogPresenter
     
     // MARK: - SERVICES ASSEMBLY
-    let servicesAssembly: ServicesAssembly
     
+    
+    //MARK: - ACTIVITY_INDICATOR
+    internal lazy var activityIndicator = UIActivityIndicatorView()
     //MARK: - UI PROPERTIES
     
     let tableForCollectionsNft = UITableView()
-    let sortButton = UIButton()
-    let navigationBar = UINavigationBar()
+    lazy var sortButton = UIButton()
     
     //MARK: - INIT
     init(servicesAssembly: ServicesAssembly) {
-        self.servicesAssembly = servicesAssembly
+        self.presenter = CatalogPresenter(servicesAssembly: servicesAssembly)
+        
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -24,88 +29,42 @@ final class CatalogViewController: UIViewController {
     //MARK: - VIEW LIFE CIRCLE
     override func viewDidLoad() {
         super.viewDidLoad()
+        presenter.view = self
+        presenter.loadCatalogs()
         configureUI()
         setupSortButton()
         setupTableForCollectionsNft()
         setupConstraints()
     }
     
-    // MARK: - CONFIGURE UI
-    
-    private func configureUI() {
-        setupNavigationBar()
-        configureView()
-        addSubviews()
-        setupSortButton()
+    override func viewWillAppear(_ animated: Bool) {
+        presenter.viewWllAppear()
     }
     
-    private func configureView() {
-        view.backgroundColor = .systemBackground
+
+    
+    func updatetable() {
+        tableForCollectionsNft.reloadData()
     }
     
-    private func addSubviews() {
-        view.addSubview(tableForCollectionsNft)
-        view.addSubview(navigationBar)
-        navigationBar.addSubview(sortButton)
+    //MARK: - PROGRESS_HUD
+    func showProgressHud() {
+        ProgressHUD.show()
     }
     
-    //MARK: - SORT BUTTON
-    
-    private func setupSortButton() {
-        sortButton.setImage(UIImage(named: "navBar.sort"), for: .normal)
-        sortButton.addTarget(self, action: #selector(sortButtonTapped), for: .touchUpInside)
-    }
-    
-    private func setupSortButtonConstraints() {
-        sortButton.translatesAutoresizingMaskIntoConstraints = false
-        
-        NSLayoutConstraint.activate([
-            sortButton.topAnchor.constraint(equalTo: navigationBar.topAnchor),
-            sortButton.trailingAnchor.constraint(equalTo: navigationBar.trailingAnchor, constant: -9),
-            sortButton.bottomAnchor.constraint(equalTo: navigationBar.bottomAnchor),
-            sortButton.widthAnchor.constraint(equalToConstant: 42)
-        ])
-    }
-    
-    // MARK: - TABLE VIEW WITH COLLECTIONS NFT
-    private func setupTableForCollectionsNft() {
-        //TODO: сделать описание таблицы. Зарегать ее и т.д.
-    }
-    
-    private func setupTableForCollectionsNftConstraint() {
-        
-        tableForCollectionsNft.translatesAutoresizingMaskIntoConstraints = false
-        
-        NSLayoutConstraint.activate([
-            tableForCollectionsNft.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            tableForCollectionsNft.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            tableForCollectionsNft.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            tableForCollectionsNft.bottomAnchor.constraint(equalTo: view.bottomAnchor)
-        ])
-        
+    func hideProgressHud() {
+        ProgressHUD.dismiss()
     }
     
     //MARK: - NAVIGATION BAR
     
     private func setupNavigationBar() {
-        navigationBar.backgroundColor = .systemBackground
         self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: sortButton)
-    }
-    
-    private func setupNavigationBarConstraints() {
-        navigationBar.translatesAutoresizingMaskIntoConstraints = false
-        
-        NSLayoutConstraint.activate([
-            navigationBar.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            navigationBar.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            navigationBar.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            navigationBar.heightAnchor.constraint(equalToConstant: 42)
-        ])
     }
     
     //MARK: - ACTIONS
     
-    @objc func sortButtonTapped() {
+    @objc private func sortButtonTapped() {
         showAlertController()
     }
     
@@ -129,8 +88,103 @@ final class CatalogViewController: UIViewController {
 extension CatalogViewController {
     
     private func setupConstraints() {
-        setupNavigationBarConstraints()
         setupSortButtonConstraints()
         setupTableForCollectionsNftConstraint()
     }
 }
+
+
+extension CatalogViewController: CustomCellForTableViewDelegate {
+    func avx(_ cell: CustomCellForTableView) {
+        
+    }
+    
+    private func configCell(for cell: CustomCellForTableView, with indexPath: IndexPath) {
+        cell.delegate = self
+    }
+}
+
+    //MARK: - UI_TABLE_VIEW_DATA_SOURCE
+
+extension CatalogViewController: UITableViewDataSource {
+    //TODO: Сделать расчет колличества ячеек после получения доступа к АПИ
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        return presenter.getAllCatalogs()
+    }
+    //TODO: Заполнить данными после получения АПИ
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
+        if let cell = tableView.dequeueReusableCell(withIdentifier: CustomCellForTableView.reUseIdentifier, for: indexPath) as? CustomCellForTableView {
+            let params = presenter.getParamsForCell(for: indexPath.row)
+            cell.configure(with: params)
+            return cell
+        }
+        debugPrint("@@@ StatisticsViewController: Ошибка подготовки ячейки для таблицы рейтинга.")
+        return UITableViewCell()
+    }
+    
+}
+
+    //MARK: - UI_TABLE_VIEW_DELEGATE
+extension CatalogViewController: UITableViewDelegate {
+    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        let navigationCollection = CurrentCollectionNftViewController()
+        let navigation = UINavigationController(rootViewController: navigationCollection)
+        present(navigation, animated: true)
+    }
+    
+    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+        tableView.deselectRow(at: indexPath, animated: true)
+    }
+}
+
+private extension CatalogViewController {
+    // MARK: - CONFIGURE UI
+    
+    func configureUI() {
+        setupNavigationBar()
+        configureView()
+        addSubviews()
+        setupSortButton()
+    }
+    
+    func configureView() {
+        view.backgroundColor = .systemBackground
+    }
+    
+    func addSubviews() {
+        view.addSubview(tableForCollectionsNft)
+    }
+    
+    //MARK: - SORT BUTTON
+    func setupSortButton() {
+        sortButton.setImage(UIImage.navBarIconsSort, for: .normal)
+        sortButton.addTarget(self, action: #selector(sortButtonTapped), for: .touchUpInside)
+    }
+    
+    func setupSortButtonConstraints() {
+        sortButton.translatesAutoresizingMaskIntoConstraints = false
+    }
+    
+    // MARK: - TABLE VIEW WITH COLLECTIONS NFT
+    func setupTableForCollectionsNft()  {
+        tableForCollectionsNft.register(CustomCellForTableView.self, forCellReuseIdentifier: CustomCellForTableView.reUseIdentifier)
+        tableForCollectionsNft.separatorStyle = .none
+        tableForCollectionsNft.dataSource = self
+        tableForCollectionsNft.delegate = self
+    }
+    
+    func setupTableForCollectionsNftConstraint() {
+        
+        tableForCollectionsNft.translatesAutoresizingMaskIntoConstraints = false
+        
+        NSLayoutConstraint.activate([
+            tableForCollectionsNft.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            tableForCollectionsNft.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            tableForCollectionsNft.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
+            tableForCollectionsNft.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ])
+        
+    }
+}
+
