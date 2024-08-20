@@ -6,4 +6,5 @@ extension UIImage {
     static let tabBarIconsCatalog = UIImage(named: "tabBar.catalog")
     static let tabBarIconsCart = UIImage(named: "tabBar.cart")
     static let tabBarIconsStatistics = UIImage(named: "tabBar.statistics")
+    static let navBarIconSort = UIImage(named: "navBar.sort")
 }
