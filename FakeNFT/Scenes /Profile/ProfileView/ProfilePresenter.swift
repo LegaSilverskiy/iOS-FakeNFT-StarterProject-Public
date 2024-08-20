@@ -86,7 +86,9 @@ final class ProfilePresenter: ProfilePresenterProtocol {
             name: model.name,
             description: model.description,
             website: model.website,
-            avatar: model.avatar
+            avatar: model.avatar,
+            nfts: model.nfts,
+            likes: model.likes
         )
     }
     

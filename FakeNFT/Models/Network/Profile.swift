@@ -8,11 +8,12 @@
 import Foundation
 
 struct ProfileResult: Codable {
-    let id: String
     let name: String
     let avatar: String
     let description: String
     let website: String
+    var nfts: [String]
+    var likes: [String]
 }
 
 struct Profile {
@@ -20,6 +21,8 @@ struct Profile {
     var description: String
     var website: String
     var avatar: String
+    var nfts: [String]
+    var likes: [String]
 }
 
 

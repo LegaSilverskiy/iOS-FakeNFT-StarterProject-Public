@@ -189,6 +189,7 @@ final class ProfileViewController: UIViewController, ProfileViewProtocol {
     
     func showUIElements() {
         navigationController?.isNavigationBarHidden = false
+        tableView.reloadData()
         ProgressHUD.dismiss()
         view.isHidden = false
     }
@@ -206,6 +207,17 @@ final class ProfileViewController: UIViewController, ProfileViewProtocol {
         textView.frame = frame
         
         updateConstraintsForTextView(textView, estimatedSize)
+    }
+    
+    private func routeToMyNft() -> UIViewController {
+        guard let profile = presenter.profile else { return UIViewController()}
+        
+        let networkClient = DefaultNetworkClient()
+        let nftService = MyNftService(networkClient: networkClient)
+        let presenter = MyNftPresenter(nftService: nftService, nftString: profile.nfts)
+        let myNftViewController = MyNftViewController(presenter: presenter)
+        presenter.view = myNftViewController
+        return myNftViewController
     }
     
     @objc private func editButtonTapped() {
@@ -231,6 +243,13 @@ final class ProfileViewController: UIViewController, ProfileViewProtocol {
 extension ProfileViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: false)
+        
+        if indexPath.row == 0 {
+            let myNftViewController = routeToMyNft()
+            navigationController?.pushViewController(myNftViewController, animated: true)
+        } else if indexPath.row == 2 {
+            webviewTapped()
+        }
     }
 }
 
@@ -245,6 +264,12 @@ extension ProfileViewController: UITableViewDataSource {
         }
         
         cell.title.text = presenter.tableNames[indexPath.row]
+        
+        if let nftsCount = presenter.profile?.nfts.count {
+            if indexPath.row == 0 {
+                cell.title.text = "\(presenter.tableNames[indexPath.row]) (\(nftsCount))"
+            }
+        }
         
         return cell
     }

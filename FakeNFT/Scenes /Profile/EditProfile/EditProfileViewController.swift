@@ -127,7 +127,8 @@ final class EditProfileViewController: UIViewController, EditProfileViewProtocol
             presenter.profile.name,
             presenter.profile.description,
             presenter.profile.website,
-            presenter.profile.avatar
+            presenter.profile.avatar,
+            presenter.profile.nfts.first ?? ""
         ]
     }
     

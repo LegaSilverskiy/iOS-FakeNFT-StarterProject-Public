@@ -103,7 +103,9 @@ final class EditProfilePresenter: EditProfilePresenterProtocol {
             name: text[0],
             description: text[1],
             website: text[2],
-            avatar: text[3]
+            avatar: text[3],
+            nfts: [],
+            likes: []
         )
     }
     
@@ -125,7 +127,9 @@ final class EditProfilePresenter: EditProfilePresenterProtocol {
                     name: profileResult.name,
                     description: profileResult.description,
                     website: profileResult.website,
-                    avatar: profileResult.avatar
+                    avatar: profileResult.avatar,
+                    nfts: profileResult.nfts,
+                    likes: profileResult.likes
                 )
                 completion()
                 
