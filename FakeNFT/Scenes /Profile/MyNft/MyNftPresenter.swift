@@ -61,6 +61,8 @@ final class MyNftPresenter: MyNftPresenterProtocol {
     
     private func loadNfts() {
         
+        nfts.removeAll()
+        
         let group = DispatchGroup()
         
         nftString.forEach { nft in
