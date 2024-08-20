@@ -10,8 +10,14 @@ import UIKit
 
 protocol MyNftPresenterProtocol {
     func viewDidLoad()
-    func sortNfts(by: String)
+    func sortNfts(by: sortKeys)
     var nfts: [NftResult] { get set }
+}
+
+enum sortKeys: String, CaseIterable {
+    case name = "По имени"
+    case price = "По цене"
+    case rating = "По рейтингу"
 }
 
 final class MyNftPresenter: MyNftPresenterProtocol {
@@ -33,25 +39,21 @@ final class MyNftPresenter: MyNftPresenterProtocol {
         loadNfts()
     }
     
-    func sortNfts(by option: String) {
+    func sortNfts(by option: sortKeys) {
         switch option {
-        case "По цене":
+        case .price:
             nfts = nfts.sorted(by: {
                 $0.price < $1.price
             })
-        case "По рейтингу":
+        case .rating:
             nfts = nfts.sorted(by: {
                 $0.rating < $1.rating
             })
-        case "По названию":
+        case .name:
             nfts = nfts.sorted(by: {
                 $0.name < $1.name
             })
-            
-        default:
-            break
         }
-        
         view?.showUIElements()
     }
     
@@ -78,12 +80,18 @@ final class MyNftPresenter: MyNftPresenterProtocol {
         
         group.notify(queue: .main) { [weak self] in
             guard let self else { return }
+            
+            if let savedSortKey = UserDefaults.standard.string(forKey: "selectedSortKey"),
+               let sortOption = sortKeys(rawValue: savedSortKey) {
+                self.sortNfts(by: sortOption)
+            } else {
+                self.sortNfts(by: .name)
+            }
             self.view?.showUIElements()
             
             if self.nfts.isEmpty {
                 view?.showEmptyNfts()
             }
         }
-        
     }
 }

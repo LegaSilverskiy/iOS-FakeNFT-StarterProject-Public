@@ -40,8 +40,6 @@ final class MyNftViewController: UIViewController {
     
     private var sortButton = UIBarButtonItem()
     
-    private let sortOptions = ["По цене", "По рейтингу", "По названию"]
-    
     init(presenter: MyNftPresenterProtocol) {
         self.presenter = presenter
         super.init(nibName: nil, bundle: nil)
@@ -64,7 +62,8 @@ final class MyNftViewController: UIViewController {
     }
     
     func showUIElements() {
-        sortButton.target = self
+        sortButton.image = UIImage(named: "Sort")
+        sortButton.isEnabled = true
         tableView.reloadData()
         ProgressHUD.dismiss()
         view.isHidden = false
@@ -85,6 +84,7 @@ final class MyNftViewController: UIViewController {
     
     private func hideUIElements() {
         sortButton.image = nil
+        sortButton.isEnabled = false
         ProgressHUD.show()
         view.isHidden = true
     }
@@ -135,10 +135,11 @@ final class MyNftViewController: UIViewController {
         
         let alertController = UIAlertController(title: "Сортировка", message: nil, preferredStyle: .actionSheet)
 
-        for option in sortOptions {
+        for option in sortKeys.allCases {
             
-            alertController.addAction(UIAlertAction(title: option, style: .default) { _ in
+            alertController.addAction(UIAlertAction(title: option.rawValue, style: .default) { _ in
                 self.presenter.sortNfts(by: option)
+                UserDefaults.standard.set(option.rawValue, forKey: "selectedSortKey")
             })
         }
         
