@@ -1,5 +1,6 @@
 "buttons.cancel" = "Отмена";
 "buttons.repeat" = "Повторить";
+"buttons.showUserSite" = "Перейти на сайт пользователя";
 
 "Error.title" = "Ошибка";
 "Error.network" = "Произошла ошибка сети";
@@ -13,5 +14,8 @@
 "actionSheet.title.sorting" = "Сортировка";
 "sortingOptions.name" = "По имени";
 "sortingOptions.rating" = "По рейтингу";
+
+"userCardViewController.showNFTs" = "Коллекция NFT (%d)";
+"UserNFTCollectionVC.title" = "Коллекция NFT";
 
 "Catalog.openNft" = "Открыть Nft";

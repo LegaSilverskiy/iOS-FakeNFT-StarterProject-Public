@@ -3,6 +3,7 @@ import Foundation
 extension String {
     static let buttonsCancel = NSLocalizedString("buttons.cancel", comment: "")
     static let buttonsRepeat = NSLocalizedString("buttons.repeat", comment: "")
+    static let showUserSite = NSLocalizedString("buttons.showUserSite", comment: "")
     
     static let errorTitle = NSLocalizedString("Error.title", comment: "")
     static let errorNetwork = NSLocalizedString("Error.network", comment: "")
@@ -16,4 +17,7 @@ extension String {
     static let actionSheetTitleSorting = NSLocalizedString("actionSheet.title.sorting", comment: "")
     static let sortingOptionsName = NSLocalizedString("sortingOptions.name", comment: "")
     static let sortingOptionsRating = NSLocalizedString("sortingOptions.rating", comment: "")
+    
+    static let userCardShowNFTs = NSLocalizedString("userCardViewController.showNFTs", comment: "")
+    static let userNFTCollectionVCTitle = NSLocalizedString("UserNFTCollectionVC.title", comment: "")
 }

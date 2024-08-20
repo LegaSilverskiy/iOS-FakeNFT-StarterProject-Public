@@ -38,6 +38,7 @@ final class StatisticsPresenter: StatisticsPresenterProtocol {
     
     // MARK: - Private Properties
     private let usersService: UsersServiceProtocol
+    private let userNFTService: UserNFTServiceProtocol
     private let pageSize = 15
     private var users: [User] = []
     private var state: StatisticsState? {
@@ -53,8 +54,9 @@ final class StatisticsPresenter: StatisticsPresenterProtocol {
     private var alertIsPresented = false
     
     // MARK: - Initializers
-    init(usersService: UsersServiceProtocol) {
+    init(usersService: UsersServiceProtocol, userNFTService: UserNFTServiceProtocol) {
         self.usersService = usersService
+        self.userNFTService = userNFTService
     }
     
     // MARK: - Public Methods
@@ -94,7 +96,7 @@ final class StatisticsPresenter: StatisticsPresenterProtocol {
     }
     
     func switchToProfile(for index: Int) {
-        view?.switchToUserCard(usersService: usersService)
+        view?.switchToUserCard(userInfo: users[index], userNFTService: userNFTService)
     }
     
     // MARK: - Private Methods

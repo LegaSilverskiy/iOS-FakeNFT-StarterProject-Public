@@ -15,8 +15,9 @@ final class StatisticsAssembly {
     
     public func build() -> UIViewController {
         let presenter = StatisticsPresenter(
-            usersService: servicesAssembler.usersService
-        )
+            usersService: servicesAssembler.usersService,
+            userNFTService: servicesAssembler.userNFTService)
+        
         let viewController = StatisticsViewController(presenter: presenter)
         presenter.view = viewController
         return viewController

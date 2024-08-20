@@ -5,7 +5,7 @@ protocol StatisticsViewProtocol: AnyObject, ErrorView {
     func showLoading()
     func hideLoading()
     func updateTable()
-    func switchToUserCard(usersService: UsersServiceProtocol)
+    func switchToUserCard(userInfo: User, userNFTService: UserNFTServiceProtocol)
     func showError(_ model: ErrorModel)
 }
 
@@ -60,8 +60,10 @@ final class StatisticsViewController: UIViewController, StatisticsViewProtocol {
         )
     }
     
-    func switchToUserCard(usersService: UsersServiceProtocol) {
-        let vc = UserCardViewController(usersService: usersService)
+    func switchToUserCard(userInfo: User, userNFTService: UserNFTServiceProtocol) {
+        
+        let assembler = UserCardAssembler(userInfo: userInfo, userNFTService: userNFTService)
+        let vc  = assembler.build()
         self.navigationController?.pushViewController(vc, animated: true)
     }
     
