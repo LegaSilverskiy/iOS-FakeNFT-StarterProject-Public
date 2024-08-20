@@ -61,23 +61,9 @@ final class MyNftViewController: UIViewController {
         setupConstraints()
     }
     
-    func showUIElements() {
-        sortButton.image = UIImage(named: "Sort")
-        sortButton.isEnabled = true
-        tableView.reloadData()
-        ProgressHUD.dismiss()
-        view.isHidden = false
-    }
-    
     func loadPresenter() {
         hideUIElements()
         presenter.viewDidLoad()
-    }
-    
-    func showEmptyNfts() {
-        sortButton.image = nil
-        tableView.isHidden = true
-        emptyLabel.isHidden = false
     }
     
     // MARK: - Private
@@ -91,14 +77,19 @@ final class MyNftViewController: UIViewController {
     
     private func setupUI() {
         
-        sortButton = UIBarButtonItem(image: UIImage(named: "Sort"), style: .plain, target: self, action: #selector(sortButtonTapped))
+        sortButton = UIBarButtonItem(
+            image: UIImage(named: "Sort"),
+            style: .plain,
+            target: self,
+            action: #selector(sortButtonTapped)
+        )
         sortButton.tintColor = .tabBarItemsTintColor
         navigationItem.rightBarButtonItem = sortButton
         
         title = "Мои NFT"
         view.backgroundColor = .systemBackground
         navigationItem.hidesBackButton = true
-        createBackbutton()
+        createBackButton()
         view.addSubview(tableView)
         view.addSubview(emptyLabel)
     }
@@ -115,7 +106,7 @@ final class MyNftViewController: UIViewController {
         ])
     }
     
-    private func createBackbutton() {
+    private func createBackButton() {
         let backButton = UIButton(type: .system)
         backButton.setImage(UIImage(systemName: "chevron.backward"), for: .normal)
         backButton.tintColor = .black
@@ -149,6 +140,27 @@ final class MyNftViewController: UIViewController {
     }
 }
 
+// MARK: - MyNftViewProtocol
+
+extension MyNftViewController: MyNftViewProtocol {
+    
+    func showUIElements() {
+        sortButton.image = UIImage(named: "Sort")
+        sortButton.isEnabled = true
+        tableView.reloadData()
+        ProgressHUD.dismiss()
+        view.isHidden = false
+    }
+    
+    func showEmptyNfts() {
+        sortButton.image = nil
+        tableView.isHidden = true
+        emptyLabel.isHidden = false
+    }
+}
+
+// MARK: - UITableView
+
 extension MyNftViewController: UITableViewDataSource {
     
     func numberOfSections(in tableView: UITableView) -> Int {
@@ -168,9 +180,3 @@ extension MyNftViewController: UITableViewDataSource {
 }
 
 extension MyNftViewController: UITableViewDelegate { }
-
-extension MyNftViewController: MyNftViewProtocol {
-    func reloadTable() {
-        tableView.reloadData()
-    }
-}

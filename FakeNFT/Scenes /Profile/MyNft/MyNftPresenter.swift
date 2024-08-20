@@ -26,7 +26,7 @@ final class MyNftPresenter: MyNftPresenterProtocol {
     
     var nfts: [NftResult] = []
     
-    var nftString: [String]
+    private let nftString: [String]
     
     private let nftService: NftServiceProtocol
     
@@ -57,6 +57,8 @@ final class MyNftPresenter: MyNftPresenterProtocol {
         view?.showUIElements()
     }
     
+    // MARK: - Private
+    
     private func loadNfts() {
         
         let group = DispatchGroup()
@@ -79,6 +81,7 @@ final class MyNftPresenter: MyNftPresenterProtocol {
         }
         
         group.notify(queue: .main) { [weak self] in
+            
             guard let self else { return }
             
             if let savedSortKey = UserDefaults.standard.string(forKey: "selectedSortKey"),
