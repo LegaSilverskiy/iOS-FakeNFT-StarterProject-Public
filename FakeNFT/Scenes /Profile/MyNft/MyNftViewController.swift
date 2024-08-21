@@ -61,12 +61,12 @@ final class MyNftViewController: UIViewController {
         setupConstraints()
     }
     
-    func loadPresenter() {
+    // MARK: - Private
+    
+    private func loadPresenter() {
         hideUIElements()
         presenter.viewDidLoad()
     }
-    
-    // MARK: - Private
     
     private func hideUIElements() {
         sortButton.image = nil
@@ -76,7 +76,6 @@ final class MyNftViewController: UIViewController {
     }
     
     private func setupUI() {
-        
         sortButton = UIBarButtonItem(
             image: UIImage(named: "Sort"),
             style: .plain,
@@ -126,7 +125,7 @@ final class MyNftViewController: UIViewController {
         
         let alertController = UIAlertController(title: "Сортировка", message: nil, preferredStyle: .actionSheet)
 
-        for option in sortKeys.allCases {
+        for option in SortKeys.allCases {
             
             alertController.addAction(UIAlertAction(title: option.rawValue, style: .default) { _ in
                 self.presenter.sortNfts(by: option)
@@ -172,8 +171,13 @@ extension MyNftViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: MyNftTableViewCell.reuseIdentifier, for: indexPath) as? MyNftTableViewCell else { return UITableViewCell() }
-        
+        guard let cell = tableView.dequeueReusableCell(
+            withIdentifier: MyNftTableViewCell.reuseIdentifier,
+            for: indexPath
+        ) as? MyNftTableViewCell else {
+            return UITableViewCell()
+        }
+
         cell.configureCell(model: presenter.nfts[indexPath.section])
         return cell
     }

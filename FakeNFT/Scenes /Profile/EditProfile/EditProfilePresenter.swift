@@ -76,8 +76,7 @@ final class EditProfilePresenter: EditProfilePresenterProtocol {
     func loadPhoto(with urlString: String?) {
         guard
             let urlString,
-            let url = URL(string: urlString),
-            let view
+            let url = URL(string: urlString)
         else { return }
         
         KingfisherManager.shared.retrieveImage(with: url, options: nil, progressBlock: nil) { result in

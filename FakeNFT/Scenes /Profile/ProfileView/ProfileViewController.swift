@@ -103,7 +103,11 @@ final class ProfileViewController: UIViewController, ProfileViewProtocol {
     }
     
     func showAlert() {
-        let alertController = UIAlertController(title: "Что-то пошло не так(", message: "Не удалось загрузить профиль", preferredStyle: .alert)
+        let alertController = UIAlertController(
+            title: "Что-то пошло не так(",
+            message: "Не удалось загрузить профиль",
+            preferredStyle: .alert
+        )
         let okAction = UIAlertAction(title: "Повторить", style: .default) { _ in
             self.loadPresenter()
         }
@@ -117,8 +121,10 @@ final class ProfileViewController: UIViewController, ProfileViewProtocol {
         
         textViewHeightConstraint = textView.heightAnchor.constraint(equalToConstant: estimatedSize.height + 8)
         textViewHeightConstraint?.isActive = true
-        
-        containerViewHeightConstraint = containerView.heightAnchor.constraint(equalToConstant: estimatedSize.height + 137)
+
+        containerViewHeightConstraint = containerView.heightAnchor.constraint(
+            equalToConstant: estimatedSize.height + 137
+        )
         containerViewHeightConstraint?.isActive = true
         
         self.view.layoutIfNeeded()
@@ -127,7 +133,14 @@ final class ProfileViewController: UIViewController, ProfileViewProtocol {
     // MARK: - Private
     
     private func setupUI() {
-        let editButton = UIBarButtonItem(image: UIImage(named: "Edit"), style: .plain, target: self, action: #selector(editButtonTapped))
+        let editButton = UIBarButtonItem(
+            image: UIImage(named: "Edit"),
+            style: .plain,
+            target: self,
+            action: #selector(
+                editButtonTapped
+            )
+        )
         editButton.tintColor = .tabBarItemsTintColor
         navigationItem.rightBarButtonItem = editButton
         
@@ -148,7 +161,6 @@ final class ProfileViewController: UIViewController, ProfileViewProtocol {
         
         containerViewHeightConstraint = containerView.heightAnchor.constraint(lessThanOrEqualToConstant: 200)
         containerViewHeightConstraint?.isActive = true
-        
         
         NSLayoutConstraint.activate([
             containerView.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor),
@@ -259,7 +271,10 @@ extension ProfileViewController: UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        guard let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath) as? ProfileTableViewCell else {
+        guard let cell = tableView.dequeueReusableCell(
+            withIdentifier: "cell",
+            for: indexPath
+        ) as? ProfileTableViewCell else {
             return UITableViewCell()
         }
         

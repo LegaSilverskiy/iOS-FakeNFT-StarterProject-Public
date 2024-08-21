@@ -10,11 +10,11 @@ import UIKit
 
 protocol MyNftPresenterProtocol {
     func viewDidLoad()
-    func sortNfts(by: sortKeys)
+    func sortNfts(by: SortKeys)
     var nfts: [NftResult] { get set }
 }
 
-enum sortKeys: String, CaseIterable {
+enum SortKeys: String, CaseIterable {
     case name = "По имени"
     case price = "По цене"
     case rating = "По рейтингу"
@@ -39,7 +39,7 @@ final class MyNftPresenter: MyNftPresenterProtocol {
         loadNfts()
     }
     
-    func sortNfts(by option: sortKeys) {
+    func sortNfts(by option: SortKeys) {
         switch option {
         case .price:
             nfts = nfts.sorted(by: {
@@ -87,7 +87,7 @@ final class MyNftPresenter: MyNftPresenterProtocol {
             guard let self else { return }
             
             if let savedSortKey = UserDefaults.standard.string(forKey: "selectedSortKey"),
-               let sortOption = sortKeys(rawValue: savedSortKey) {
+               let sortOption = SortKeys(rawValue: savedSortKey) {
                 self.sortNfts(by: sortOption)
             } else {
                 self.sortNfts(by: .name)

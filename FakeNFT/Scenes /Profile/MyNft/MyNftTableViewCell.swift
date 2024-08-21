@@ -170,7 +170,10 @@ final class MyNftTableViewCell: UITableViewCell {
     private func createStarsStack() {
         rating = (0..<5).map { _ in
             let starImageView = UIImageView()
-            starImageView.image = UIImage(systemName: "star.fill", withConfiguration: UIImage.SymbolConfiguration(pointSize: 12))
+            starImageView.image = UIImage(
+                systemName: "star.fill",
+                withConfiguration: UIImage.SymbolConfiguration(pointSize: 12)
+            )
             starImageView.tintColor = .yellow
             starImageView.translatesAutoresizingMaskIntoConstraints = false
             ratingStack.addArrangedSubview(starImageView)

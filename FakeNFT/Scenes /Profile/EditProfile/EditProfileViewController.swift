@@ -48,7 +48,11 @@ final class EditProfileViewController: UIViewController, EditProfileViewProtocol
         collectionView.dataSource = self
         collectionView.delegate = self
         collectionView.register(TextEditorCollectionViewCell.self, forCellWithReuseIdentifier: "cell")
-        collectionView.register(TextEditorHeaderCollectionViewCell.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "header")
+        collectionView.register(
+            TextEditorHeaderCollectionViewCell.self,
+            forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader,
+            withReuseIdentifier: "header"
+        )
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         return collectionView
     }()
@@ -105,8 +109,18 @@ final class EditProfileViewController: UIViewController, EditProfileViewProtocol
     // MARK: - Private
     
     private func makeObserversForKeyboard() {
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillShow), name: UIResponder.keyboardWillShowNotification, object: nil)
-        NotificationCenter.default.addObserver(self, selector: #selector(keyboardWillHide), name: UIResponder.keyboardWillHideNotification, object: nil)
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(keyboardWillShow),
+            name: UIResponder.keyboardWillShowNotification,
+            object: nil
+        )
+        NotificationCenter.default.addObserver(
+            self,
+            selector: #selector(keyboardWillHide),
+            name: UIResponder.keyboardWillHideNotification,
+            object: nil
+        )
     }
     
     private func removeObserver() {
@@ -251,10 +265,18 @@ extension EditProfileViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         1
     }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath) as? TextEditorCollectionViewCell else { return UICollectionViewCell() }
-        
+
+    func collectionView(
+        _ collectionView: UICollectionView,
+        cellForItemAt indexPath: IndexPath
+    ) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(
+            withReuseIdentifier: "cell",
+            for: indexPath
+        ) as? TextEditorCollectionViewCell else {
+            return UICollectionViewCell()
+        }
+
         cell.setText(text: presenter.editedText[indexPath.section])
         
         cell.textChangeHandler = { [weak self] text in
@@ -269,8 +291,14 @@ extension EditProfileViewController: UICollectionViewDataSource {
         viewForSupplementaryElementOfKind kind: String,
         at indexPath: IndexPath
     ) -> UICollectionReusableView {
-        guard let view = collectionView.dequeueReusableSupplementaryView(ofKind: kind, withReuseIdentifier: "header", for: indexPath) as? TextEditorHeaderCollectionViewCell else { return UICollectionReusableView() }
-        
+        guard let view = collectionView.dequeueReusableSupplementaryView(
+            ofKind: kind,
+            withReuseIdentifier: "header",
+            for: indexPath
+        ) as? TextEditorHeaderCollectionViewCell else {
+            return UICollectionReusableView()
+        }
+
         view.titleLabel.text = presenter.tableHeaders[indexPath.section]
         
         return view
@@ -317,8 +345,12 @@ extension EditProfileViewController: UICollectionViewDelegateFlowLayout {
     ) -> CGSize {
         
         let indexPath = IndexPath(row: 0, section: section)
-        let headerView = self.collectionView(collectionView, viewForSupplementaryElementOfKind: UICollectionView.elementKindSectionHeader, at: indexPath)
-        
+        let headerView = self.collectionView(
+            collectionView,
+            viewForSupplementaryElementOfKind: UICollectionView.elementKindSectionHeader,
+            at: indexPath
+        )
+
         return headerView.systemLayoutSizeFitting(
             CGSize(
                 width: collectionView.frame.width,
