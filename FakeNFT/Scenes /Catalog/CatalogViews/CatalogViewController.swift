@@ -1,7 +1,7 @@
 import UIKit
-import ProgressHUD
 
-final class CatalogViewController: UIViewController, ErrorView, LoadingView {
+
+final class CatalogViewController: UIViewController, ErrorView {
     
     //MARK: - PRIVATE_PROPERTIES
     private let presenter: CatalogPresenter
@@ -10,7 +10,6 @@ final class CatalogViewController: UIViewController, ErrorView, LoadingView {
     
     private let tableForCollectionsNft = UITableView()
     private let sortButton = UIButton()
-    lazy var activityIndicator = UIActivityIndicatorView()
     //MARK: - INIT
     init(servicesAssembly: ServicesAssembly) {
         self.presenter = CatalogPresenter(servicesAssembly: servicesAssembly)
@@ -41,18 +40,6 @@ final class CatalogViewController: UIViewController, ErrorView, LoadingView {
     func updatetable() {
         tableForCollectionsNft.reloadData()
     }
-    
-    func showProgressHud() {
-        ProgressHUD.show()
-    }
-    
-    func hideProgressHud() {
-        ProgressHUD.dismiss()
-    }
-    
-    
-
-    
     //MARK: - ACTIONS
     
     @objc private func sortButtonTapped() {
@@ -93,14 +80,11 @@ extension CatalogViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        if let cell = tableView.dequeueReusableCell(withIdentifier: CustomCellForTableView.reUseIdentifier, for: indexPath) as? CustomCellForTableView {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: CustomCellForTableView.reUseIdentifier, for: indexPath) as? CustomCellForTableView else { return UITableViewCell() }
             let params = presenter.getParamsForCell(for: indexPath.row)
             cell.configure(with: params)
             cell.selectionStyle = .none
             return cell
-        }
-        debugPrint("@@@ StatisticsViewController: Ошибка подготовки ячейки для таблицы рейтинга.")
-        return UITableViewCell()
     }
     
 }

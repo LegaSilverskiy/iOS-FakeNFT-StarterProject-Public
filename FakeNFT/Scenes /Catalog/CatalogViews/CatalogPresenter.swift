@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import ProgressHUD
 
 final class CatalogPresenter {
 
@@ -70,20 +71,17 @@ final class CatalogPresenter {
         case .initial:
             assertionFailure("can't move to initial state")
         case .loading:
-            view?.showProgressHud()
-            view?.showLoading()
+            showProgressHud()
             loadCatalogs()
             view?.updatetable()
         case .failed(let error):
             let errorModel = makeErrorModel(error)
-            view?.hideLoading()
             view?.showError(errorModel)
-            view?.hideProgressHud()
+            hideProgressHud()
         case .data(let catalog):
-            view?.hideLoading()
             self.catalogs.append(contentsOf: catalog)
             view?.updatetable()
-            view?.hideProgressHud()
+            hideProgressHud()
         case .none:
             assertionFailure("StatisticsPresenter can't move to initial state")
         }
@@ -102,5 +100,13 @@ final class CatalogPresenter {
         return ErrorModel(message: message, actionText: actionText) { [weak self] in
             self?.state = .loading
         }
+    }
+    
+    private func showProgressHud() {
+        ProgressHUD.show()
+    }
+    
+    private func hideProgressHud() {
+        ProgressHUD.dismiss()
     }
 }
