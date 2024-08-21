@@ -93,6 +93,7 @@ extension CatalogViewController: UITableViewDataSource {
         let params = presenter.getParamsForCell(for: indexPath.row)
         cell.configure(with: params)
         cell.selectionStyle = .none
+        
         return cell
     }
     

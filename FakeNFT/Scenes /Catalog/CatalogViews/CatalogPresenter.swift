@@ -51,6 +51,7 @@ final class CatalogPresenter {
     }
     
     func getAllCatalogs() -> Int {
+        
         return catalogs.count
     }
     
@@ -96,6 +97,7 @@ final class CatalogPresenter {
         }
         
         let actionText = NSLocalizedString("Error.repeat", comment: "")
+        
         return ErrorModel(message: message, actionText: actionText) { [weak self] in
             self?.state = .loading
         }
