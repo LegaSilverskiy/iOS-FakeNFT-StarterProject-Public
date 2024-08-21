@@ -203,7 +203,6 @@
 			isa = PBXGroup;
 			children = (
 				EB55302E2C7311A6002A15F6 /* Helpers */,
-				EB5530202C6FD65E002A15F6 /* Protocols */,
 				EBEA4C882C6BD1FA00A10B44 /* CustomCells */,
 				EBEA4C842C6BD0E500A10B44 /* CatalogViews */,
 			);
@@ -416,13 +415,6 @@
 				3F6806A129CBBAF200B4F915 /* LaunchScreen.storyboard */,
 			);
 			path = Resources;
-			sourceTree = "<group>";
-		};
-		EB5530202C6FD65E002A15F6 /* Protocols */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Protocols;
 			sourceTree = "<group>";
 		};
 		EB55302B2C7291E4002A15F6 /* CatalogModel */ = {

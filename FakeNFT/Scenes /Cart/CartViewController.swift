@@ -2,7 +2,7 @@ import UIKit
 
 final class CartViewController: UIViewController {
     
-    let servicesAssembly: ServicesAssembly
+    private let servicesAssembly: ServicesAssembly
     
     init(servicesAssembly: ServicesAssembly) {
         self.servicesAssembly = servicesAssembly
@@ -18,8 +18,4 @@ final class CartViewController: UIViewController {
         
         view.backgroundColor = .systemBackground
     }
-    
-    
-    
-    
 }

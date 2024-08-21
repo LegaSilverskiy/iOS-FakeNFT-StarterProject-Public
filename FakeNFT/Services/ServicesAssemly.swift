@@ -22,9 +22,9 @@ final class ServicesAssembly {
     }
     
     var catalogService: CatalogServiceImpl {
-        CatalogServiceImpl (
-        networkClient: networkClient,
-        storage: catalogStorage
-        )
-    }
+            .init(
+                networkClient: networkClient,
+                storage: catalogStorage
+            )
+        }
 }
