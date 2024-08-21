@@ -18,9 +18,7 @@ final class CurrentCollectionNftViewController: UIViewController {
     }
     
     //MARK: - PUBLIC_METHODS
-    
     //MARK: - PRIVATE_METHODS
-    
     //MARK: - CONFIGURE_UI_METHODS
     
     private func configureUI() {
