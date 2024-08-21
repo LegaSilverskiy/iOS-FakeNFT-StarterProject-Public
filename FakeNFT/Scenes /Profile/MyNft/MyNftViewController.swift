@@ -61,6 +61,12 @@ final class MyNftViewController: UIViewController {
         setupConstraints()
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+
+        tabBarController?.tabBar.isHidden = false
+    }
+    
     // MARK: - Private
     
     private func loadPresenter() {
@@ -84,6 +90,8 @@ final class MyNftViewController: UIViewController {
         )
         sortButton.tintColor = .tabBarItemsTintColor
         navigationItem.rightBarButtonItem = sortButton
+        
+        tabBarController?.tabBar.isHidden = true
         
         title = "Мои NFT"
         view.backgroundColor = .systemBackground

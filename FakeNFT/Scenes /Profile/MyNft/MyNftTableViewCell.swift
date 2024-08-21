@@ -34,7 +34,6 @@ final class MyNftTableViewCell: UITableViewCell {
         title.text = "Lilo"
         return title
     }()
-    
     private lazy var rating = {
         let rating = [UIView()]
         return rating
@@ -108,8 +107,8 @@ final class MyNftTableViewCell: UITableViewCell {
             image.kf.setImage(with: url)
         }
         title.text = model.name
-        author.text = "От \(model.author)"
-        priceNum.text = "\(model.price) ETH"
+        author.text = model.author
+        priceNum.text = model.priceStr
         setStars(model.rating)
     }
     
