@@ -3,19 +3,14 @@ import ProgressHUD
 
 final class CatalogViewController: UIViewController, ErrorView, LoadingView {
     
-    //MARK: - PRESENTER
-    var presenter: CatalogPresenter
+    //MARK: - PRIVATE_PROPERTIES
+    private let presenter: CatalogPresenter
     
-    // MARK: - SERVICES ASSEMBLY
-    
-    
-    //MARK: - ACTIVITY_INDICATOR
-    internal lazy var activityIndicator = UIActivityIndicatorView()
     //MARK: - UI_PROPERTIES
     
-    let tableForCollectionsNft = UITableView()
-    lazy var sortButton = UIButton()
-    
+    private let tableForCollectionsNft = UITableView()
+    private let sortButton = UIButton()
+    lazy var activityIndicator = UIActivityIndicatorView()
     //MARK: - INIT
     init(servicesAssembly: ServicesAssembly) {
         self.presenter = CatalogPresenter(servicesAssembly: servicesAssembly)
@@ -41,13 +36,12 @@ final class CatalogViewController: UIViewController, ErrorView, LoadingView {
         presenter.viewWllAppear()
     }
     
-
+    //MARK: - PUBLIC_PORPERTIES
     
     func updatetable() {
         tableForCollectionsNft.reloadData()
     }
     
-    //MARK: - PROGRESS_HUD
     func showProgressHud() {
         ProgressHUD.show()
     }
@@ -56,11 +50,8 @@ final class CatalogViewController: UIViewController, ErrorView, LoadingView {
         ProgressHUD.dismiss()
     }
     
-    //MARK: - NAVIGATION BAR
     
-    private func setupNavigationBar() {
-        self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: sortButton)
-    }
+
     
     //MARK: - ACTIONS
     
@@ -127,8 +118,8 @@ extension CatalogViewController: UITableViewDelegate {
     }
 }
 
+//MARK: - PRIVATE_EXTENSION
 private extension CatalogViewController {
-    // MARK: - CONFIGURE_UI
     
     func configureUI() {
         setupNavigationBar()
@@ -145,7 +136,10 @@ private extension CatalogViewController {
         view.addSubview(tableForCollectionsNft)
     }
     
-    //MARK: - SORT_BUTTON
+    func setupNavigationBar() {
+        self.navigationItem.rightBarButtonItem = UIBarButtonItem(customView: sortButton)
+    }
+    
     func setupSortButton() {
         sortButton.setImage(UIImage.navBarIconsSort, for: .normal)
         sortButton.addTarget(self, action: #selector(sortButtonTapped), for: .touchUpInside)
@@ -155,7 +149,6 @@ private extension CatalogViewController {
         sortButton.translatesAutoresizingMaskIntoConstraints = false
     }
     
-    // MARK: - TABLE_VIEW_WITH_COLLECTIONS_NFT
     func setupTableForCollectionsNft()  {
         tableForCollectionsNft.register(CustomCellForTableView.self, forCellReuseIdentifier: CustomCellForTableView.reUseIdentifier)
         tableForCollectionsNft.separatorStyle = .none
@@ -164,7 +157,6 @@ private extension CatalogViewController {
 
     }
     
-    //MARK: - SETUP_TABLE_VIEW_CONSTRAINT
     func setupTableForCollectionsNftConstraint() {
         
         tableForCollectionsNft.translatesAutoresizingMaskIntoConstraints = false

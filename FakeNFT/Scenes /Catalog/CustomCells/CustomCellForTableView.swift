@@ -13,7 +13,6 @@ final class CustomCellForTableView: UITableViewCell, ReuseIdentifying {
     static let reUseIdentifier = "TableInCatalogCustomViewCell"
     
     //MARK: - PRIVATE UI PROPERTIES
-//    private lazy var frameViewForTable = UIView()
     private lazy var imageCollectionNFT = UIImageView()
     private lazy var titleLabelForCollectionNFT = UILabel()
     

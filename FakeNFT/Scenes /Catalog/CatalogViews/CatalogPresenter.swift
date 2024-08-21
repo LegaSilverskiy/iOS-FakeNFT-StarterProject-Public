@@ -6,54 +6,54 @@
 //
 
 import Foundation
-import Combine
 
 final class CatalogPresenter {
-    @Published var catalogs: [Catalog] = []
-    
-    //MARK: - LINK_TO_CATALOG_VIEW_CONTROLLR
+
     weak var view: CatalogViewController?
     
     //MARK: - SERVICESASSEMBLY
-    let servicesAssembly: ServicesAssembly
+    private let servicesAssembly: ServicesAssembly
     
-    //MARK: STATE
     private var state: StatesOfCatalog? {
         didSet {
             stateDidChange()
         }
     }
     
-    //MARK: - VIEW_DID_LOAD
+    //MARK: - LOADING_STATES
     
     func viewDidLoad() {
         state = .loading
     }
     
-    //MARK: - VIEW_WILL_APPEARE
     func viewWllAppear() {
         state = .loading
     }
     
-    //MARK: - SERVICE
+    //MARK: - PRIVATE_PROPERTIES
     private let service: CatalogServiceImpl
+    private var catalogs: [Catalog] = []
+    
     //MARK: - INIT
     init(servicesAssembly: ServicesAssembly) {
         self.servicesAssembly = servicesAssembly
         self.service = servicesAssembly.catalogService
     }
     
-    //MARK: - GET_PARAMS_FOR_CELL
+    //MARK: - PUBLIC_METHODS
     func getParamsForCell(for index: Int) -> CatalogCell {
-        return CatalogCell(name: catalogs[index].name, cover: catalogs[index].cover,id: catalogs[index].id, nfts: catalogs[index].nfts)
+        .init(
+            name: catalogs[index].name,
+            cover: catalogs[index].cover,
+            id: catalogs[index].id,
+            nfts: catalogs[index].nfts
+        )
     }
     
-    //MARK: - GET_ALL_CATALOGS_FOR_COUNT
     func getAllCatalogs() -> Int {
         return catalogs.count
     }
     
-    //MARK: - LOAD_CATALOGS
     func loadCatalogs() {
         service.loadCatalogs() {[weak self] result in
             switch result {
@@ -64,7 +64,7 @@ final class CatalogPresenter {
             }
         }
     }
-    //MARK: - CHANGE_STATE
+    //MARK: - PRIVATE_METHODS
     private func stateDidChange() {
         switch state {
         case .initial:
@@ -89,7 +89,6 @@ final class CatalogPresenter {
         }
     }
     
-    //MARK: - ERROR MODEL
     private func makeErrorModel(_ error: Error) -> ErrorModel {
         let message: String
         switch error {
@@ -98,7 +97,7 @@ final class CatalogPresenter {
         default:
             message = NSLocalizedString("Error.unknown", comment: "")
         }
-
+        
         let actionText = NSLocalizedString("Error.repeat", comment: "")
         return ErrorModel(message: message, actionText: actionText) { [weak self] in
             self?.state = .loading
