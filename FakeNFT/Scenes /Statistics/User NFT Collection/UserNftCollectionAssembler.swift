@@ -9,14 +9,16 @@ import UIKit
 
 final class UserNftCollectionAssembler {
     
+    private let userNfts: [String]
     private let userNFTService: UserNFTServiceProtocol
     
-    init(userNFTService: UserNFTServiceProtocol) {
+    init(userNfts: [String], userNFTService: UserNFTServiceProtocol) {
+        self.userNfts = userNfts
         self.userNFTService = userNFTService
     }
     
     public func build() -> UIViewController {
-        let presenter = UserNFTCollectionPresenter(userNFTService: userNFTService)
+        let presenter = UserNFTCollectionPresenter(userNfts: userNfts, userNFTService: userNFTService)
         
         let viewController = UserNFTCollectionVC(presenter: presenter)
         presenter.view = viewController

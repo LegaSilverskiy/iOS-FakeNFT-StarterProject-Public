@@ -20,4 +20,6 @@ extension String {
     
     static let userCardShowNFTs = NSLocalizedString("userCardViewController.showNFTs", comment: "")
     static let userNFTCollectionVCTitle = NSLocalizedString("UserNFTCollectionVC.title", comment: "")
+    static let userNFTCollectionVCNoNfts = NSLocalizedString("UserNFTCollectionVC.userHasNoNfts", comment: "")
+    
 }

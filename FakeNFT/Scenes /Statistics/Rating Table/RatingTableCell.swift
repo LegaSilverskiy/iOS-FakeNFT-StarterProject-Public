@@ -10,6 +10,9 @@ import UIKit
 
 final class RatingTableCell: UITableViewCell {
     
+    //MARK: - Public Properties
+    static let reuseIdentifier = "ratingTableCell"
+    
     // MARK: - Private Properties
     private let ratingLabel = UILabel()
     private var avatarImageView = UIImageView()

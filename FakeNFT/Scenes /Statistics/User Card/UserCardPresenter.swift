@@ -52,7 +52,7 @@ final class UserCardPresenter: UserCardPresenterProtocol {
     }
     
     func showNFTsButtonPressed() {
-        view?.switchToUserNFTCollectionVC(userNFTService: userNFTService)
+        view?.switchToUserNFTCollectionVC(userNfts: userInfo.nfts, userNFTService: userNFTService)
     }
     
     // MARK: - Private Methods

@@ -17,5 +17,6 @@
 
 "userCardViewController.showNFTs" = "Коллекция NFT (%d)";
 "UserNFTCollectionVC.title" = "Коллекция NFT";
+"UserNFTCollectionVC.userHasNoNfts" = "У пользователя пока нет NFT";
 
 "Catalog.openNft" = "Открыть Nft";

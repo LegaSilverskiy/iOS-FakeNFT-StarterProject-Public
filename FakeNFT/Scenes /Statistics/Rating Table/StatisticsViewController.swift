@@ -105,7 +105,7 @@ final class StatisticsViewController: UIViewController, StatisticsViewProtocol {
     }
     
     private func setRatingTable() {
-        ratingTable.register(RatingTableCell.self, forCellReuseIdentifier: "ratingCell")
+        ratingTable.register(RatingTableCell.self, forCellReuseIdentifier: RatingTableCell.reuseIdentifier)
         ratingTable.delegate = self
         ratingTable.dataSource = self
         ratingTable.backgroundColor = .systemBackground
@@ -131,7 +131,7 @@ extension StatisticsViewController: UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
-        if let cell = tableView.dequeueReusableCell(withIdentifier: "ratingCell", for: indexPath) as? RatingTableCell {
+        if let cell = tableView.dequeueReusableCell(withIdentifier: RatingTableCell.reuseIdentifier, for: indexPath) as? RatingTableCell {
             
             let params = presenter.getParams(for: indexPath.row)
             cell.configure(with: params)
