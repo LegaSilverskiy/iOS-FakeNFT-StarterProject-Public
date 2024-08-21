@@ -1,18 +1,8 @@
 import Foundation
 
-struct GetNFTByIDRequest: NetworkRequest {
-    let end: String
-    
-    var endpoint: URL? {
-        return URL(string: "\(RequestConstants.baseURL)/api/v1/\(end)")
-    }
-    var httpMethod: HttpMethod { .get }
-    var dto: Encodable? { nil }
-}
-
-
 final class OrderService {
     static let shared = OrderService()
+    private init() {}
     
     func fetchOrders(completion: @escaping (Result<Order, Error>) -> Void) {
         let request = GetNFTByIDRequest(end: "orders/1")
@@ -42,27 +32,6 @@ final class OrderService {
         }
         
         task.resume()
-    }
-    
-    func create(request: NetworkRequest) -> URLRequest? {
-        guard let endpoint = request.endpoint else {
-            assertionFailure("Empty endpoint")
-            return nil
-        }
-
-        var urlRequest = URLRequest(url: endpoint)
-        urlRequest.httpMethod = request.httpMethod.rawValue
-        
-        for (key, value) in RequestConstants.headers {
-            urlRequest.setValue(value, forHTTPHeaderField: key)
-        }
-        
-        if let dto = request.dto,
-           let dtoEncoded = try? JSONEncoder().encode(dto) {
-            urlRequest.httpBody = dtoEncoded
-        }
-
-        return urlRequest
     }
 
     func fetchNFTByID(nftID: String, completion: @escaping (Result<CartNft, Error>) -> Void) {
@@ -116,6 +85,28 @@ final class OrderService {
             }
             completion(nil)
         }
+        
         task.resume()
+    }
+    
+    private func create(request: NetworkRequest) -> URLRequest? {
+        guard let endpoint = request.endpoint else {
+            assertionFailure("Empty endpoint")
+            return nil
+        }
+
+        var urlRequest = URLRequest(url: endpoint)
+        urlRequest.httpMethod = request.httpMethod.rawValue
+        
+        for (key, value) in RequestConstants.headers {
+            urlRequest.setValue(value, forHTTPHeaderField: key)
+        }
+        
+        if let dto = request.dto,
+           let dtoEncoded = try? JSONEncoder().encode(dto) {
+            urlRequest.httpBody = dtoEncoded
+        }
+
+        return urlRequest
     }
 }

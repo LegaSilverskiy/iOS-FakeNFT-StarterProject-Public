@@ -1,13 +1,25 @@
 import UIKit
 
 final class CartDeleteViewController: UIViewController {
-    weak var delegate: CartPresenterDelegate?
-    var indexPath: IndexPath?
-    var imageURL: String?
+    
+    private weak var delegate: CartView?
+    private var indexPath: IndexPath
+    private var imageURL: String
+    
+    init(delegate: CartView, indexPath: IndexPath, imageURL: String) {
+        self.delegate = delegate
+        self.indexPath = indexPath
+        self.imageURL = imageURL
+        
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     private let mainContainer: UIStackView = {
         let stackView = UIStackView()
-        stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .vertical
         stackView.spacing = 20
     
@@ -16,7 +28,6 @@ final class CartDeleteViewController: UIViewController {
     
     private let nftInfoContainer: UIStackView = {
         let stackView = UIStackView()
-        stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .vertical
         stackView.alignment = .center
         stackView.distribution = .fill
@@ -27,7 +38,6 @@ final class CartDeleteViewController: UIViewController {
     
     private let buttonsContainer: UIStackView = {
         let stackView = UIStackView()
-        stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .horizontal
         stackView.distribution = .fillEqually
         stackView.spacing = 8
@@ -37,14 +47,11 @@ final class CartDeleteViewController: UIViewController {
     
     private let nftImage: UIImageView = {
         let imageView = UIImageView()
-        imageView.translatesAutoresizingMaskIntoConstraints = false
-
         return imageView
     }()
     
     private let warningMessage: UILabel = {
         let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.caption2
         label.textColor = .tabBarItemsTintColor
         label.text = "Вы уверены, что хотите \nудалить объект из корзины?"
@@ -56,8 +63,7 @@ final class CartDeleteViewController: UIViewController {
     
     private let deleteButton: UIButton = {
         let button = UIButton(type: .system)
-        
-        button.translatesAutoresizingMaskIntoConstraints = false
+
         button.heightAnchor.constraint(equalToConstant: 44).isActive = true
         button.layer.cornerRadius = 16
         button.backgroundColor = .tabBarItemsTintColor
@@ -72,8 +78,7 @@ final class CartDeleteViewController: UIViewController {
     
     private let cancelButton: UIButton = {
         let button = UIButton(type: .system)
-        
-        button.translatesAutoresizingMaskIntoConstraints = false
+   
         button.heightAnchor.constraint(equalToConstant: 44).isActive = true
         button.layer.cornerRadius = 16
         button.backgroundColor = .tabBarItemsTintColor
@@ -93,9 +98,22 @@ final class CartDeleteViewController: UIViewController {
     
     private func setupUI() {
         setBlurEffect()
+        setupViews()
         setupNftImage()
         setupContainers()
-        
+    }
+    
+    private func setupViews() {
+        [mainContainer,
+         nftInfoContainer,
+         buttonsContainer,
+         nftImage,
+         warningMessage,
+         deleteButton,
+         cancelButton].forEach {
+            $0.translatesAutoresizingMaskIntoConstraints = false
+            view.addSubview($0)
+        }
     }
     
     private func setBlurEffect() {
@@ -109,8 +127,6 @@ final class CartDeleteViewController: UIViewController {
     }
     
     private func setupContainers() {
-        view.addSubview(mainContainer)
-        
         mainContainer.addArrangedSubview(nftInfoContainer)
         mainContainer.addArrangedSubview(buttonsContainer)
         
@@ -131,22 +147,18 @@ final class CartDeleteViewController: UIViewController {
             nftImage.widthAnchor.constraint(equalToConstant: 108),
             nftImage.heightAnchor.constraint(equalToConstant: 108)
         ])
-        
     }
     
     private func setupNftImage() {
-        if let imageURL = imageURL {
-            guard let url = URL(string: imageURL) else { return }
-            nftImage.kf.indicatorType = .activity
-            (nftImage.kf.indicator?.view as? UIActivityIndicatorView)?.color = .textSecondary
-            nftImage.kf.setImage(with: url, placeholder: UIImage(named: "cart.placeholder"))
-            nftImage.layer.cornerRadius = 12
-            nftImage.clipsToBounds = true
-        }
+        guard let url = URL(string: imageURL) else { return }
+        nftImage.kf.indicatorType = .activity
+        (nftImage.kf.indicator?.view as? UIActivityIndicatorView)?.color = .textSecondary
+        nftImage.kf.setImage(with: url, placeholder: UIImage(named: "cart.placeholder"))
+        nftImage.layer.cornerRadius = 12
+        nftImage.clipsToBounds = true
     }
     
     @objc private func deleteFromCart() {
-        guard let indexPath = indexPath else { return }
         delegate?.deleteFromCart(at: indexPath)
         dismiss(animated: true, completion: nil)
     }

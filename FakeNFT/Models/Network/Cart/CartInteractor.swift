@@ -6,9 +6,18 @@ protocol CartInteractorProtocol {
 }
 
 final class CartInteractor: CartInteractorProtocol {
+    private let service = OrderService.shared
+    
+    private let numberFormatter: NumberFormatter = {
+            let formatter = NumberFormatter()
+            formatter.numberStyle = .decimal
+            formatter.locale = Locale(identifier: "ru_RU")
+            return formatter
+        }()
     
     func fetchNfts(completion: @escaping (Result<[CartNftModel], Error>) -> Void) {
-        OrderService.shared.fetchOrders { result in
+        service.fetchOrders { [weak self] result in
+            guard let self else { return }
             switch result {
             case .success(let order):
                 let nftIds = order.nfts
@@ -18,23 +27,12 @@ final class CartInteractor: CartInteractorProtocol {
                 
                 for nftId in nftIds {
                     dispatchGroup.enter()
-                    OrderService.shared.fetchNFTByID(nftID: nftId) { result in
+                    service.fetchNFTByID(nftID: nftId) { [weak self] result in
+                        guard let self else { return }
                         switch result {
                         case .success(let nft):
-                            let numberFormatter = NumberFormatter()
-                            numberFormatter.numberStyle = .decimal
-                            numberFormatter.locale = Locale(identifier: "ru_RU")
-                            
-                            let priceString = numberFormatter.string(from: NSNumber(value: nft.price)) ?? "0,00"
-                            
-                            let cartNftModel = CartNftModel(
-                                id: nftId,
-                                title: nft.name,
-                                price: priceString + " ETH",
-                                rating: nft.rating,
-                                image: nft.images.first ?? "cart.placeholder"
-                            )
-                            fetchedNfts.append(cartNftModel)
+                            let model = convertNft(id: nftId, nft: nft)
+                            fetchedNfts.append(model)
                         case .failure(let error):
                             print("Failed to fetch NFT by ID: \(error)")
                         }
@@ -53,12 +51,23 @@ final class CartInteractor: CartInteractorProtocol {
     }
     
     func updateOrder(with nftsIds: [String], completion: @escaping (Result<Void, Error>) -> Void) {
-        OrderService.shared.updateOrder(nftsIds: nftsIds) { error in
+        service.updateOrder(nftsIds: nftsIds) { error in
             if let error = error {
                 completion(.failure(error))
             } else {
                 completion(.success(()))
             }
         }
+    }
+    
+    private func convertNft(id: String, nft: CartNft) -> CartNftModel {
+        let priceString = numberFormatter.string(from: NSNumber(value: nft.price)) ?? "0,00"
+        return .init(
+            id: id,
+            title: nft.name,
+            price: priceString + " ETH",
+            rating: nft.rating,
+            image: nft.images.first ?? "cart.placeholder"
+        )
     }
 }

@@ -1,8 +1,8 @@
 import UIKit
 
-final class CartViewController: UIViewController, CartView {
+final class CartViewController: UIViewController {
     
-    let presenter: CartPresenter
+    private let presenter: CartPresenter
     
     private let nftsTableView: UITableView = {
         let tableView = UITableView()
@@ -78,23 +78,9 @@ final class CartViewController: UIViewController, CartView {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        presenter.delegate = self
-        presenter.setView(self)
+        presenter.view = self
         presenter.loadNfts()
-        
-    
         setupUI()
-    }
-    
-    func reloadData() {
-        setupDefaultState()
-        nftCount.text = "\(presenter.getNftsCount()) NFT"
-        nftTotalPrice.text = presenter.formattedTotalPrice()
-        nftsTableView.reloadData()
-    }
-    
-    func deleteRows(at indexPath: IndexPath) {
-        nftsTableView.deleteRows(at: [indexPath], with: .automatic)
     }
     
     private func setupUI() {
@@ -120,7 +106,6 @@ final class CartViewController: UIViewController, CartView {
     }
     
     private func setupSortButton() {
-        presenter.saveSortOption(.name)
         navigationItem.rightBarButtonItem = UIBarButtonItem(image: UIImage(named: "navBarItem.sort"), style: .plain, target: self, action: #selector(sortButtonPressed))
         navigationItem.rightBarButtonItem?.tintColor = .tabBarItemsTintColor
         navigationItem.rightBarButtonItem?.width = 44
@@ -190,28 +175,77 @@ final class CartViewController: UIViewController, CartView {
     
     @objc
     private func sortButtonPressed() {
-
-        let sortByPrice = AlertButtonAction(buttonTitle: "По цене", style: .default) { [weak self] _ in
-            guard let self = self else { return }
-            presenter.sortNft(by: .price)
-        }
-        
-        let sortByRating = AlertButtonAction(buttonTitle: "По рейтингу", style: .default) { [weak self] _ in
-            guard let self = self else { return }
-            presenter.sortNft(by: .rating)
-        }
-        
-        let sortByName = AlertButtonAction(buttonTitle: "По названию", style: .default) { [weak self] _ in
-            guard let self = self else { return }
-            presenter.sortNft(by: .name)
-        }
-        
-        let cancelAction = AlertButtonAction(buttonTitle: "Закрыть", style: .cancel, action: nil)
-       
-            
-        let alert = UIAlertController().showSortActionSheet(for: AlertModel(title: "Сортировка", message: nil), action: [sortByPrice, sortByRating, sortByName, cancelAction])
+        let actions = presenter.showSortOptions()
+        let alert = UIAlertController().showSortActionSheet(for: AlertModel(title: "Сортировка", message: nil), action: actions)
         
         present(alert, animated: true)
+    }
+}
+
+extension CartViewController: CartView {
+    func deleteFromCart(at indexPath: IndexPath) {
+        presenter.deleteFromCart(at: indexPath)
+    }
+    
+    func presentBlurredScreen(with indexPath: IndexPath, imageURL: String) {
+        let blurredVC = CartDeleteViewController(
+            delegate: self,
+            indexPath: indexPath,
+            imageURL: imageURL
+        )
+        blurredVC.modalPresentationStyle = .overFullScreen
+        blurredVC.modalTransitionStyle = .crossDissolve
+        
+        present(blurredVC, animated: true, completion: nil)
+    }
+    
+    func reloadData() {
+        setupDefaultState()
+        nftCount.text = "\(presenter.getNftsCount()) NFT"
+        nftTotalPrice.text = presenter.formattedTotalPrice()
+        nftsTableView.reloadData()
+    }
+    
+    func deleteRows(at indexPath: IndexPath) {
+        nftsTableView.deleteRows(at: [indexPath], with: .automatic)
+    }
+    
+    func showHud() {
+        UIBlockingProgressHUD.show()
+    }
+    
+    func hideHud() {
+        UIBlockingProgressHUD.dismiss()
+    }
+}
+
+extension CartViewController: UITableViewDelegate, UITableViewDataSource {
+    
+    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        presenter.getNftsCount()
+    }
+    
+    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: CartTableViewCell.reuseIdentifier, for: indexPath) as? CartTableViewCell else { return UITableViewCell()
+        }
+        
+        let cartNftModel = presenter.getNft(at: indexPath)
+        
+        cell.delegate = self
+        cell.selectionStyle = .none
+        cell.configCell(with: cartNftModel, at: indexPath)
+        
+        return cell
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        140
+    }
+}
+
+extension CartViewController: CartTableViewCellDelegate {
+    func didTapButton(in cell: CartTableViewCell, at indexPath: IndexPath, with image: String) {
+        presentBlurredScreen(with: indexPath, imageURL: image)
     }
 }
 

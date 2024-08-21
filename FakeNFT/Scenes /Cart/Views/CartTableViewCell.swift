@@ -9,9 +9,9 @@ final class CartTableViewCell: UITableViewCell {
     
     static let reuseIdentifier = "CartTableViewCell"
     weak var delegate: CartTableViewCellDelegate?
-    private var indexPath: IndexPath?
-    var imageURL: String?
     
+    private var indexPath: IndexPath?
+    private var imageURL: String?
     private var stars: [UIView] = []
     
     private let nftImage: UIImageView = {

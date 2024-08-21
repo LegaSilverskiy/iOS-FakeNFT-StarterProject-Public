@@ -1,20 +1,9 @@
 import UIKit
 
-enum SortOption: String {
-    case price = "price"
-    case rating = "rating"
-    case name = "name"
-}
-
 struct AlertModel {
     let title: String?
     let message: String?
 }
 
-struct AlertButtonAction {
-    let buttonTitle: String
-    let style: UIAlertAction.Style
-    let action: ((UIAlertAction) -> Void)?
-}
 
 
