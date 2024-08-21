@@ -1,5 +1,5 @@
 import UIKit
-
+import ProgressHUD
 
 final class CatalogViewController: UIViewController, ErrorView {
     
@@ -40,6 +40,15 @@ final class CatalogViewController: UIViewController, ErrorView {
     func updatetable() {
         tableForCollectionsNft.reloadData()
     }
+    
+    
+    func showProgressHud() {
+        ProgressHUD.show()
+    }
+    
+    func hideProgressHud() {
+        ProgressHUD.dismiss()
+    }
     //MARK: - ACTIONS
     
     @objc private func sortButtonTapped() {
@@ -61,7 +70,7 @@ final class CatalogViewController: UIViewController, ErrorView {
     
 }
 
-    //MARK: - CONSTRAINTS
+//MARK: - CONSTRAINTS
 
 extension CatalogViewController {
     
@@ -71,7 +80,7 @@ extension CatalogViewController {
     }
 }
 
-    //MARK: - UI_TABLE_VIEW_DATA_SOURCE
+//MARK: - UI_TABLE_VIEW_DATA_SOURCE
 
 extension CatalogViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -81,15 +90,15 @@ extension CatalogViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         
         guard let cell = tableView.dequeueReusableCell(withIdentifier: CustomCellForTableView.reUseIdentifier, for: indexPath) as? CustomCellForTableView else { return UITableViewCell() }
-            let params = presenter.getParamsForCell(for: indexPath.row)
-            cell.configure(with: params)
-            cell.selectionStyle = .none
-            return cell
+        let params = presenter.getParamsForCell(for: indexPath.row)
+        cell.configure(with: params)
+        cell.selectionStyle = .none
+        return cell
     }
     
 }
 
-    //MARK: - UI_TABLE_VIEW_DELEGATE
+//MARK: - UI_TABLE_VIEW_DELEGATE
 extension CatalogViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let navigationCollection = CurrentCollectionNftViewController()
@@ -138,7 +147,7 @@ private extension CatalogViewController {
         tableForCollectionsNft.separatorStyle = .none
         tableForCollectionsNft.dataSource = self
         tableForCollectionsNft.delegate = self
-
+        
     }
     
     func setupTableForCollectionsNftConstraint() {
