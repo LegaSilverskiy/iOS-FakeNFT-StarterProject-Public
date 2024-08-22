@@ -163,6 +163,7 @@ final class CartViewController: UIViewController {
     
     private func setupPayButton() {
         payButton.setTitle("К оплате", for: .normal)
+        payButton.addTarget(self, action: #selector(payButtonTapped), for: .touchUpInside)
         payButton.titleLabel?.font = UIFont.bodyBold
         payButton.setTitleColor(.textOnPrimary, for: .normal)
         payButton.layer.cornerRadius = 16
@@ -179,6 +180,15 @@ final class CartViewController: UIViewController {
         let alert = UIAlertController().showSortActionSheet(for: AlertModel(title: "Сортировка", message: nil), action: actions)
         
         present(alert, animated: true)
+    }
+    
+    @objc
+    private func payButtonTapped() {
+        let currencyViewController = CartCurrencyViewController()
+        let navController = UINavigationController(rootViewController: currencyViewController)
+        navController.modalPresentationStyle = .fullScreen
+        
+        present(navController, animated: true)
     }
 }
 
