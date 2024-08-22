@@ -42,6 +42,12 @@ extension UIColor {
     static let textSecondary = UIColor.gray
     static let textOnPrimary = UIColor.white
     static let textOnSecondary = UIColor.black
+    static let yaYellow = UIColor(hexString: "#FEEF0D")
+    static let yaGreen = UIColor(hexString: "#1C9F00")
+    static let yaRed = UIColor(hexString: "#FF3B30")
+    
+    // epic Statistics
+    static let avatarStubTintColor = UIColor(hexString: "#625C5C")
 
     // тут создаем константы для цветов с поддержкой темной темы
     static let tabBarItemsTintColor = UIColor { traits in
@@ -71,6 +77,6 @@ extension UIColor {
     // сюда помещаем цвета, используемые для создания констант, но не используемые в коде напрямую
     private static let yaBlackLight = UIColor(hexString: "1A1B22")
     private static let yaBlackDark = UIColor.white
-    private static let yaLightGrayLight = UIColor(hexString: "#F7F7F8")
+    private static let yaLightGrayLight = UIColor(hexString: "#F7F7F8") 
     private static let yaLightGrayDark = UIColor(hexString: "#2C2C2E")
 }
