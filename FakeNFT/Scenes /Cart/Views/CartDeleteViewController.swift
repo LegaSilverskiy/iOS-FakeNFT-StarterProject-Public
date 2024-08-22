@@ -106,13 +106,10 @@ final class CartDeleteViewController: UIViewController {
     private func setupViews() {
         [mainContainer,
          nftInfoContainer,
-         buttonsContainer,
-         nftImage,
-         warningMessage,
-         deleteButton,
-         cancelButton].forEach {
+         buttonsContainer
+        ].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
-            
+            view.addSubview($0)
         }
     }
     
