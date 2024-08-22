@@ -7,10 +7,11 @@
 import UIKit
 
 struct NftCellParams {
+    let index: Int
     let name: String
     let image: String
     let rating: Int
-    let price: Float
+    let price: Double
     let isFavorite: Bool
     let isInCart: Bool
 }

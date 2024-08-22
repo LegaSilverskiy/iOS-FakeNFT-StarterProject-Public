@@ -7,7 +7,9 @@
 import UIKit
 
 protocol UserNFTCollectionVCProtocol: AnyObject, ErrorView {
-    
+    func showLoading()
+    func hideLoading()
+    func updateCollectionItems(method: CollectionUpdateMethods, indexes: [IndexPath])
     func showError(_ model: ErrorModel)
 }
 
@@ -55,14 +57,14 @@ final class UserNFTCollectionVC: UIViewController, UserNFTCollectionVCProtocol {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        //        presenter.viewDidLoad()
+        presenter.viewDidLoad()
         setUI()
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
         
-        //        presenter.viewWllAppear()
+        presenter.viewWllAppear()
     }
     
     // MARK: - Public Methods
@@ -75,9 +77,19 @@ final class UserNFTCollectionVC: UIViewController, UserNFTCollectionVCProtocol {
         UIBlockingProgressHUD.dismiss()
     }
     
-    func updateCollection() {
-        nftCollection.reloadData()
-        //        nftCollection.reloadItems(at: [indexPath])
+    func updateCollectionItems(method: CollectionUpdateMethods, indexes: [IndexPath]) {
+        
+        switch method {
+            
+        case .insertItems:
+            nftCollection.insertItems(at: indexes)
+            
+        case .reloadItems:
+            nftCollection.reloadItems(at: indexes)
+            
+        case .reloadData:
+            nftCollection.reloadData()
+        }
     }
     
     
@@ -129,15 +141,10 @@ extension UserNFTCollectionVC: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         if let cell = collectionView.dequeueReusableCell(withReuseIdentifier: UserNFTCollectionCell.reuseIdentifier, for: indexPath) as? UserNFTCollectionCell {
             cell.delegate = presenter
-            cell.configure(index: indexPath.item,
-                           params: NftCellParams(name: "Test1",
-                                                 image: "https://pixelbox.ru/wp-content/uploads/2021/04/ava-mult-vk-49.jpg",
-                                                 rating: 3,
-                                                 price: 11.11,
-                                                 isFavorite: true,
-                                                 isInCart: true
-                                                )
-            )
+            
+            let params = presenter.getParams(for: indexPath.item)
+            cell.configure(with: params)
+            
             return cell
         }
         

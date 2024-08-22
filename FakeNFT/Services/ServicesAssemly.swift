@@ -30,8 +30,7 @@ final class ServicesAssembly {
     
     var userNFTService: UserNFTServiceProtocol {
         UserNFTService(
-            networkClient: networkClient,
-            storage: usersStorage
+            networkClient: networkClient
         )
     }
 }

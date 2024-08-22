@@ -81,9 +81,9 @@ final class UserNFTCollectionCell: UICollectionViewCell {
     }
     
     // MARK: - Public Methods
-    func configure(index: Int, params: NftCellParams) {
+    func configure(with params: NftCellParams) {
         
-        self.index = index
+        self.index = params.index
         
         if let url = URL(string: params.image) {
             updateNFTImage(url: url)

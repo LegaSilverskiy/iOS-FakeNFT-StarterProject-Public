@@ -88,10 +88,10 @@ final class StatisticsPresenter: StatisticsPresenterProtocol {
     func getParams(for index: Int) -> RatingCellParams {
         endOfListCheck(for: index)
         
-        return RatingCellParams(rating: Int(users[index].rating) ?? 0,
-                                avatar: users[index].avatar,
-                                name: users[index].name,
-                                NFTCount: users[index].nfts.count
+        return .init(rating: Int(users[index].rating) ?? 0,
+                     avatar: users[index].avatar,
+                     name: users[index].name,
+                     NFTCount: users[index].nfts.count
         )
     }
     
