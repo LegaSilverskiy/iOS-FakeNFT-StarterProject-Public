@@ -58,9 +58,7 @@ final class TabBarController: UITabBarController {
         )
         catalogController.tabBarItem = catalogTabBarItem
         
-        let cartController = CartViewController(
-            servicesAssembly: servicesAssembly
-        )
+        let cartController = CartViewController(presenter: CartPresenter(interactor: CartInteractor()))
         cartController.tabBarItem = cartTabBarItem
         
         let statisticsController = StatisticsViewController(
@@ -68,6 +66,11 @@ final class TabBarController: UITabBarController {
         )
         statisticsController.tabBarItem = statisticsTabBarItem
         
-        viewControllers = [profileController, catalogController, cartController, statisticsController]
+        let navigationCatalogVC = UINavigationController(rootViewController: catalogController)
+        let navigationCartVC = UINavigationController(rootViewController: cartController)
+        let navigationProfileVC = UINavigationController(rootViewController: profileController)
+        let navigationStatisticVC = UINavigationController(rootViewController: statisticsController)
+        
+        viewControllers = [navigationProfileVC, navigationCatalogVC, navigationCartVC, navigationStatisticVC]
     }
 }
