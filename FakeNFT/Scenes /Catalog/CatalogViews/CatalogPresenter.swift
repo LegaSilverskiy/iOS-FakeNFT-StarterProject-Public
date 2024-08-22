@@ -11,7 +11,7 @@ final class CatalogPresenter {
 
     weak var view: CatalogViewController?
     
-    //MARK: - SERVICESASSEMBLY
+    // MARK: - Private Properties
     private let servicesAssembly: ServicesAssembly
     
     private var state: StatesOfCatalog? {
@@ -20,7 +20,7 @@ final class CatalogPresenter {
         }
     }
     
-    //MARK: - LOADING_STATES
+    // MARK: - Public Methods
     
     func viewDidLoad() {
         state = .loading
@@ -30,17 +30,17 @@ final class CatalogPresenter {
         state = .loading
     }
     
-    //MARK: - PRIVATE_PROPERTIES
+    // MARK: - Private Properties
     private let service: CatalogServiceImpl
     private var catalogs: [Catalog] = []
     
-    //MARK: - INIT
+    // MARK: - Initializers
     init(servicesAssembly: ServicesAssembly) {
         self.servicesAssembly = servicesAssembly
         self.service = servicesAssembly.catalogService
     }
     
-    //MARK: - PUBLIC_METHODS
+    // MARK: - Public Methods
     func getParamsForCell(for index: Int) -> CatalogCell {
         .init(
             name: catalogs[index].name,
@@ -65,8 +65,11 @@ final class CatalogPresenter {
             }
         }
     }
-    //MARK: - PRIVATE_METHODS
-    private func stateDidChange() {
+}
+
+// MARK: - Private Methods
+private extension CatalogPresenter {
+    func stateDidChange() {
         switch state {
         case .initial:
             assertionFailure("can't move to initial state")
@@ -87,7 +90,7 @@ final class CatalogPresenter {
         }
     }
     
-    private func makeErrorModel(_ error: Error) -> ErrorModel {
+    func makeErrorModel(_ error: Error) -> ErrorModel {
         let message: String
         switch error {
         case is NetworkClientError:

@@ -3,14 +3,15 @@ import ProgressHUD
 
 final class CatalogViewController: UIViewController, ErrorView {
     
-    //MARK: - PRIVATE_PROPERTIES
+    // MARK: - Private Properties
     private let presenter: CatalogPresenter
     
-    //MARK: - UI_PROPERTIES
+    // MARK: - Private UI Properties
     
     private let tableForCollectionsNft = UITableView()
     private let sortButton = UIButton()
-    //MARK: - INIT
+    
+    // MARK: - Initializers
     init(servicesAssembly: ServicesAssembly) {
         self.presenter = CatalogPresenter(servicesAssembly: servicesAssembly)
         
@@ -20,7 +21,7 @@ final class CatalogViewController: UIViewController, ErrorView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    //MARK: - VIEW_LIFE_CIRCLE
+    //MARK: - Overrides Methods
     override func viewDidLoad() {
         super.viewDidLoad()
         presenter.view?.viewDidLoad()
@@ -35,7 +36,7 @@ final class CatalogViewController: UIViewController, ErrorView {
         presenter.viewWllAppear()
     }
     
-    //MARK: - PUBLIC_PORPERTIES
+    //MARK: - Public Methods
     
     func updatetable() {
         tableForCollectionsNft.reloadData()
@@ -50,15 +51,23 @@ final class CatalogViewController: UIViewController, ErrorView {
     func hideProgressHud() {
         UIBlockingProgressHUD.dismiss()
     }
-    //MARK: - ACTIONS
+    //MARK: - IB Actions
     
     @objc private func sortButtonTapped() {
         showAlertController()
     }
+}
+
+//MARK: - Constraints
+
+private extension CatalogViewController {
     
-    //MARK: - UIALERTCONTROLLER
+    func setupConstraints() {
+        setupSortButtonConstraints()
+        setupTableForCollectionsNftConstraint()
+    }
     
-    private func showAlertController() {
+    func showAlertController() {
         let alert = UIAlertController(title: .actionSheetTitleSorting,
                                       message: nil,
                                       preferredStyle: .actionSheet)
@@ -68,20 +77,9 @@ final class CatalogViewController: UIViewController, ErrorView {
         [sortByName, sortByNftCount, cancelAction].forEach { alert.addAction($0)}
         self.present(alert, animated: true)
     }
-    
 }
 
-//MARK: - CONSTRAINTS
-
-extension CatalogViewController {
-    
-    private func setupConstraints() {
-        setupSortButtonConstraints()
-        setupTableForCollectionsNftConstraint()
-    }
-}
-
-//MARK: - UI_TABLE_VIEW_DATA_SOURCE
+//MARK: - UITabvleViewDataSource
 
 extension CatalogViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -100,7 +98,7 @@ extension CatalogViewController: UITableViewDataSource {
     
 }
 
-//MARK: - UI_TABLE_VIEW_DELEGATE
+//MARK: - UITabvleViewDelegate
 extension CatalogViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let navigationCollection = CurrentCollectionNftViewController()
@@ -115,7 +113,7 @@ extension CatalogViewController: UITableViewDelegate {
     }
 }
 
-//MARK: - PRIVATE_EXTENSION
+// MARK: - Private Methods
 private extension CatalogViewController {
     
     func configureUI() {

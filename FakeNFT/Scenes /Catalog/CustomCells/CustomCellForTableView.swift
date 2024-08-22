@@ -12,11 +12,11 @@ final class CustomCellForTableView: UITableViewCell, ReuseIdentifying {
     
     static let reUseIdentifier = "TableInCatalogCustomViewCell"
     
-    //MARK: - PRIVATE UI PROPERTIES
+    //MARK: - Private UI Properties
     private lazy var imageCollectionNFT = UIImageView()
     private lazy var titleLabelForCollectionNFT = UILabel()
     
-    // MARK: - INIT
+    // MARK: - Initializers
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
         configureUI()
@@ -26,7 +26,7 @@ final class CustomCellForTableView: UITableViewCell, ReuseIdentifying {
         fatalError("init(coder:) has not been implemented")
     }
     
-    //MARK: - PUBLIC METHODS
+    //MARK: - Public Methods
     func configure(with params: CatalogCell) {
         titleLabelForCollectionNFT.text = String("\(params.name.capitalizingFirstLetter())"+" (\(params.nfts.count))")
         if let url = URL(string: params.cover) {
@@ -38,45 +38,13 @@ final class CustomCellForTableView: UITableViewCell, ReuseIdentifying {
         imageCollectionNFT.kf.setImage(with: url, placeholder: UIImage.tabBarIconsCatalog?.withTintColor(.black))
     }
     
-    //MARK: - OVERRIDE METHODS
+    //MARK: - Overrides Methods
     public override func prepareForReuse() {
         super.prepareForReuse()
         imageCollectionNFT.kf.cancelDownloadTask()
     }
     
-    // MARK: - CONFIGURE UI
-    private func configureUI() {
-        configureView()
-        addSubviews()
-        setupConstraints()
-        configureTitleLabel()
-        configImageView()
-    }
     
-    private func configImageView() {
-        imageCollectionNFT.layer.cornerRadius = 14
-        imageCollectionNFT.layer.masksToBounds = true
-        imageCollectionNFT.contentMode = .scaleAspectFill
-    }
-    
-    private func addSubviews() {
-        addSubview(imageCollectionNFT)
-        addSubview(titleLabelForCollectionNFT)
-    }
-    
-    private func configureView() {
-        backgroundColor = .clear
-        layer.cornerRadius = 10
-        layer.cornerCurve = .continuous
-    }
-    
-    private func configureTitleLabel() {
-        titleLabelForCollectionNFT.font = .bodyBold
-    }
-    
-    private func setTitleLabelText(with text: String) {
-        titleLabelForCollectionNFT.text = text
-    }
 }
 
 //MARK: - CONSTRAINTS
@@ -97,5 +65,41 @@ extension CustomCellForTableView {
             titleLabelForCollectionNFT.leadingAnchor.constraint(equalTo: leadingAnchor),
             titleLabelForCollectionNFT.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -21)
         ])
+    }
+}
+
+// MARK: - Private Methods
+private extension CustomCellForTableView {
+    func configureUI() {
+        configureView()
+        addSubviews()
+        setupConstraints()
+        configureTitleLabel()
+        configImageView()
+    }
+    
+    func configImageView() {
+        imageCollectionNFT.layer.cornerRadius = 14
+        imageCollectionNFT.layer.masksToBounds = true
+        imageCollectionNFT.contentMode = .scaleAspectFill
+    }
+    
+    func addSubviews() {
+        addSubview(imageCollectionNFT)
+        addSubview(titleLabelForCollectionNFT)
+    }
+    
+    func configureView() {
+        backgroundColor = .clear
+        layer.cornerRadius = 10
+        layer.cornerCurve = .continuous
+    }
+    
+    func configureTitleLabel() {
+        titleLabelForCollectionNFT.font = .bodyBold
+    }
+    
+    func setTitleLabelText(with text: String) {
+        titleLabelForCollectionNFT.text = text
     }
 }
