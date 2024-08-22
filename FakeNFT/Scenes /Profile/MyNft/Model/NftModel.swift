@@ -23,6 +23,7 @@ struct NftResult {
     let price: Double
     let author: String
     let id: String
+    let priceStr: String
     
     init(nft: NFTModel) {
         self.name = nft.name
@@ -31,5 +32,7 @@ struct NftResult {
         self.price = nft.price
         self.author = nft.author
         self.id = nft.id
+
+        self.priceStr = "\(price) ETH"
     }
 }
