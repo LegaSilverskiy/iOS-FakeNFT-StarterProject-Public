@@ -8,7 +8,7 @@
 import Foundation
 
 final class CatalogPresenter {
-
+    
     weak var view: CatalogViewController?
     
     // MARK: - Private Properties

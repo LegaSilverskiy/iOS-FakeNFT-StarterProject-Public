@@ -3,7 +3,7 @@ import ProgressHUD
 
 final class CatalogViewController: UIViewController, ErrorView {
     
-    // MARK: - Private Properties
+    
     private let presenter: CatalogPresenter
     
     // MARK: - Private UI Properties
