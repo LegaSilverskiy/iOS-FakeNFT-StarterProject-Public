@@ -21,6 +21,7 @@ final class NftDetailViewController: UIViewController {
 
         collectionView.showsHorizontalScrollIndicator = false
         collectionView.isPagingEnabled = true
+        
         return collectionView
     }()
 
@@ -29,15 +30,15 @@ final class NftDetailViewController: UIViewController {
         button.tintColor = .closeButton
         button.setImage(UIImage(named: "close"), for: .normal)
         button.addTarget(self, action: #selector(close), for: .touchUpInside)
+        
         return button
     }()
 
     private lazy var pageControl = LinePageControl()
     internal lazy var activityIndicator = UIActivityIndicatorView()
-
     private var cellModels: [NftDetailCellModel] = []
 
-    // MARK: - Init
+    // MARK: - Inititial
 
     init(presenter: NftDetailPresenter) {
         self.presenter = presenter
@@ -109,7 +110,6 @@ extension NftDetailViewController: UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView,
                         cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell: NftImageCollectionViewCell = collectionView.dequeueReusableCell(indexPath: indexPath)
-
         let cellModel = cellModels[indexPath.row]
         cell.configure(with: cellModel)
 
