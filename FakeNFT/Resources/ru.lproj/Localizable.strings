@@ -8,8 +8,11 @@
 
 "sortingOptions.name" = "По имени";
 "sortingOptions.rating" = "По рейтингу";
+"sortingOptions.sortByNamedNft" = "По названию";
+"sortingOptions.sortByNumberOfNFTs" = "По количеству NFT";
 
 "buttons.cancel" = "Отмена";
+"buttons.close" = "Закрыть";
 
 "Catalog.openNft" = "Открыть Nft";
 "Error.network" = "Произошла ошибка сети";

@@ -70,7 +70,7 @@ final class CustomCellForTableView: UITableViewCell, ReuseIdentifying {
     }
     
     private func configureTitleLabel() {
-        titleLabelForCollectionNFT.font = .systemFont(ofSize: 17, weight: .bold)
+        titleLabelForCollectionNFT.font = .bodyBold
     }
     
     private func setTitleLabelText(with text: String) {
@@ -82,18 +82,18 @@ final class CustomCellForTableView: UITableViewCell, ReuseIdentifying {
 extension CustomCellForTableView {
     
     private func setupConstraints() {
+        
         imageCollectionNFT.translatesAutoresizingMaskIntoConstraints = false
         titleLabelForCollectionNFT.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            imageCollectionNFT.topAnchor.constraint(equalTo: topAnchor, constant: 20),
+            imageCollectionNFT.topAnchor.constraint(equalTo: topAnchor),
             imageCollectionNFT.leadingAnchor.constraint(equalTo: leadingAnchor),
             imageCollectionNFT.trailingAnchor.constraint(equalTo: trailingAnchor),
             imageCollectionNFT.heightAnchor.constraint(equalToConstant: 179),
-            
             imageCollectionNFT.bottomAnchor.constraint(equalTo: titleLabelForCollectionNFT.topAnchor, constant: -4),
             
-            titleLabelForCollectionNFT.leadingAnchor.constraint(equalTo: leadingAnchor, constant: 16),
+            titleLabelForCollectionNFT.leadingAnchor.constraint(equalTo: leadingAnchor),
             titleLabelForCollectionNFT.bottomAnchor.constraint(equalTo: bottomAnchor, constant: -21)
         ])
     }

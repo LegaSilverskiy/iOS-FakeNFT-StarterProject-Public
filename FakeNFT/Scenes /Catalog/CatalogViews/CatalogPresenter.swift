@@ -55,7 +55,7 @@ final class CatalogPresenter {
         return catalogs.count
     }
     
-    func loadCatalogs() {
+    private func loadCatalogs() {
         service.loadCatalogs() {[weak self] result in
             switch result {
             case .success(let catalogs):

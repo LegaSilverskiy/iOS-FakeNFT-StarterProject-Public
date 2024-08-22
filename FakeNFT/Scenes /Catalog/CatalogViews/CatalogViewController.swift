@@ -43,11 +43,12 @@ final class CatalogViewController: UIViewController, ErrorView {
     
     
     func showProgressHud() {
-        ProgressHUD.show()
+        
+        UIBlockingProgressHUD.show()
     }
     
     func hideProgressHud() {
-        ProgressHUD.dismiss()
+        UIBlockingProgressHUD.dismiss()
     }
     //MARK: - ACTIONS
     
@@ -58,12 +59,12 @@ final class CatalogViewController: UIViewController, ErrorView {
     //MARK: - UIALERTCONTROLLER
     
     private func showAlertController() {
-        let alert = UIAlertController(title: "Сортировка",
+        let alert = UIAlertController(title: .actionSheetTitleSorting,
                                       message: nil,
                                       preferredStyle: .actionSheet)
-        let sortByName = UIAlertAction(title: "Сортировка по имени", style: .default)
-        let sortByNftCount = UIAlertAction(title: "По количеству NFT", style: .default)
-        let cancelAction = UIAlertAction(title: "Закрыть", style: .cancel)
+        let sortByName = UIAlertAction(title: .sortingOptionsByNamedNft, style: .default)
+        let sortByNftCount = UIAlertAction(title: .sortingOptionsByNumberOfNFTs, style: .default)
+        let cancelAction = UIAlertAction(title: .buttonsClose, style: .cancel)
         [sortByName, sortByNftCount, cancelAction].forEach { alert.addAction($0)}
         self.present(alert, animated: true)
     }
@@ -104,7 +105,9 @@ extension CatalogViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         let navigationCollection = CurrentCollectionNftViewController()
         let navigation = UINavigationController(rootViewController: navigationCollection)
+        navigation.modalPresentationStyle = .fullScreen
         present(navigation, animated: true)
+        
     }
     
     func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
@@ -148,6 +151,7 @@ private extension CatalogViewController {
         tableForCollectionsNft.separatorStyle = .none
         tableForCollectionsNft.dataSource = self
         tableForCollectionsNft.delegate = self
+        tableForCollectionsNft.showsVerticalScrollIndicator = false
         
     }
     
@@ -156,7 +160,7 @@ private extension CatalogViewController {
         tableForCollectionsNft.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            tableForCollectionsNft.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            tableForCollectionsNft.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20),
             tableForCollectionsNft.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             tableForCollectionsNft.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             tableForCollectionsNft.bottomAnchor.constraint(equalTo: view.bottomAnchor)
