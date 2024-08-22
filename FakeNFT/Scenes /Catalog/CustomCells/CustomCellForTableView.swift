@@ -28,7 +28,7 @@ final class CustomCellForTableView: UITableViewCell, ReuseIdentifying {
     
     //MARK: - PUBLIC METHODS
     func configure(with params: CatalogCell) {
-        titleLabelForCollectionNFT.text = String("\(params.name.prefix(18))"+" (\(params.nfts.count))")
+        titleLabelForCollectionNFT.text = String("\(params.name.capitalizingFirstLetter())"+" (\(params.nfts.count))")
         if let url = URL(string: params.cover) {
             setupImageWithKf(with: url)
         }
@@ -56,6 +56,7 @@ final class CustomCellForTableView: UITableViewCell, ReuseIdentifying {
     private func configImageView() {
         imageCollectionNFT.layer.cornerRadius = 14
         imageCollectionNFT.layer.masksToBounds = true
+        imageCollectionNFT.contentMode = .scaleAspectFill
     }
     
     private func addSubviews() {
@@ -90,7 +91,7 @@ extension CustomCellForTableView {
             imageCollectionNFT.topAnchor.constraint(equalTo: topAnchor),
             imageCollectionNFT.leadingAnchor.constraint(equalTo: leadingAnchor),
             imageCollectionNFT.trailingAnchor.constraint(equalTo: trailingAnchor),
-            imageCollectionNFT.heightAnchor.constraint(equalToConstant: 179),
+            imageCollectionNFT.heightAnchor.constraint(equalToConstant: 140),
             imageCollectionNFT.bottomAnchor.constraint(equalTo: titleLabelForCollectionNFT.topAnchor, constant: -4),
             
             titleLabelForCollectionNFT.leadingAnchor.constraint(equalTo: leadingAnchor),
