@@ -93,7 +93,7 @@ final class CartViewController: UIViewController {
     }
     
     private func setupDefaultState() {
-        presenter.getNftsCount() == 0 ? setupEmptyCartInfo() : setupTableView()
+        presenter.getNftsCount().count == 0 ? setupEmptyCartInfo() : setupTableView()
     }
     
     private func setupEmptyCartInfo() {
@@ -201,7 +201,7 @@ extension CartViewController: CartView {
     
     func reloadData() {
         setupDefaultState()
-        nftCount.text = "\(presenter.getNftsCount()) NFT"
+        nftCount.text = "\(presenter.getNftsCount().count) NFT"
         nftTotalPrice.text = presenter.formattedTotalPrice()
         nftsTableView.reloadData()
     }
@@ -222,7 +222,7 @@ extension CartViewController: CartView {
 extension CartViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        presenter.getNftsCount()
+        presenter.getNftsCount().count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

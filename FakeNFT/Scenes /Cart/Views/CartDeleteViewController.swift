@@ -112,7 +112,7 @@ final class CartDeleteViewController: UIViewController {
          deleteButton,
          cancelButton].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
-            view.addSubview($0)
+            
         }
     }
     

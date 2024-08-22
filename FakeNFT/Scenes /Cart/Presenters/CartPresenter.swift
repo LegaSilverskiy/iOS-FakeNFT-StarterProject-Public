@@ -25,7 +25,7 @@ final class CartPresenter {
     func loadNfts() {
         view?.showHud()
         interactor.fetchNfts { [weak self] result in
-            guard let self = self else { return }
+            guard let self else { return }
             switch result {
             case .success(let fetchedNfts):
                 
@@ -90,8 +90,8 @@ final class CartPresenter {
         return cartNftModel
     }
     
-    func getNftsCount() -> Int {
-        return filteredNfts.count
+    func getNftsCount() -> [CartNftModel] {
+        filteredNfts
     }
     
     func formattedTotalPrice() -> String {
@@ -119,7 +119,7 @@ final class CartPresenter {
                 let priceValue1 = Double(price1) ?? 0.0
                 let priceValue2 = Double(price2) ?? 0.0
                 
-                return priceValue1 < priceValue2
+                return priceValue1 > priceValue2
             }
         case .rating:
             filteredNfts = nftModels.sorted(by: { $0.rating > $1.rating })

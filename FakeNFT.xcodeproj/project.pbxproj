@@ -430,13 +430,6 @@
 			path = Helpers;
 			sourceTree = "<group>";
 		};
-		9AEF3EE72C72111F009331FC /* Extensions */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Extensions;
-			sourceTree = "<group>";
-		};
 		9AEF3EE82C7211A0009331FC /* CartServices */ = {
 			isa = PBXGroup;
 			children = (
@@ -461,7 +454,6 @@
 				9A238E5A2C6B93B000D75687 /* Models */,
 				9A238E592C6B93A200D75687 /* Presenters */,
 				9A238E582C6B939B00D75687 /* Views */,
-				9AEF3EE72C72111F009331FC /* Extensions */,
 			);
 			path = Cart;
 			sourceTree = "<group>";
