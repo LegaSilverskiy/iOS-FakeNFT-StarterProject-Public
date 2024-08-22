@@ -9,11 +9,11 @@ final class CartInteractor: CartInteractorProtocol {
     private let service = OrderService.shared
     
     private let numberFormatter: NumberFormatter = {
-            let formatter = NumberFormatter()
-            formatter.numberStyle = .decimal
-            formatter.locale = Locale(identifier: "ru_RU")
-            return formatter
-        }()
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .decimal
+        formatter.locale = Locale(identifier: "ru_RU")
+        return formatter
+    }()
     
     func fetchNfts(completion: @escaping (Result<[CartNftModel], Error>) -> Void) {
         service.fetchOrders { [weak self] result in
@@ -27,11 +27,10 @@ final class CartInteractor: CartInteractorProtocol {
                 
                 for nftId in nftIds {
                     dispatchGroup.enter()
-                    service.fetchNFTByID(nftID: nftId) { [weak self] result in
-                        guard let self else { return }
+                    service.fetchNFTByID(nftID: nftId) { result in
                         switch result {
                         case .success(let nft):
-                            let model = convertNft(id: nftId, nft: nft)
+                            let model = self.convertNft(id: nftId, nft: nft)
                             fetchedNfts.append(model)
                         case .failure(let error):
                             print("Failed to fetch NFT by ID: \(error)")
