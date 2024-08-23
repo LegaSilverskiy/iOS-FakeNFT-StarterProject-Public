@@ -8,9 +8,10 @@ protocol CartCurrencyView: AnyObject {
 
 final class CartCurrencyPresenter {
     weak var view: CartCurrencyView?
-    private var currencies: [String] = []
+    private var currencies: [CartCurrency] = []
     
     func viewDidLoad() {
+        currencies = Mock.shared.currencies
         loadSelectedCurrency()
     }
 
@@ -20,6 +21,10 @@ final class CartCurrencyPresenter {
     
     func userAgreementTapped() {
         view?.navigateToUserAgreement()
+    }
+    
+    func getCurrencies() -> [CartCurrency] {
+        currencies
     }
     
     private func loadSelectedCurrency() {

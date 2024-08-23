@@ -162,14 +162,14 @@ final class CartCurrencyViewController: UIViewController {
 
 extension CartCurrencyViewController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 8
+        presenter.getCurrencies().count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CurrencyCollectionViewCell.reuseIdentifier, for: indexPath) as? CurrencyCollectionViewCell else { return UICollectionViewCell() }
         
-        cell.backgroundColor = .segmentInactive
-        cell.layer.cornerRadius = 12
+        let currency = presenter.getCurrencies()[indexPath.row]
+        cell.configCell(for: currency)
         
         return cell
     }

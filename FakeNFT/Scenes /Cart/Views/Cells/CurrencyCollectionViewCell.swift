@@ -55,7 +55,16 @@ final class CurrencyCollectionViewCell: UICollectionViewCell {
         setupUI()
     }
     
+    func configCell(for model: CartCurrency) {
+        currencyImage.image = UIImage(named: model.image)
+        currencyName.text = model.title
+        currencyShortName.text = model.name
+    }
+    
     private func setupUI() {
+        backgroundColor = .segmentInactive
+        layer.cornerRadius = 12
+        
         setupViews()
         setupContainers()
     }

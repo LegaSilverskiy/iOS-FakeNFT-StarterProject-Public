@@ -49,6 +49,8 @@
 		9A238E622C6D606F00D75687 /* CartDeleteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A238E612C6D606F00D75687 /* CartDeleteViewController.swift */; };
 		9A30A9432C790775003FE5CE /* UserAgreementPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A30A9422C790775003FE5CE /* UserAgreementPresenter.swift */; };
 		9A30A9452C790997003FE5CE /* CartCurrencyPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A30A9442C790997003FE5CE /* CartCurrencyPresenter.swift */; };
+		9A30A9472C793E52003FE5CE /* CartCurrency.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A30A9462C793E52003FE5CE /* CartCurrency.swift */; };
+		9A30A9492C793ECD003FE5CE /* Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A30A9482C793ECD003FE5CE /* Mock.swift */; };
 		9A43E0702C6FBF1700F2A9E6 /* Order.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A43E06F2C6FBF1700F2A9E6 /* Order.swift */; };
 		9A43E0722C70001800F2A9E6 /* OrderService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A43E0712C70001800F2A9E6 /* OrderService.swift */; };
 		9A43E0742C70038100F2A9E6 /* CartNft.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A43E0732C70038100F2A9E6 /* CartNft.swift */; };
@@ -133,6 +135,8 @@
 		9A238E612C6D606F00D75687 /* CartDeleteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartDeleteViewController.swift; sourceTree = "<group>"; };
 		9A30A9422C790775003FE5CE /* UserAgreementPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAgreementPresenter.swift; sourceTree = "<group>"; };
 		9A30A9442C790997003FE5CE /* CartCurrencyPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartCurrencyPresenter.swift; sourceTree = "<group>"; };
+		9A30A9462C793E52003FE5CE /* CartCurrency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartCurrency.swift; sourceTree = "<group>"; };
+		9A30A9482C793ECD003FE5CE /* Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mock.swift; sourceTree = "<group>"; };
 		9A43E06F2C6FBF1700F2A9E6 /* Order.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Order.swift; sourceTree = "<group>"; };
 		9A43E0712C70001800F2A9E6 /* OrderService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderService.swift; sourceTree = "<group>"; };
 		9A43E0732C70038100F2A9E6 /* CartNft.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartNft.swift; sourceTree = "<group>"; };
@@ -420,6 +424,7 @@
 				9AE020B52C6E30C1008A52BF /* CartNftModel.swift */,
 				9A0471792C756A380086E596 /* SortOption.swift */,
 				9A04717B2C756A610086E596 /* AlertButtonAction.swift */,
+				9A30A9462C793E52003FE5CE /* CartCurrency.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -465,6 +470,7 @@
 			isa = PBXGroup;
 			children = (
 				9AE020AD2C6E2511008A52BF /* AlertController + extension.swift */,
+				9A30A9482C793ECD003FE5CE /* Mock.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -708,10 +714,12 @@
 				0C79EE682A76DE0900EE90EA /* NftDetailPresenter.swift in Sources */,
 				3F68069B29CBBAF100B4F915 /* ProductDetailsTableViewController.swift in Sources */,
 				9A04717C2C756A610086E596 /* AlertButtonAction.swift in Sources */,
+				9A30A9492C793ECD003FE5CE /* Mock.swift in Sources */,
 				9A43E0742C70038100F2A9E6 /* CartNft.swift in Sources */,
 				9A43E0702C6FBF1700F2A9E6 /* Order.swift in Sources */,
 				9ADB06BC2C77F01700C800D1 /* CartCurrencyViewController.swift in Sources */,
 				0CFCB7402A78002A0009A829 /* NftService.swift in Sources */,
+				9A30A9472C793E52003FE5CE /* CartCurrency.swift in Sources */,
 				D486EF552C6394E30023EF6F /* ProfileViewController.swift in Sources */,
 				3F6806D529CBBEC700B4F915 /* NetworkTask.swift in Sources */,
 				9AE020AE2C6E2511008A52BF /* AlertController + extension.swift in Sources */,
