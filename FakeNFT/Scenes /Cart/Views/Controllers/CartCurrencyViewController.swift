@@ -8,10 +8,15 @@ final class CartCurrencyViewController: UIViewController {
         return collectionView
     }()
     
-    private let footerPanel: UIStackView = {
+    private let footerPanel: UIView = {
+        let view = UIView()
+        return view
+    }()
+    
+    private let currencyInfoContainer: UIStackView = {
         let stackView = UIStackView()
         stackView.axis = .vertical
-        stackView.alignment = .center
+        stackView.spacing = 4
         
         return stackView
     }()
@@ -25,6 +30,24 @@ final class CartCurrencyViewController: UIViewController {
         return label
     }()
     
+    private let userAgreementLink: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.caption2
+        label.textColor = .yaBlue
+        label.text = "Пользовательского соглашения"
+        label.isUserInteractionEnabled = true
+        
+        return label
+    }()
+    
+    private let payButton: UIButton = {
+        let button = UIButton(type: .system)
+        button.backgroundColor = .tabBarItemsTintColor
+        button.translatesAutoresizingMaskIntoConstraints = false
+        
+        return button
+    }()
+    
     override func viewDidLoad() {
         setupUI()
     }
@@ -35,12 +58,17 @@ final class CartCurrencyViewController: UIViewController {
         navigationItem.leftBarButtonItem?.tintColor = .tabBarItemsTintColor
         view.backgroundColor = .textOnPrimary
         
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(userAgreementTapped))
+        userAgreementLink.addGestureRecognizer(tapGesture)
+        
         setupViews()
     }
     
     private func setupViews() {
         [currencyCollectionView,
-         footerPanel
+         footerPanel,
+         currencyInfoContainer,
+         payButton
         ].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
             view.addSubview($0)
@@ -48,6 +76,8 @@ final class CartCurrencyViewController: UIViewController {
         
         setupCurrencyCollectionView()
         setupFooterPanel()
+        setupContainers()
+        setupPayButton()
     }
     
     private func setupCurrencyCollectionView() {
@@ -76,10 +106,45 @@ final class CartCurrencyViewController: UIViewController {
         ])
     }
     
+    private func setupContainers() {
+        currencyInfoContainer.addArrangedSubview(userAgreementTitle)
+        currencyInfoContainer.addArrangedSubview(userAgreementLink)
+        
+        NSLayoutConstraint.activate([
+            currencyInfoContainer.topAnchor.constraint(equalTo: footerPanel.topAnchor, constant: 16),
+            currencyInfoContainer.leadingAnchor.constraint(equalTo: footerPanel.leadingAnchor, constant: 16),
+            currencyInfoContainer.trailingAnchor.constraint(equalTo: footerPanel.trailingAnchor, constant: -16)
+        ])
+    }
+    
+    private func setupPayButton() {
+        payButton.setTitle("Оплатить", for: .normal)
+        payButton.titleLabel?.font = UIFont.bodyBold
+        payButton.setTitleColor(.textOnPrimary, for: .normal)
+        payButton.layer.cornerRadius = 16
+        
+        NSLayoutConstraint.activate([
+            payButton.heightAnchor.constraint(equalToConstant: 60),
+            payButton.topAnchor.constraint(equalTo: currencyInfoContainer.bottomAnchor, constant: 20),
+            payButton.leadingAnchor.constraint(equalTo: footerPanel.leadingAnchor, constant: 16),
+            payButton.trailingAnchor.constraint(equalTo: footerPanel.trailingAnchor, constant: -16)
+        ])
+    }
+    
     @objc
     private func backButtonPressed() {
         dismiss(animated: true)
     }
+    
+    @objc
+    private func userAgreementTapped() {
+        let userAgreementVC = UserAgreementViewController()
+        let navController = UINavigationController(rootViewController: userAgreementVC)
+        navController.modalPresentationStyle = .fullScreen
+        
+        present(navController, animated: true, completion: nil)
+    }
+    
 }
 
 extension CartCurrencyViewController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
