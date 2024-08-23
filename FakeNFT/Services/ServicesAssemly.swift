@@ -33,4 +33,16 @@ final class ServicesAssembly {
             networkClient: networkClient
         )
     }
+    
+    var profileService: ProfileServiceProtocol {
+        ProfileService(
+            networkClient: networkClient
+        )
+    }
+    
+    var orderService: OrderServiceProtocol {
+        OrderService(
+            networkClient: networkClient
+        )
+    }
 }

@@ -10,15 +10,15 @@ import UIKit
 final class UserCardAssembler {
     
     private let userInfo: User
-    private let userNFTService: UserNFTServiceProtocol
+    private let servisesAssembly: ServicesAssembly
     
-    init(userInfo: User, userNFTService: UserNFTServiceProtocol) {
+    init(userInfo: User, servisesAssembly: ServicesAssembly) {
         self.userInfo = userInfo
-        self.userNFTService = userNFTService
+        self.servisesAssembly = servisesAssembly
     }
     
     public func build() -> UIViewController {
-        let presenter = UserCardPresenter(userInfo: userInfo, userNFTService: userNFTService)
+        let presenter = UserCardPresenter(userInfo: userInfo, servisesAssembly: servisesAssembly)
         
         let viewController = UserCardViewController(presenter: presenter)
         presenter.view = viewController

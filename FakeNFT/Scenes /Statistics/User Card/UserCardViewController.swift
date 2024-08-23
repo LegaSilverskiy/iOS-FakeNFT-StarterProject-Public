@@ -8,7 +8,7 @@ import UIKit
 
 protocol UserCardViewProtocol: AnyObject {
     func updateUserImage(with url: URL)
-    func switchToUserNFTCollectionVC(userNfts: [String], userNFTService: UserNFTServiceProtocol)
+    func switchToUserNFTCollectionVC(userNfts: [String], servisesAssembly: ServicesAssembly)
 }
 
 final class UserCardViewController: UIViewController, UserCardViewProtocol {
@@ -115,8 +115,8 @@ final class UserCardViewController: UIViewController, UserCardViewProtocol {
         )
     }
     
-    func switchToUserNFTCollectionVC(userNfts: [String], userNFTService: UserNFTServiceProtocol) {
-        let assembler = UserNftCollectionAssembler(userNfts: userNfts, userNFTService: userNFTService)
+    func switchToUserNFTCollectionVC(userNfts: [String], servisesAssembly: ServicesAssembly) {
+        let assembler = UserNftCollectionAssembler(userNfts: userNfts, servisesAssembly: servisesAssembly)
         let vc  = assembler.build()
         self.navigationController?.pushViewController(vc, animated: true)
     }

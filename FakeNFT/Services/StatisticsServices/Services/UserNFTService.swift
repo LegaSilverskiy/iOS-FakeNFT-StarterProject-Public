@@ -24,10 +24,10 @@ final class UserNFTService: UserNFTServiceProtocol {
     
     func loadNftDetails(id: String, completion: @escaping NFTDetailsCompletion) {
         let request = NFTDetailsRequest(id: id)
-        networkClient.send(request: request, type: NftDetails.self) { result in
+        networkClient.send(request: request, type: NftDetails.self) {result in
             switch result {
             case .success(let nft):
-                completion(.success(nft ))
+                completion(.success(nft))
             case .failure(let error):
                 completion(.failure(error))
             }

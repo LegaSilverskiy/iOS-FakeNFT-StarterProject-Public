@@ -63,7 +63,7 @@ final class TabBarController: UITabBarController {
         )
         cartController.tabBarItem = cartTabBarItem
         
-        let statisticsAssembly = StatisticsAssembly(
+        let statisticsAssembly = StatisticsAssembler(
             servicesAssembler: servicesAssembly
         )        
         let statisticsController = statisticsAssembly.build()

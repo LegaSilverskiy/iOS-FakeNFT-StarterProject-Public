@@ -22,13 +22,14 @@ final class UserCardPresenter: UserCardPresenterProtocol {
     
     // MARK: - Private Properties
     private var userInfo: User
+    private let servisesAssembly: ServicesAssembly
     private let userNFTService: UserNFTServiceProtocol
     
     // MARK: - Initializers
-    init(userInfo: User, userNFTService: UserNFTServiceProtocol) {
-        
+    init(userInfo: User, servisesAssembly: ServicesAssembly) {        
         self.userInfo = userInfo
-        self.userNFTService = userNFTService
+        self.servisesAssembly = servisesAssembly
+        self.userNFTService = servisesAssembly.userNFTService
     }
     
     // MARK: - Public Methods
@@ -52,9 +53,6 @@ final class UserCardPresenter: UserCardPresenterProtocol {
     }
     
     func showNFTsButtonPressed() {
-        view?.switchToUserNFTCollectionVC(userNfts: userInfo.nfts, userNFTService: userNFTService)
+        view?.switchToUserNFTCollectionVC(userNfts: userInfo.nfts, servisesAssembly: servisesAssembly)
     }
-    
-    // MARK: - Private Methods
-    
 }

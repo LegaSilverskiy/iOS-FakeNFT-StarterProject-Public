@@ -28,34 +28,45 @@ final class UserNFTCollectionPresenter: UserNFTCollectionPresenterProtocol {
     // MARK: - Private Properties
     private let userNfts: [String]
     private var userNftsDetails: [NftDetails] = []
+    private let servisesAssembly: ServicesAssembly
     private let userNFTService: UserNFTServiceProtocol
+    private let profileService: ProfileServiceProtocol
+    private let orderService: OrderServiceProtocol
     private var state: NFTCollectionPresenterState? {
         didSet {
             stateDidChanged()
         }
     }
     private var dataIsLoading = false
+    private var collectionUpdateMethod: CollectionUpdateMethods = .insertItems
     private var loadIndicatorNeeded = true
     private var firstIndexForReload = 0
     private var alertIsPresented = false
     
     // MARK: - Initializers
-    init(userNfts: [String], userNFTService: UserNFTServiceProtocol) {
+    init(userNfts: [String], servisesAssembly: ServicesAssembly) {
         self.userNfts = userNfts
-        self.userNFTService = userNFTService
+        self.servisesAssembly = servisesAssembly
+        self.userNFTService = servisesAssembly.userNFTService
+        self.profileService = servisesAssembly.profileService
+        self.orderService = servisesAssembly.orderService
     }
     
     // MARK: - Public Methods
-    func viewDidLoad() {        
-   
+    func viewDidLoad() {
+        
     }
     
     func viewWllAppear() {
-        
+        //        firstIndexForReload = userNftsDetails.count
         firstIndexForReload = 0
-        state = userNftsDetails.count < userNfts.count
-        ? .load
-        : .show
+        
+        if userNftsDetails.count < userNfts.count {
+            state = .load
+        } else {
+            collectionUpdateMethod = .reloadItems
+            state = .show
+        }
     }
     
     func showStub() -> Bool {
@@ -83,7 +94,7 @@ final class UserNFTCollectionPresenter: UserNFTCollectionPresenterProtocol {
         switch state {
             
         case .show:
-            view?.updateCollectionItems(method: .insertItems, indexes: getIndexesForReload())
+            view?.updateCollectionItems(method: collectionUpdateMethod, indexes: getIndexesForReload())
             firstIndexForReload = userNftsDetails.count
             if userNftsDetails.count < userNfts.count {
                 state = .load
@@ -103,6 +114,7 @@ final class UserNFTCollectionPresenter: UserNFTCollectionPresenterProtocol {
             view?.hideLoading()
             self.userNftsDetails.append(newNft)
             loadIndicatorNeeded = false
+            collectionUpdateMethod = .insertItems
             state = .show
             
         case .failed(let error):
