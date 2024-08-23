@@ -76,8 +76,7 @@ final class EditProfilePresenter: EditProfilePresenterProtocol {
     func loadPhoto(with urlString: String?) {
         guard
             let urlString,
-            let url = URL(string: urlString),
-            let view
+            let url = URL(string: urlString)
         else { return }
         
         KingfisherManager.shared.retrieveImage(with: url, options: nil, progressBlock: nil) { result in
@@ -103,7 +102,9 @@ final class EditProfilePresenter: EditProfilePresenterProtocol {
             name: text[0],
             description: text[1],
             website: text[2],
-            avatar: text[3]
+            avatar: text[3],
+            nfts: [],
+            likes: []
         )
     }
     
@@ -125,7 +126,9 @@ final class EditProfilePresenter: EditProfilePresenterProtocol {
                     name: profileResult.name,
                     description: profileResult.description,
                     website: profileResult.website,
-                    avatar: profileResult.avatar
+                    avatar: profileResult.avatar,
+                    nfts: profileResult.nfts,
+                    likes: profileResult.likes
                 )
                 completion()
                 
