@@ -17,8 +17,12 @@ final class UserNFTCollectionVC: UIViewController, UserNFTCollectionVCProtocol {
     
     // MARK: - Private Properties
     private let presenter: UserNFTCollectionPresenter
-    private let cellSize = CGSize(width: 108, height: 192)
-    
+    private let minimalCellWidth = 108.0
+    private let maximalCellWidth = 150.0
+    private let cellHeightRatio = 1.8
+    private let minimumSpacing = 10.0
+    private let minimumRowSpacing = 8.0
+        
     private lazy var nftCollection: UICollectionView = {
         let collection = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
         collection.register(UserNFTCollectionCell.self, forCellWithReuseIdentifier: UserNFTCollectionCell.reuseIdentifier)
@@ -42,7 +46,6 @@ final class UserNFTCollectionVC: UIViewController, UserNFTCollectionVCProtocol {
     
     // MARK: - Initializers
     init(presenter: UserNFTCollectionPresenter) {
-        
         self.presenter = presenter
         
         super.init(nibName: nil, bundle: nil)
@@ -57,7 +60,6 @@ final class UserNFTCollectionVC: UIViewController, UserNFTCollectionVCProtocol {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        presenter.viewDidLoad()
         setUI()
     }
     
@@ -78,7 +80,6 @@ final class UserNFTCollectionVC: UIViewController, UserNFTCollectionVCProtocol {
     }
     
     func updateCollectionItems(method: CollectionUpdateMethods, indexes: [IndexPath]) {
-        
         switch method {
             
         case .insertItems:
@@ -91,7 +92,6 @@ final class UserNFTCollectionVC: UIViewController, UserNFTCollectionVCProtocol {
             nftCollection.reloadData()
         }
     }
-    
     
     // MARK: - Private Methods
     private func navBarConfig() {
@@ -107,6 +107,7 @@ final class UserNFTCollectionVC: UIViewController, UserNFTCollectionVCProtocol {
         navBarConfig()
         setElements()
         setConstraints()
+        stubLabel.isHidden = !presenter.showStub()
     }
     
     private func setElements() {
@@ -116,19 +117,15 @@ final class UserNFTCollectionVC: UIViewController, UserNFTCollectionVCProtocol {
             $0.translatesAutoresizingMaskIntoConstraints = false
             self.view.addSubview($0)
         }
-        
-        stubLabel.isHidden = !presenter.showStub()
     }
     
     private func setConstraints() {
-        
         nftCollection.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 20).isActive = true
         nftCollection.leadingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.leadingAnchor, constant: 16).isActive = true
         nftCollection.trailingAnchor.constraint(equalTo: view.safeAreaLayoutGuide.trailingAnchor, constant: -16).isActive = true
         nftCollection.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -20).isActive = true
         stubLabel.constraintCenters(to: view)
     }
-    
 }
 
 // MARK: - UICollectionViewDataSource
@@ -157,14 +154,21 @@ extension UserNFTCollectionVC: UICollectionViewDataSource {
 extension UserNFTCollectionVC: UICollectionViewDelegateFlowLayout {
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return cellSize
+        
+        let dividend = collectionView.bounds.width + minimumSpacing
+        let divider = minimalCellWidth + minimumSpacing
+        let cellsInRow = (dividend / divider).rounded(.towardZero)
+        let cellWidth = min((collectionView.bounds.width - (minimumSpacing * (cellsInRow - 1))) / cellsInRow, maximalCellWidth)
+        let cellHeight = cellWidth * cellHeightRatio
+        
+        return CGSize(width: cellWidth, height: cellHeight)
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-        10
+        minimumSpacing
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        10
+        minimumRowSpacing
     }
 }

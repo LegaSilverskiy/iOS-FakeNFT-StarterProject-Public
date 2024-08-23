@@ -82,7 +82,6 @@ final class UserNFTCollectionCell: UICollectionViewCell {
     
     // MARK: - Public Methods
     func configure(with params: NftCellParams) {
-        
         self.index = params.index
         
         if let url = URL(string: params.image) {
@@ -139,10 +138,11 @@ final class UserNFTCollectionCell: UICollectionViewCell {
             
             cartButton.topAnchor.constraint(equalTo: nftRatingContainer.bottomAnchor, constant: 5),
             cartButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            cartButton.widthAnchor.constraint(equalToConstant: 40),
             
             nameLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             nameLabel.topAnchor.constraint(equalTo: cartButton.topAnchor),
-            nameLabel.widthAnchor.constraint(equalToConstant: 68),
+            nameLabel.trailingAnchor.constraint(equalTo: cartButton.leadingAnchor),
             
             priceLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
             priceLabel.bottomAnchor.constraint(equalTo: cartButton.bottomAnchor)
