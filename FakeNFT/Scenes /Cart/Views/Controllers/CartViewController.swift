@@ -184,7 +184,7 @@ final class CartViewController: UIViewController {
     
     @objc
     private func payButtonTapped() {
-        let currencyViewController = CartCurrencyViewController()
+        let currencyViewController = CartCurrencyViewController(presenter: CartCurrencyPresenter())
         let navController = UINavigationController(rootViewController: currencyViewController)
         navController.modalPresentationStyle = .fullScreen
         

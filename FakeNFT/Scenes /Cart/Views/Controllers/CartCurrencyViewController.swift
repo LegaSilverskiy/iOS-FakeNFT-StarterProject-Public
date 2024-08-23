@@ -1,6 +1,9 @@
 import UIKit
 
 final class CartCurrencyViewController: UIViewController {
+    
+    private let presenter: CartCurrencyPresenter
+    
     private let currencyCollectionView: UICollectionView = {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
         collectionView.register(CurrencyCollectionViewCell.self, forCellWithReuseIdentifier: CurrencyCollectionViewCell.reuseIdentifier)
@@ -48,24 +51,22 @@ final class CartCurrencyViewController: UIViewController {
         return button
     }()
     
-    private var selectedCurrencyIndex: IndexPath? {
-        didSet {
-            if let selectedIndex = selectedCurrencyIndex {
-                UserDefaults.standard.set(selectedIndex.row, forKey: "SelectedCurrencyIndex")
-            } else {
-                UserDefaults.standard.removeObject(forKey: "SelectedCurrencyIndex")
-            }
-        }
+    
+    init(presenter: CartCurrencyPresenter) {
+        self.presenter = presenter
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     override func viewDidLoad() {
-        super.viewDidLoad() 
-        setupUI()
+        super.viewDidLoad()
         
-        if let savedIndex = UserDefaults.standard.value(forKey: "SelectedCurrencyIndex") as? Int {
-            selectedCurrencyIndex = IndexPath(row: savedIndex, section: 0)
-            currencyCollectionView.selectItem(at: selectedCurrencyIndex, animated: false, scrollPosition: .centeredVertically)
-        }
+        presenter.view = self
+        setupUI()
+        presenter.viewDidLoad()
     }
     
     private func setupUI() {
@@ -155,11 +156,7 @@ final class CartCurrencyViewController: UIViewController {
     
     @objc
     private func userAgreementTapped() {
-        let userAgreementVC = UserAgreementViewController()
-        let navController = UINavigationController(rootViewController: userAgreementVC)
-        navController.modalPresentationStyle = .fullScreen
-        
-        present(navController, animated: true, completion: nil)
+        presenter.userAgreementTapped()
     }
 }
 
@@ -194,7 +191,23 @@ extension CartCurrencyViewController: UICollectionViewDataSource, UICollectionVi
     }
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-           selectedCurrencyIndex = indexPath
-       }
+        presenter.didSelectCurrency(at: indexPath)
+    }
 }
 
+extension CartCurrencyViewController: CartCurrencyView {
+    func navigateToUserAgreement() {
+        let userAgreementVC = UserAgreementViewController(presenter: UserAgreementPresenter())
+        let navController = UINavigationController(rootViewController: userAgreementVC)
+        navController.modalPresentationStyle = .fullScreen
+        present(navController, animated: true, completion: nil)
+    }
+    
+    func selectCurrency(at indexPath: IndexPath) {
+        currencyCollectionView.selectItem(at: indexPath, animated: false, scrollPosition: .centeredVertically)
+    }
+    
+    func reloadData() {
+        currencyCollectionView.reloadData()
+    }
+}

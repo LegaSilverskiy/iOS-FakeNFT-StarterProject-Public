@@ -3,11 +3,23 @@ import WebKit
 
 final class UserAgreementViewController: UIViewController {
     private var webView: WKWebView?
+    private let presenter: UserAgreementPresenter
+    
+    init(presenter: UserAgreementPresenter) {
+        self.presenter = presenter
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
         setupWebView()
-        loadUserAgreement()
+        presenter.view = self
+        presenter.viewDidLoad()
     }
     
     private func setupWebView() {
@@ -25,23 +37,28 @@ final class UserAgreementViewController: UIViewController {
         ])
     }
     
-    private func loadUserAgreement() {
-        if let url = URL(string: "https://yandex.ru/legal/practicum_termsofuse/"), 
-           let webView {
-            let request = URLRequest(url: url)
-            webView.load(request)
-        }
-    }
-    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        navigationItem.title = "Пользовательское соглашение"
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "chevron.backward"), style: .plain, target: self, action: #selector(backButtonPressed))
         navigationItem.leftBarButtonItem?.tintColor = .tabBarItemsTintColor
     }
     
     @objc
     private func backButtonPressed() {
+        presenter.backButtonPressed()
+    }
+}
+
+extension UserAgreementViewController: UserAgreementView {
+    func loadUserAgreement(with request: URLRequest) {
+        webView?.load(request)
+    }
+    
+    func setNavigationTitle(_ title: String) {
+        navigationItem.title = title
+    }
+    
+    func dismissView() {
         dismiss(animated: true, completion: nil)
     }
 }
