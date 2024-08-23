@@ -8,7 +8,7 @@
 import UIKit
 
 final class TextEditorCollectionViewCell: UICollectionViewCell {
-    
+
     lazy var textField: UITextView = {
         let textField = UITextView()
         textField.translatesAutoresizingMaskIntoConstraints = false
@@ -21,14 +21,14 @@ final class TextEditorCollectionViewCell: UICollectionViewCell {
         textField.textContainerInset = UIEdgeInsets(top: 11, left: 16, bottom: 11, right: 0)
         return textField
     }()
-    
+
     var textChangeHandler: ((String) -> Void)?
-    
+
     override init(frame: CGRect) {
         super.init(frame: frame)
-        
+
         addSubview(textField)
-        
+
         NSLayoutConstraint.activate([
             textField.leadingAnchor.constraint(equalTo: leadingAnchor),
             textField.trailingAnchor.constraint(equalTo: trailingAnchor),
@@ -36,16 +36,16 @@ final class TextEditorCollectionViewCell: UICollectionViewCell {
             textField.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
         ])
     }
-    
+
     override func awakeFromNib() {
         super.awakeFromNib()
         textField.delegate = self
     }
-    
+
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
+
     func setText(text: String) {
         textField.text = text
     }

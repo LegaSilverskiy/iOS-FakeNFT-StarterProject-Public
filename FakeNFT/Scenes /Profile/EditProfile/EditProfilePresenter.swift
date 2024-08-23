@@ -29,40 +29,40 @@ protocol EditProfilePresenterProtocol {
 }
 
 final class EditProfilePresenter: EditProfilePresenterProtocol {
-    
+
     weak var view: EditProfileViewProtocol?
-    
-    weak var delegate: SendTextDelegate?
-    
+
+    weak var delegate: SendInfoDelegate?
+
     var editedText: [String] {
         _editedText
     }
-    
+
     var tableHeaders = ["Имя", "Описание", "Сайт"]
-    
+
     var profile: Profile
-    
+
     private let profileService: EditProfileServiceProtocol
-    
+
     private var _editedText = [String]()
-    
+
     init(profileService: EditProfileServiceProtocol, profile: Profile) {
         self.profileService = profileService
         self.profile = profile
     }
-    
+
     func viewDidLoad() {
         loadPhoto(with: profile.avatar)
     }
-    
+
     func initializeEditedText(with data: [String]) {
         _editedText = data
     }
-    
+
     func updateEditedText(at index: Int, with text: String) {
         _editedText[index] = text
     }
-    
+
     func updatePhoto() -> AlertModel {
         AlertModel(
             title: "Введите URL нового фото",
@@ -72,13 +72,13 @@ final class EditProfilePresenter: EditProfilePresenterProtocol {
             cancelTitle: "Отмена"
         )
     }
-    
+
     func loadPhoto(with urlString: String?) {
         guard
             let urlString,
             let url = URL(string: urlString)
         else { return }
-        
+
         KingfisherManager.shared.retrieveImage(with: url, options: nil, progressBlock: nil) { result in
             switch result {
             case .success(let image):
@@ -88,15 +88,15 @@ final class EditProfilePresenter: EditProfilePresenterProtocol {
             }
         }
     }
-    
+
     func didTapExit() {
         updateAndNotify(text: editedText) { [weak self] in
             self?.delegate?.loadPresenter()
         }
     }
-    
+
     // MARK: - Private
-    
+
     private func convertStringToProfile(text: [String]) -> Profile {
         Profile(
             name: text[0],
@@ -107,19 +107,19 @@ final class EditProfilePresenter: EditProfilePresenterProtocol {
             likes: []
         )
     }
-    
+
     private func updateAndNotify(text: [String], completion: @escaping () -> Void) {
         let updatedProfile = convertStringToProfile(text: text)
-        
+
         updateData(profile: updatedProfile) {
             completion()
         }
     }
-    
+
     private func updateData(profile: Profile, completion: @escaping () -> Void) {
         profileService.updateProfile(profile: profile) { [weak self] result in
             guard let self = self else { return }
-            
+
             switch result {
             case .success(let profileResult):
                 self.profile = Profile(
@@ -131,12 +131,11 @@ final class EditProfilePresenter: EditProfilePresenterProtocol {
                     likes: profileResult.likes
                 )
                 completion()
-                
+
             case .failure:
                 print("Update failed")
                 completion()
             }
         }
     }
-    
 }

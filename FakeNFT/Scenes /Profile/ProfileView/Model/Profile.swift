@@ -24,5 +24,3 @@ struct Profile {
     var nfts: [String]
     var likes: [String]
 }
-
-

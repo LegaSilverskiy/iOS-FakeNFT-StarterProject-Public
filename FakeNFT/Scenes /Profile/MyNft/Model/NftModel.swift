@@ -24,7 +24,8 @@ struct NftResult {
     let author: String
     let id: String
     let priceStr: String
-    
+    var isLiked: Bool
+
     init(nft: NFTModel) {
         self.name = nft.name
         self.image = nft.images.first ?? ""
@@ -34,5 +35,7 @@ struct NftResult {
         self.id = nft.id
 
         self.priceStr = "\(price) ETH"
+
+        self.isLiked = false
     }
 }

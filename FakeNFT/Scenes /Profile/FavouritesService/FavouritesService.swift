@@ -1,19 +1,19 @@
 //
-//  ProfileService.swift
+//  FavouritesService.swift
 //  FakeNFT
 //
-//  Created by Andrey Lazarev on 15.08.2024.
+//  Created by Andrey Lazarev on 22.08.2024.
 //
 
 import Foundation
 
-typealias ProfileCompletion = (Result<ProfileResult, Error>) -> Void
+typealias FavouritesCompletion = (Result<ProfileResult, Error>) -> Void
 
-protocol ProfileServiceProtocol {
-    func loadProfile(completion: @escaping ProfileCompletion)
+protocol FavouritesServiceProtocol: AnyObject {
+    func updateProfile(profile: Profile, completion: @escaping FavouritesCompletion)
 }
 
-final class ProfileService: ProfileServiceProtocol {
+final class FavouritesService: FavouritesServiceProtocol {
 
     private let networkClient: NetworkClient
 
@@ -21,9 +21,9 @@ final class ProfileService: ProfileServiceProtocol {
         self.networkClient = networkClient
     }
 
-    func loadProfile(completion: @escaping ProfileCompletion) {
+    func updateProfile(profile: Profile, completion: @escaping FavouritesCompletion) {
 
-        let request = ProfileRequest()
+        let request = FavouritesRequest(profile: profile)
         networkClient.send(request: request, type: ProfileResult.self) { result in
             switch result {
             case .success(let profile):
