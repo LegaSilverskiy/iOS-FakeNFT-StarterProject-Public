@@ -139,7 +139,6 @@ final class CartDeleteViewController: UIViewController {
             mainContainer.centerXAnchor.constraint(equalTo: view.centerXAnchor)
         ])
         
-        
         NSLayoutConstraint.activate([
             nftImage.widthAnchor.constraint(equalToConstant: 108),
             nftImage.heightAnchor.constraint(equalToConstant: 108)

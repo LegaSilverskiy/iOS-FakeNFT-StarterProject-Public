@@ -3,10 +3,26 @@ import UIKit
 final class CartCurrencyViewController: UIViewController {
     private let currencyCollectionView: UICollectionView = {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
-        collectionView.translatesAutoresizingMaskIntoConstraints = false
-        collectionView.register(UICollectionViewCell.self, forCellWithReuseIdentifier: "cell")
+        collectionView.register(CurrencyCollectionViewCell.self, forCellWithReuseIdentifier: CurrencyCollectionViewCell.reuseIdentifier)
         
         return collectionView
+    }()
+    
+    private let footerPanel: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .vertical
+        stackView.alignment = .center
+        
+        return stackView
+    }()
+    
+    private let userAgreementTitle: UILabel = {
+        let label = UILabel()
+        label.font = UIFont.caption2
+        label.textColor = .tabBarItemsTintColor
+        label.text = "Совершая покупку, вы соглашаетесь с условиями"
+        
+        return label
     }()
     
     override func viewDidLoad() {
@@ -23,7 +39,15 @@ final class CartCurrencyViewController: UIViewController {
     }
     
     private func setupViews() {
+        [currencyCollectionView,
+         footerPanel
+        ].forEach {
+            $0.translatesAutoresizingMaskIntoConstraints = false
+            view.addSubview($0)
+        }
+        
         setupCurrencyCollectionView()
+        setupFooterPanel()
     }
     
     private func setupCurrencyCollectionView() {
@@ -31,13 +55,24 @@ final class CartCurrencyViewController: UIViewController {
         currencyCollectionView.delegate = self
         currencyCollectionView.contentInset = UIEdgeInsets(top: 20, left: 0, bottom: 0, right: 0)
         
-        view.addSubview(currencyCollectionView)
-        
         NSLayoutConstraint.activate([
             currencyCollectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             currencyCollectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             currencyCollectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             currencyCollectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+        ])
+    }
+    
+    private func setupFooterPanel() {
+        footerPanel.backgroundColor = .segmentInactive
+        footerPanel.layer.cornerRadius = 12
+        footerPanel.layer.maskedCorners = [.layerMinXMinYCorner, .layerMaxXMinYCorner]
+        
+        NSLayoutConstraint.activate([
+            footerPanel.heightAnchor.constraint(equalToConstant: 186),
+            footerPanel.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            footerPanel.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            footerPanel.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
     }
     
@@ -53,9 +88,11 @@ extension CartCurrencyViewController: UICollectionViewDataSource, UICollectionVi
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "cell", for: indexPath)
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CurrencyCollectionViewCell.reuseIdentifier, for: indexPath) as? CurrencyCollectionViewCell else { return UICollectionViewCell() }
+        
         cell.backgroundColor = .segmentInactive
         cell.layer.cornerRadius = 12
+        
         return cell
     }
     
