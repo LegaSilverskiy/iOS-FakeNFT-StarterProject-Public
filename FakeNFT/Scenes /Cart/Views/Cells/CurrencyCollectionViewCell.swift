@@ -1,7 +1,7 @@
 import UIKit
 
 final class CurrencyCollectionViewCell: UICollectionViewCell {
-    static let reuseIdentifier = "CurrencyCollectionViewCel"
+    static let reuseIdentifier = "CurrencyCollectionViewCell"
     
     private let currencyImage: UIImageView = {
         let imageView = UIImageView()
@@ -44,6 +44,12 @@ final class CurrencyCollectionViewCell: UICollectionViewCell {
         return stackView
     }()
     
+    override var isSelected: Bool {
+        didSet {
+            configureBorder(isSelected: isSelected)
+        }
+    }
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         setupUI()
@@ -59,7 +65,7 @@ final class CurrencyCollectionViewCell: UICollectionViewCell {
          currencyInfoContainer
         ].forEach {
             $0.translatesAutoresizingMaskIntoConstraints = false
-            contentView.addSubview($0)
+            addSubview($0)
         }
     }
     
@@ -83,7 +89,19 @@ final class CurrencyCollectionViewCell: UICollectionViewCell {
         ])
     }
     
+    private func configureBorder(isSelected: Bool) {
+        layer.cornerRadius = 12
+        layer.masksToBounds = true
+        layer.borderColor = isSelected ? UIColor.tabBarItemsTintColor.cgColor : UIColor.clear.cgColor
+        layer.borderWidth = isSelected ? 1 : 0
+    }
+    
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        configureBorder(isSelected: false)
     }
 }

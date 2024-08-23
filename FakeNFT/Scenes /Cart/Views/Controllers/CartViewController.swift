@@ -79,7 +79,7 @@ final class CartViewController: UIViewController {
         super.viewDidLoad()
         
         presenter.view = self
-        presenter.loadNfts()
+        presenter.viewDidLoad()
         setupUI()
     }
     

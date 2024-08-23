@@ -22,6 +22,11 @@ final class CartPresenter {
         saveSortOption(.name)
     }
     
+    func viewDidLoad() {
+        loadNfts()
+        resetChosenCurrency()
+    }
+    
     func loadNfts() {
         view?.showHud()
         interactor.fetchNfts { [weak self] result in
@@ -160,4 +165,7 @@ final class CartPresenter {
         }
     }
 
+    private func resetChosenCurrency() {
+        UserDefaults.standard.removeObject(forKey: "SelectedCurrencyIndex")
+    }
 }

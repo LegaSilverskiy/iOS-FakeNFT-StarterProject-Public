@@ -48,8 +48,24 @@ final class CartCurrencyViewController: UIViewController {
         return button
     }()
     
+    private var selectedCurrencyIndex: IndexPath? {
+        didSet {
+            if let selectedIndex = selectedCurrencyIndex {
+                UserDefaults.standard.set(selectedIndex.row, forKey: "SelectedCurrencyIndex")
+            } else {
+                UserDefaults.standard.removeObject(forKey: "SelectedCurrencyIndex")
+            }
+        }
+    }
+    
     override func viewDidLoad() {
+        super.viewDidLoad() 
         setupUI()
+        
+        if let savedIndex = UserDefaults.standard.value(forKey: "SelectedCurrencyIndex") as? Int {
+            selectedCurrencyIndex = IndexPath(row: savedIndex, section: 0)
+            currencyCollectionView.selectItem(at: selectedCurrencyIndex, animated: false, scrollPosition: .centeredVertically)
+        }
     }
     
     private func setupUI() {
@@ -83,6 +99,7 @@ final class CartCurrencyViewController: UIViewController {
     private func setupCurrencyCollectionView() {
         currencyCollectionView.dataSource = self
         currencyCollectionView.delegate = self
+        currencyCollectionView.allowsMultipleSelection = false
         currencyCollectionView.contentInset = UIEdgeInsets(top: 20, left: 0, bottom: 0, right: 0)
         
         NSLayoutConstraint.activate([
@@ -144,7 +161,6 @@ final class CartCurrencyViewController: UIViewController {
         
         present(navController, animated: true, completion: nil)
     }
-    
 }
 
 extension CartCurrencyViewController: UICollectionViewDataSource, UICollectionViewDelegate, UICollectionViewDelegateFlowLayout {
@@ -176,5 +192,9 @@ extension CartCurrencyViewController: UICollectionViewDataSource, UICollectionVi
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         return 7
     }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+           selectedCurrencyIndex = indexPath
+       }
 }
 
