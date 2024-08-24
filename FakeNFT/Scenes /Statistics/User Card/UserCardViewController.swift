@@ -14,7 +14,7 @@ protocol UserCardViewProtocol: AnyObject {
 final class UserCardViewController: UIViewController, UserCardViewProtocol {
 
     // MARK: - Private Properties
-    private var presenter: UserCardPresenterProtocol
+    private let presenter: UserCardPresenterProtocol
 
     private var showNFTsButtonTitleLabel: UILabel?
 
@@ -108,7 +108,6 @@ final class UserCardViewController: UIViewController, UserCardViewProtocol {
     // MARK: - Public Methods
     func updateUserImage(with url: URL) {
         avatarImageView.kf.indicatorType = .activity
-
         avatarImageView.kf.setImage(
             with: url,
             placeholder: UIImage.tabBarIconsProfile?.withTintColor(.avatarStubTintColor)
@@ -123,7 +122,7 @@ final class UserCardViewController: UIViewController, UserCardViewProtocol {
 
     // MARK: - IBAction
     @objc private func userSiteButtonPressed() {
-
+        // TODO: - Задача на третий модуль
     }
 
     @objc private func showNFTsButtonPressed() {

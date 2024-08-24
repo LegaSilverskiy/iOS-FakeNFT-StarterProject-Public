@@ -280,5 +280,5 @@ final class UserNFTCollectionPresenter: UserNFTCollectionPresenterProtocol {
 
 // MARK: - TrackersCVCellDelegate
 extension UserNFTCollectionPresenter: UserNFTCollectionCellDelegate {
-
+    // TODO: - Задача на третий модуль, добавить методы работы с избраенным и корзиной
 }

@@ -136,24 +136,23 @@ final class UserNFTCollectionVC: UIViewController, UserNFTCollectionVCProtocol {
 extension UserNFTCollectionVC: UICollectionViewDataSource {
 
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return presenter.getItemsCount()
+        presenter.getItemsCount()
     }
 
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        if let cell = collectionView.dequeueReusableCell(
+        guard let cell = collectionView.dequeueReusableCell(
             withReuseIdentifier: UserNFTCollectionCell.reuseIdentifier,
             for: indexPath
-        ) as? UserNFTCollectionCell {
-            cell.delegate = presenter
-
-            let params = presenter.getParams(for: indexPath.item)
-            cell.configure(with: params)
-
-            return cell
+        ) as? UserNFTCollectionCell  else {
+            debugPrint("@@@ UserNFTCollectionVC: Ошибка подготовки ячейки для коллекции NFT.")
+            return UICollectionViewCell()
         }
+        cell.delegate = presenter
 
-        debugPrint("@@@ UserNFTCollectionVC: Ошибка подготовки ячейки для коллекции NFT.")
-        return UICollectionViewCell()
+        let params = presenter.getParams(for: indexPath.item)
+        cell.configure(with: params)
+
+        return cell
     }
 }
 

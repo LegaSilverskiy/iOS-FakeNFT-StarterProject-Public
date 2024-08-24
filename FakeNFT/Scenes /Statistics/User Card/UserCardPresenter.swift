@@ -21,7 +21,7 @@ final class UserCardPresenter: UserCardPresenterProtocol {
     weak var view: UserCardViewProtocol?
 
     // MARK: - Private Properties
-    private var userInfo: User
+    private let userInfo: User
     private let servisesAssembly: ServicesAssembly
     private let userNFTService: UserNFTServiceProtocol
 

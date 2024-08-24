@@ -8,7 +8,7 @@ import Kingfisher
 import UIKit
 
 protocol UserNFTCollectionCellDelegate: AnyObject {
-
+    // TODO: - Задача на третий модуль, добавить методы работы с избраенным и корзиной
 }
 
 final class UserNFTCollectionCell: UICollectionViewCell {
@@ -97,11 +97,12 @@ final class UserNFTCollectionCell: UICollectionViewCell {
     // MARK: - IBAction
     @objc private func favoriteButtonAction() {
         print("нажата кнопка добавления в избранное в ячейке \(index)")
-//        delegate?.updateNftLikeStatus(indexPath: IndexPath)
+        // TODO: - Задача на третий модуль (delegate?.updateNftFaviriteStatus(indexPath: IndexPath))
     }
 
     @objc private func cartButtonAction() {
         print("нажата кнопка добавления в корзину в ячейке \(index)")
+        // TODO: - Задача на третий модуль
     }
 
     // MARK: - Private Methods
@@ -157,12 +158,13 @@ final class UserNFTCollectionCell: UICollectionViewCell {
 
     private func setupRatingStars() {
         for _ in  0...4 {
-
             let star  = UIImageView(
-                image: UIImage(systemName: "star.fill",
-                               withConfiguration: UIImage.SymbolConfiguration(pointSize: 12
-                                                                             )
-                              )
+                image: UIImage(
+                    systemName: "star.fill",
+                    withConfiguration: UIImage.SymbolConfiguration(
+                        pointSize: 12
+                    )
+                )
             )
             star.tintColor = .segmentInactive
             star.translatesAutoresizingMaskIntoConstraints = false

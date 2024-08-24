@@ -132,20 +132,17 @@ extension StatisticsViewController: UITableViewDataSource {
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-
-        if let cell = tableView.dequeueReusableCell(
+        guard let cell = tableView.dequeueReusableCell(
             withIdentifier: RatingTableCell.reuseIdentifier,
             for: indexPath
-        ) as? RatingTableCell {
-
-            let params = presenter.getParams(for: indexPath.row)
-            cell.configure(with: params)
-
-            return cell
+        ) as? RatingTableCell else {
+            debugPrint("@@@ StatisticsViewController: Ошибка подготовки ячейки для таблицы рейтинга.")
+            return UITableViewCell()
         }
+        let params = presenter.getParams(for: indexPath.row)
+        cell.configure(with: params)
 
-        debugPrint("@@@ StatisticsViewController: Ошибка подготовки ячейки для таблицы рейтинга.")
-        return UITableViewCell()
+        return cell
     }
 }
 
@@ -153,11 +150,10 @@ extension StatisticsViewController: UITableViewDataSource {
 extension StatisticsViewController: UITableViewDelegate {
 
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
-        return ratingTableRowHeight
+        ratingTableRowHeight
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-
         presenter.switchToProfile(for: indexPath.row)
     }
 }
