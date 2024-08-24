@@ -122,7 +122,7 @@ final class MyNftTableViewCell: UITableViewCell {
         id = model.id
         isLiked = model.isLiked
         setStars(model.rating)
-        likeButton.tintColor = isLiked ? .red : .segmentInactive
+        likeButton.tintColor = isLiked ? .likeTintColor : .segmentInactive
     }
 
     private func setupCell() {

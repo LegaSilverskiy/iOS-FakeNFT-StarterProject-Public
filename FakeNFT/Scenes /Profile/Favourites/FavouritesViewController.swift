@@ -10,6 +10,7 @@ import ProgressHUD
 
 protocol FavouritesViewProtocol: AnyObject {
     func showUIElements()
+    func showLoading()
     func showEmptyFavouriteNfts()
 }
 
@@ -135,6 +136,10 @@ extension FavouritesViewController: FavouritesViewProtocol {
         collectionView.isHidden = true
         emptyLabel.isHidden = false
     }
+
+    func showLoading() {
+        ProgressHUD.show()
+    }
 }
 
 extension FavouritesViewController: UICollectionViewDataSource {
@@ -200,9 +205,5 @@ extension FavouritesViewController: UICollectionViewDelegateFlowLayout {
 extension FavouritesViewController: FavouriteCellDelegate {
     func didTapLike(id: String) {
         presenter.didTapLike(id: id)
-
-//        let currentState = LikeManager.shared.isLiked(for: id)
-//                LikeManager.shared.setLiked(!currentState, for: id)
-
     }
 }

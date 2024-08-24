@@ -12,7 +12,7 @@ protocol FavouritesPresenterProtocol {
     func viewDidLoad()
     func didTapExit()
     func didTapLike(id: String)
-    var favouriteNfts: [NftResult] { get set }
+    var favouriteNfts: [NftResult] { get }
 }
 
 final class FavouritesPresenter: FavouritesPresenterProtocol {
@@ -65,6 +65,7 @@ final class FavouritesPresenter: FavouritesPresenterProtocol {
                     self.favouriteNfts.append(NftResult(nft: nft))
                 case .failure(let error):
                     print(error.localizedDescription)
+                    // TODO: - Алерт об ошибке
                 }
             }
         }
@@ -82,7 +83,9 @@ final class FavouritesPresenter: FavouritesPresenterProtocol {
     }
 
     private func updateData(profile: Profile) {
-        ProgressHUD.show()
+
+        view?.showLoading()
+
         favouritesService.updateProfile(profile: profile) { [weak self] result in
             guard let self else { return }
 
@@ -92,7 +95,8 @@ final class FavouritesPresenter: FavouritesPresenterProtocol {
 
             case .failure:
                 print("Update failed")
-                ProgressHUD.dismiss()
+                view?.showUIElements()
+                // TODO: - Алерт об ошибке
             }
         }
     }

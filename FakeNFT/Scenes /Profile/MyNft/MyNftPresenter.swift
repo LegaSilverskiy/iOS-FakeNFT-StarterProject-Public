@@ -137,7 +137,9 @@ final class MyNftPresenter: MyNftPresenterProtocol {
     }
 
     private func updateData(profile: Profile) {
-        ProgressHUD.show()
+
+        view?.showLoading()
+
         favService.updateProfile(profile: profile) { [weak self] result in
             guard let self else { return }
 
@@ -147,7 +149,8 @@ final class MyNftPresenter: MyNftPresenterProtocol {
 
             case .failure:
                 print("Update failed")
-                ProgressHUD.dismiss()
+                view?.showUIElements()
+                // TODO - Алерт об ошибке
             }
         }
     }

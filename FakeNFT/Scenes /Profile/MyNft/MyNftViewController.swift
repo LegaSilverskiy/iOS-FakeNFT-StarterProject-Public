@@ -11,6 +11,7 @@ import ProgressHUD
 protocol MyNftViewProtocol: AnyObject {
     func showUIElements()
     func showEmptyNfts()
+    func showLoading()
 }
 
 final class MyNftViewController: UIViewController {
@@ -164,6 +165,10 @@ extension MyNftViewController: MyNftViewProtocol {
         sortButton.image = nil
         tableView.isHidden = true
         emptyLabel.isHidden = false
+    }
+
+    func showLoading() {
+        ProgressHUD.show()
     }
 }
 

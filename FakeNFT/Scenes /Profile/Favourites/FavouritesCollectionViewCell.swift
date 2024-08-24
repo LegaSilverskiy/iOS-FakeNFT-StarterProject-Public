@@ -17,7 +17,7 @@ final class FavouritesCollectionViewCell: UICollectionViewCell {
 
     weak var delegate: FavouriteCellDelegate?
 
-    private lazy var image = {
+    private lazy var cellImage = {
         let image = UIImageView()
         image.layer.cornerRadius = 12
         image.translatesAutoresizingMaskIntoConstraints = false
@@ -33,7 +33,7 @@ final class FavouritesCollectionViewCell: UICollectionViewCell {
         return like
     }()
 
-    private lazy var title = {
+    private lazy var titleLabel = {
         let title = UILabel()
         title.font = .bodyBold
         return title
@@ -44,7 +44,7 @@ final class FavouritesCollectionViewCell: UICollectionViewCell {
         return rating
     }()
 
-    private lazy var price = {
+    private lazy var priceLabel = {
         let price = UILabel()
         price.font = .caption1
         price.textColor = .textPrimary
@@ -67,8 +67,6 @@ final class FavouritesCollectionViewCell: UICollectionViewCell {
         return stack
     }()
 
-    private var isLiked = true
-
     private var id = ""
 
     override init(frame: CGRect) {
@@ -84,45 +82,45 @@ final class FavouritesCollectionViewCell: UICollectionViewCell {
 
     func configureCell(model: NftResult) {
         if let url = URL(string: model.image) {
-            image.kf.setImage(with: url)
+            cellImage.kf.setImage(with: url)
         }
-        title.text = model.name
-        price.text = model.priceStr
+        titleLabel.text = model.name
+        priceLabel.text = model.priceStr
         setStars(model.rating)
         id = model.id
     }
 
     private func setupCell() {
 
-        likeButton.tintColor = .red
+        likeButton.tintColor = .likeTintColor
 
-        nameStack.addArrangedSubview(title)
+        nameStack.addArrangedSubview(titleLabel)
         nameStack.addArrangedSubview(ratingStack)
-        nameStack.addArrangedSubview(price)
+        nameStack.addArrangedSubview(priceLabel)
 
-        addSubview(image)
+        addSubview(cellImage)
         addSubview(likeButton)
         addSubview(nameStack)
 
         NSLayoutConstraint.activate([
 
-            image.leadingAnchor.constraint(equalTo: leadingAnchor),
-            image.topAnchor.constraint(equalTo: topAnchor),
-            image.widthAnchor.constraint(equalToConstant: 80),
-            image.heightAnchor.constraint(equalToConstant: 80),
+            cellImage.leadingAnchor.constraint(equalTo: leadingAnchor),
+            cellImage.topAnchor.constraint(equalTo: topAnchor),
+            cellImage.widthAnchor.constraint(equalToConstant: 80),
+            cellImage.heightAnchor.constraint(equalToConstant: 80),
 
-            likeButton.topAnchor.constraint(equalTo: image.topAnchor),
-            likeButton.trailingAnchor.constraint(equalTo: image.trailingAnchor),
+            likeButton.topAnchor.constraint(equalTo: cellImage.topAnchor),
+            likeButton.trailingAnchor.constraint(equalTo: cellImage.trailingAnchor),
             likeButton.widthAnchor.constraint(equalToConstant: 30),
             likeButton.heightAnchor.constraint(equalToConstant: 30),
 
             nameStack.topAnchor.constraint(equalTo: topAnchor),
             nameStack.trailingAnchor.constraint(equalTo: trailingAnchor),
-            nameStack.leadingAnchor.constraint(equalTo: image.trailingAnchor, constant: 12),
+            nameStack.leadingAnchor.constraint(equalTo: cellImage.trailingAnchor, constant: 12),
 
-            title.leadingAnchor.constraint(equalTo: nameStack.leadingAnchor),
+            titleLabel.leadingAnchor.constraint(equalTo: nameStack.leadingAnchor),
             ratingStack.leadingAnchor.constraint(equalTo: nameStack.leadingAnchor),
-            price.leadingAnchor.constraint(equalTo: nameStack.leadingAnchor)
+            priceLabel.leadingAnchor.constraint(equalTo: nameStack.leadingAnchor)
 
         ])
     }
@@ -154,7 +152,6 @@ final class FavouritesCollectionViewCell: UICollectionViewCell {
 
     @objc private func tapLike() {
 
-        isLiked.toggle()
         delegate?.didTapLike(id: id)
     }
 }
