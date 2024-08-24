@@ -8,7 +8,7 @@
 import Foundation
 
 struct MyNftRequest: NetworkRequest {
-    
+
     let id: String
 
     var endpoint: URL? {

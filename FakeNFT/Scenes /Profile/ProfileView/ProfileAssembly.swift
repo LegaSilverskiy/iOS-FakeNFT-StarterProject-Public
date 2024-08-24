@@ -8,13 +8,13 @@
 import UIKit
 
 public final class ProfileAssembly {
-    
+
     private let servicesAssembler: ServicesAssembly
-    
+
     init(servicesAssembler: ServicesAssembly) {
         self.servicesAssembler = servicesAssembler
     }
-    
+
     public func build() -> UIViewController {
         let presenter = ProfilePresenter(
             profileService: servicesAssembler.profileService
