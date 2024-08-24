@@ -18,7 +18,7 @@ final class MyNftTableViewCell: UITableViewCell {
 
     weak var delegate: MyNftTableViewCellDelegate?
 
-    private lazy var image = {
+    private lazy var cellImage = {
         let image = UIImageView()
         image.layer.cornerRadius = 12
         image.translatesAutoresizingMaskIntoConstraints = false
@@ -34,7 +34,7 @@ final class MyNftTableViewCell: UITableViewCell {
         return like
     }()
 
-    private lazy var title = {
+    private lazy var titleLabel = {
         let title = UILabel()
         title.font = .bodyBold
         title.text = "Lilo"
@@ -52,7 +52,7 @@ final class MyNftTableViewCell: UITableViewCell {
         return name
     }()
 
-    private lazy var price = {
+    private lazy var priceLabel = {
         let price = UILabel()
         price.font = .caption2
         price.textColor = .textPrimary
@@ -114,9 +114,9 @@ final class MyNftTableViewCell: UITableViewCell {
 
     func configureCell(model: NftResult) {
         if let url = URL(string: model.image) {
-            image.kf.setImage(with: url)
+            cellImage.kf.setImage(with: url)
         }
-        title.text = model.name
+        titleLabel.text = model.name
         author.text = model.author
         priceNum.text = model.priceStr
         id = model.id
@@ -130,40 +130,40 @@ final class MyNftTableViewCell: UITableViewCell {
         nftInfoStack.addArrangedSubview(nameStack)
         nftInfoStack.addArrangedSubview(priceStack)
 
-        nameStack.addArrangedSubview(title)
+        nameStack.addArrangedSubview(titleLabel)
         nameStack.addArrangedSubview(ratingStack)
         nameStack.addArrangedSubview(author)
 
-        priceStack.addArrangedSubview(price)
+        priceStack.addArrangedSubview(priceLabel)
         priceStack.addArrangedSubview(priceNum)
 
-        contentView.addSubview(image)
+        contentView.addSubview(cellImage)
         contentView.addSubview(nftInfoStack)
         contentView.addSubview(likeButton)
 
         NSLayoutConstraint.activate([
 
-            image.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
-            image.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 16),
-            image.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16),
-            image.widthAnchor.constraint(equalToConstant: 108),
-            image.heightAnchor.constraint(equalToConstant: 108),
+            cellImage.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
+            cellImage.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 16),
+            cellImage.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -16),
+            cellImage.widthAnchor.constraint(equalToConstant: 108),
+            cellImage.heightAnchor.constraint(equalToConstant: 108),
 
-            likeButton.topAnchor.constraint(equalTo: image.topAnchor),
-            likeButton.trailingAnchor.constraint(equalTo: image.trailingAnchor),
+            likeButton.topAnchor.constraint(equalTo: cellImage.topAnchor),
+            likeButton.trailingAnchor.constraint(equalTo: cellImage.trailingAnchor),
             likeButton.widthAnchor.constraint(equalToConstant: 40),
             likeButton.heightAnchor.constraint(equalToConstant: 40),
 
             nftInfoStack.topAnchor.constraint(equalTo: topAnchor, constant: 39),
             nftInfoStack.bottomAnchor.constraint(equalTo: contentView.bottomAnchor, constant: -39),
             nftInfoStack.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -29),
-            nftInfoStack.leadingAnchor.constraint(equalTo: image.trailingAnchor, constant: 20),
+            nftInfoStack.leadingAnchor.constraint(equalTo: cellImage.trailingAnchor, constant: 20),
 
             nameStack.leadingAnchor.constraint(equalTo: nftInfoStack.leadingAnchor),
             nameStack.topAnchor.constraint(equalTo: nftInfoStack.topAnchor),
             nameStack.bottomAnchor.constraint(equalTo: nftInfoStack.bottomAnchor),
 
-            title.leadingAnchor.constraint(equalTo: nameStack.leadingAnchor),
+            titleLabel.leadingAnchor.constraint(equalTo: nameStack.leadingAnchor),
             ratingStack.leadingAnchor.constraint(equalTo: nameStack.leadingAnchor),
             author.leadingAnchor.constraint(equalTo: nameStack.leadingAnchor),
 
@@ -172,7 +172,7 @@ final class MyNftTableViewCell: UITableViewCell {
             priceStack.trailingAnchor.constraint(equalTo: nftInfoStack.trailingAnchor),
             priceStack.leadingAnchor.constraint(equalTo: nameStack.trailingAnchor, constant: 39),
 
-            price.leadingAnchor.constraint(equalTo: priceStack.leadingAnchor),
+            priceLabel.leadingAnchor.constraint(equalTo: priceStack.leadingAnchor),
             priceNum.leadingAnchor.constraint(equalTo: priceStack.leadingAnchor)
 
         ])
