@@ -220,6 +220,7 @@ final class ProfileViewController: UIViewController, ProfileViewProtocol {
         updateConstraintsForTextView(textView, estimatedSize)
     }
 
+    // TODO: - вынести в отдельную фабрику создания модулей
     private func routeToMyNft() -> UIViewController {
         guard let profile = presenter.profile else { return UIViewController()}
 
