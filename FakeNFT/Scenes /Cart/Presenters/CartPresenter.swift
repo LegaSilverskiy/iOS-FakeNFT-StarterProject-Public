@@ -40,8 +40,10 @@ final class CartPresenter {
                 let savedSortOption = self.loadSortOption()
                 sortNft(by: savedSortOption)
                 
-                view?.reloadData()
-                view?.hideHud()
+                DispatchQueue.main.async {
+                    self.view?.reloadData()
+                    self.view?.hideHud()
+                }
             case .failure(let error):
                 print("Failed to fetch orders: \(error)")
             }
@@ -57,11 +59,19 @@ final class CartPresenter {
         interactor.updateOrder(with: nftsIDs) { [weak self] result in
             switch result {
             case .success:
-                self?.loadNfts()
+                DispatchQueue.main.async {
+                    self?.loadNfts()
+                }
             case .failure(let error):
                 print("Ошибка: \(error.localizedDescription)")
             }
         }
+    }
+    
+    func clearCart() {
+        filteredNfts.removeAll()
+        view?.reloadData()
+        deleteAllItemsInCart()
     }
     
     func showSortOptions() -> [AlertButtonAction] {
@@ -167,5 +177,16 @@ final class CartPresenter {
 
     private func resetChosenCurrency() {
         UserDefaults.standard.removeObject(forKey: "SelectedCurrencyIndex")
+    }
+    
+    private func deleteAllItemsInCart() {
+        interactor.updateOrder(with: []) { result in
+            switch result {
+            case .success:
+                print("Корзина успешно очищена")
+            case .failure(let error):
+                print("Ошибка при очистке корзины: \(error.localizedDescription)")
+            }
+        }
     }
 }

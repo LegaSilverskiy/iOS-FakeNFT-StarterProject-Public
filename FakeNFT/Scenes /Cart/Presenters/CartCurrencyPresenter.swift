@@ -4,6 +4,8 @@ protocol CartCurrencyView: AnyObject {
     func reloadData()
     func selectCurrency(at indexPath: IndexPath)
     func navigateToUserAgreement()
+    func showFailedPaymentAlert() 
+    func showSuccessFlow()
 }
 
 final class CartCurrencyPresenter {
@@ -25,6 +27,41 @@ final class CartCurrencyPresenter {
     
     func getCurrencies() -> [CartCurrency] {
         currencies
+    }
+    
+    func processPayment() {
+        isSuccessPayment() ? view?.showFailedPaymentAlert() : view?.showSuccessFlow()
+    }
+    
+    func getFailedPaymentAlertActions() -> [AlertButtonAction] {
+        let actions = [
+            AlertButtonAction(
+                buttonTitle: "Отменить",
+                style: .cancel,
+                action: nil
+            ),
+            
+            AlertButtonAction(
+                buttonTitle: "Повторить",
+                style: .default) { [weak self] action in
+                    guard let self else { return }
+                    processPayment()
+                }
+        ]
+        
+        return actions
+    }
+    
+    func getSuccessFlow() -> CartSuccessPaymentController {
+        let vc = CartSuccessPaymentController()
+        vc.modalPresentationStyle = .fullScreen
+        vc.modalTransitionStyle = .crossDissolve
+        
+        return vc
+    }
+    
+    private func isSuccessPayment() -> Bool {
+        Bool.random()
     }
     
     private func loadSelectedCurrency() {

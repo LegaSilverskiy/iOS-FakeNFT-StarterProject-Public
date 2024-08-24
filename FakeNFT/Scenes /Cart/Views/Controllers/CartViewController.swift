@@ -177,7 +177,7 @@ final class CartViewController: UIViewController {
     @objc
     private func sortButtonPressed() {
         let actions = presenter.showSortOptions()
-        let alert = UIAlertController().showSortActionSheet(for: AlertModel(title: "Сортировка", message: nil), action: actions)
+        let alert = UIAlertController().createAlert(for: AlertModel(title: "Сортировка", message: nil), action: actions, style: .actionSheet)
         
         present(alert, animated: true)
     }
@@ -185,6 +185,8 @@ final class CartViewController: UIViewController {
     @objc
     private func payButtonTapped() {
         let currencyViewController = CartCurrencyViewController(presenter: CartCurrencyPresenter())
+        currencyViewController.cartVC = self
+        
         let navController = UINavigationController(rootViewController: currencyViewController)
         navController.modalPresentationStyle = .fullScreen
         
@@ -256,6 +258,12 @@ extension CartViewController: UITableViewDelegate, UITableViewDataSource {
 extension CartViewController: CartTableViewCellDelegate {
     func didTapButton(in cell: CartTableViewCell, at indexPath: IndexPath, with image: String) {
         presentBlurredScreen(with: indexPath, imageURL: image)
+    }
+}
+
+extension CartViewController: CartSuccessPaymentDelegate {
+    func clearCart() {
+        presenter.clearCart()
     }
 }
 

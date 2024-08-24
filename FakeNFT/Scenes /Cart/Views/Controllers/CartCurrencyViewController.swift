@@ -2,6 +2,7 @@ import UIKit
 
 final class CartCurrencyViewController: UIViewController {
     
+    var cartVC: CartViewController?
     private let presenter: CartCurrencyPresenter
     
     private let currencyCollectionView: UICollectionView = {
@@ -137,6 +138,7 @@ final class CartCurrencyViewController: UIViewController {
     
     private func setupPayButton() {
         payButton.setTitle("Оплатить", for: .normal)
+        payButton.addTarget(self, action: #selector(payButtonTapped), for: .touchUpInside)
         payButton.titleLabel?.font = UIFont.bodyBold
         payButton.setTitleColor(.textOnPrimary, for: .normal)
         payButton.layer.cornerRadius = 16
@@ -157,6 +159,11 @@ final class CartCurrencyViewController: UIViewController {
     @objc
     private func userAgreementTapped() {
         presenter.userAgreementTapped()
+    }
+    
+    @objc
+    private func payButtonTapped() {
+        presenter.processPayment()
     }
 }
 
@@ -196,6 +203,25 @@ extension CartCurrencyViewController: UICollectionViewDataSource, UICollectionVi
 }
 
 extension CartCurrencyViewController: CartCurrencyView {
+    func showSuccessFlow() {
+        let vc = presenter.getSuccessFlow()
+        vc.delegate = cartVC
+        
+        present(vc, animated: true)
+    }
+    
+    func showFailedPaymentAlert() {
+        let actions = presenter.getFailedPaymentAlertActions()
+        
+        let alert = UIAlertController().createAlert(
+            for: AlertModel(title: "Не удалось произвести оплату", message: nil),
+            action: actions,
+            style: .alert
+        )
+        
+        present(alert, animated: true)
+    }
+    
     func navigateToUserAgreement() {
         let userAgreementVC = UserAgreementViewController(presenter: UserAgreementPresenter())
         let navController = UINavigationController(rootViewController: userAgreementVC)
