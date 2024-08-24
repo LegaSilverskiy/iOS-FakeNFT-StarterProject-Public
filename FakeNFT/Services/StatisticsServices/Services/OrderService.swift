@@ -13,13 +13,13 @@ protocol OrderServiceProtocol {
 typealias OrderCompletion = (Result<Order, Error>) -> Void
 
 final class OrderService: OrderServiceProtocol {
-    
+
     private let networkClient: NetworkClient
-    
+
     init(networkClient: NetworkClient) {
         self.networkClient = networkClient
     }
-    
+
     func loadOrder(completion: @escaping OrderCompletion) {
         let request = OrderGetRequest()
         networkClient.send(request: request, type: Order.self) {result in

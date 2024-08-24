@@ -11,7 +11,7 @@ protocol ActionSheetPresenterDelegate: AnyObject {
 }
 
 final class ActionSheetPresenter {
-    
+
     static func show(actionSheet name: String,
                      with options: [SortingOptions],
                      on screen: UIViewController,
@@ -21,19 +21,19 @@ final class ActionSheetPresenter {
                                       message: name,
                                       preferredStyle: .actionSheet
         )
-        
+
         for option in options {
             alert.addAction(UIAlertAction(title: option.localizedTitle(),
                                           style: .default) {_ in
                 delegate.sortingParametersUpdated(with: option)
             })
         }
-        
+
         alert.addAction(UIAlertAction(title: .buttonsCancel,
                                       style: .cancel) {_ in
             alert.dismiss(animated: true)
         })
-        
+
         screen.present(alert, animated: true, completion: nil)
     }
 }

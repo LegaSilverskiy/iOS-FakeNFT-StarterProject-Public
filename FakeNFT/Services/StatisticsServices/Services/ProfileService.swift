@@ -13,13 +13,13 @@ protocol ProfileServiceProtocol {
 typealias ProfileCompletion = (Result<Profile, Error>) -> Void
 
 final class ProfileService: ProfileServiceProtocol {
-    
+
     private let networkClient: NetworkClient
-    
+
     init(networkClient: NetworkClient) {
         self.networkClient = networkClient
     }
-    
+
     func loadProfile(completion: @escaping ProfileCompletion) {
         let request = ProfileRequest()
         networkClient.send(request: request, type: Profile.self) {result in

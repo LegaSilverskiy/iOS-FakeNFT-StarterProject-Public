@@ -32,10 +32,10 @@ enum UserDefaultsKeys: String {
 }
 
 final class StatisticsPresenter: StatisticsPresenterProtocol {
-    
+
     // MARK: - Public Properties
     weak var view: StatisticsViewProtocol?
-    
+
     // MARK: - Private Properties
     private let servicesAssembly: ServicesAssembly
     private let usersService: UsersServiceProtocol
@@ -52,22 +52,22 @@ final class StatisticsPresenter: StatisticsPresenterProtocol {
     private var loadIndicatorNeeded = true
     private var sortingNeeded = true
     private var alertIsPresented = false
-    
+
     // MARK: - Initializers
     init(servisesAssembly: ServicesAssembly) {
         self.servicesAssembly = servisesAssembly
         self.usersService = servisesAssembly.usersService
     }
-    
+
     // MARK: - Public Methods
-    
+
     func viewDidLoad() {
-        
+
         getSavedSortingOptions()
     }
-    
+
     func viewWllAppear() {
-        
+
         if self.users.isEmpty {
             loadIndicatorNeeded = true
             sortingNeeded = true
@@ -76,55 +76,55 @@ final class StatisticsPresenter: StatisticsPresenterProtocol {
             state = .show
         }
     }
-    
+
     func sortButtonPressed() {
         view?.showSortMenu()
     }
-    
+
     func getRatingMembersCount() -> Int {
         return users.count
     }
-    
+
     func getParams(for index: Int) -> RatingCellParams {
         endOfListCheck(for: index)
-        
+
         return .init(rating: Int(users[index].rating) ?? 0,
                      avatar: users[index].avatar,
                      name: users[index].name,
                      NFTCount: users[index].nfts.count
         )
     }
-    
+
     func switchToProfile(for index: Int) {
         view?.switchToUserCard(userInfo: users[index], servisesAssembly: servicesAssembly)
     }
-    
+
     // MARK: - Private Methods
     private func getSavedSortingOptions() {
         let sortingOption = UserDefaults.standard.string(forKey: UserDefaultsKeys.ratingSortingOption.rawValue)
         let sortingOrder = UserDefaults.standard.string(forKey: UserDefaultsKeys.ratingSortingOrder.rawValue)
-        
+
         self.sortingOption = sortingOption == SortingOptions.name.rawValue
         ? .name
         : .rating
-        
+
         self.sortingOrder = sortingOrder == SortingOrder.desc.rawValue
         ? .desc
         : .asc
     }
-    
+
     private func saveSortingOptions(sortingOption: SortingOptions, sortingOrder: SortingOrder) {
         UserDefaults.standard.set(sortingOption.rawValue, forKey: UserDefaultsKeys.ratingSortingOption.rawValue)
         UserDefaults.standard.set(sortingOrder.rawValue, forKey: UserDefaultsKeys.ratingSortingOrder.rawValue)
     }
-    
+
     private func stateDidChanged() {
         switch state {
-            
+
         case .show:
             sortUsers()
             view?.updateTable()
-            
+
         case .loadNextPage:
             if !dataIsLoading {
                 if loadIndicatorNeeded {
@@ -133,7 +133,7 @@ final class StatisticsPresenter: StatisticsPresenterProtocol {
                 dataIsLoading = true
                 loadUsers()
             }
-            
+
         case .data(let users):
             dataIsLoading = false
             view?.hideLoading()
@@ -144,7 +144,7 @@ final class StatisticsPresenter: StatisticsPresenterProtocol {
                 sortUsers()
             }
             view?.updateTable()
-            
+
         case .failed(let error):
             view?.hideLoading()
             if !alertIsPresented {
@@ -152,12 +152,12 @@ final class StatisticsPresenter: StatisticsPresenterProtocol {
                 let errorModel = makeErrorModel(error)
                 view?.showError(errorModel)
             }
-            
+
         case .none:
             assertionFailure("StatisticsPresenter can't move to initial state")
         }
     }
-    
+
     private func loadUsers() {
         usersService.loadUsers(
             itemsLoaded: users.count,
@@ -171,24 +171,24 @@ final class StatisticsPresenter: StatisticsPresenterProtocol {
             }
         }
     }
-    
+
     private func endOfListCheck(for row: Int) {
         if row >= users.count - 5 {
             state = .loadNextPage
         }
     }
-    
+
     private func makeErrorModel(_ error: Error) -> ErrorModel {
         let message: String
         switch error {
-            
+
         case is NetworkClientError:
             message = .errorNetwork
-            
+
         default:
             message = .errorUnknown
         }
-        
+
         return ErrorModel(
             message: message,
             actionText: .buttonsRepeat,
@@ -204,7 +204,7 @@ final class StatisticsPresenter: StatisticsPresenterProtocol {
             }
         )
     }
-    
+
     private func sortUsers() {
         switch self.sortingOption {
         case .name:
@@ -225,7 +225,7 @@ final class StatisticsPresenter: StatisticsPresenterProtocol {
 
 // MARK: - ActionSheetPresenterDelegate
 extension StatisticsPresenter: ActionSheetPresenterDelegate {
-    
+
     func sortingParametersUpdated(with option: SortingOptions) {
         saveSortingOptions(sortingOption: option, sortingOrder: .asc)
         self.sortingOption = option

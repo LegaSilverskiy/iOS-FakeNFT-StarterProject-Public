@@ -11,9 +11,9 @@ enum SortingOrder: String {
 
     case asc
     case desc
-    
+
     func asParameter() -> String {
-        
+
         return ("order=\(self.rawValue)")
     }
 }
