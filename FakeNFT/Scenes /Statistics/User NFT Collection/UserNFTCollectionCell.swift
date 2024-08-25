@@ -90,7 +90,7 @@ final class UserNFTCollectionCell: UICollectionViewCell {
         updateFavoriteButton(with: params.isFavorite)
         updateCartPicture(with: params.isInCart)
         nameLabel.text = params.name
-        priceLabel.text = "\(String(params.price)) ETH"
+        priceLabel.text = params.price
         updateRatingStars(with: params.rating)
     }
 

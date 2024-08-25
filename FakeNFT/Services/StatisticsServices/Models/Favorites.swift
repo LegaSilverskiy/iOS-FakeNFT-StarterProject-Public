@@ -6,6 +6,6 @@
 //
 import Foundation
 
-struct Profile: Decodable {
+struct Favorites: Decodable {
     let likes: [String]
 }

@@ -20,12 +20,12 @@ final class UserNFTCollectionPresenter: UserNFTCollectionPresenterProtocol {
     // MARK: - Private Properties
     private let servisesAssembly: ServicesAssembly
     private let userNFTService: UserNFTServiceProtocol
-    private let profileService: ProfileServiceProtocol
+    private let favoritesService: FavoritesServiceProtocol
     private let orderService: OrderServiceProtocol
 
     private let userNfts: [String]
     private var userNftsDetails: [NftDetails] = []
-    private var faviriteNfts: [String] = []
+    private var favoriteNfts: [String] = []
     private var orderedNfts: [String] = []
     private var state: NFTCollectionPresenterState? {
         didSet {
@@ -38,7 +38,7 @@ final class UserNFTCollectionPresenter: UserNFTCollectionPresenterProtocol {
     private var alertIsPresented = false
 
     private enum LoadedDataType {
-        case profile(Profile), order(Order), newNft(NftDetails)
+        case favorites(Favorites), order(Order), newNft(NftDetails)
     }
 
     private enum LoadErrorCases {
@@ -61,7 +61,7 @@ final class UserNFTCollectionPresenter: UserNFTCollectionPresenterProtocol {
         self.userNfts = userNfts
         self.servisesAssembly = servisesAssembly
         self.userNFTService = servisesAssembly.userNFTService
-        self.profileService = servisesAssembly.profileService
+        self.favoritesService = servisesAssembly.favoritesService
         self.orderService = servisesAssembly.orderService
     }
 
@@ -94,8 +94,8 @@ final class UserNFTCollectionPresenter: UserNFTCollectionPresenterProtocol {
                      name: nft.name,
                      image: nft.images[0],
                      rating: nft.rating,
-                     price: nft.price,
-                     isFavorite: faviriteNfts.contains(userNfts[index]),
+                     price: "\(String(nft.price)) ETH",
+                     isFavorite: favoriteNfts.contains(userNfts[index]),
                      isInCart: orderedNfts.contains(userNfts[index])
         )
     }
@@ -126,8 +126,8 @@ final class UserNFTCollectionPresenter: UserNFTCollectionPresenterProtocol {
 
     private func preloadStateProcessing() {
         view?.showLoading()
-        if faviriteNfts.isEmpty {
-            self.loadProfile()
+        if favoriteNfts.isEmpty {
+            self.loadFavorites()
         } else if orderedNfts.isEmpty {
             self.loadOrder()
         } else {
@@ -156,8 +156,8 @@ final class UserNFTCollectionPresenter: UserNFTCollectionPresenterProtocol {
 
         switch dataType {
 
-        case .profile(let profile):
-            faviriteNfts = profile.likes
+        case .favorites(let profile):
+            favoriteNfts = profile.likes
             state = .preload
 
         case .order(let order):
@@ -187,7 +187,7 @@ final class UserNFTCollectionPresenter: UserNFTCollectionPresenterProtocol {
                 primaryAction = { [weak self] in
                     self?.alertDismissed()
                     self?.view?.showLoading()
-                    self?.loadProfile()
+                    self?.loadFavorites()
                 }
 
             case .order(let error):
@@ -221,11 +221,11 @@ final class UserNFTCollectionPresenter: UserNFTCollectionPresenterProtocol {
         dataIsLoading = false
     }
 
-    private func loadProfile() {
-        profileService.loadProfile {[weak self] result in
+    private func loadFavorites() {
+        favoritesService.sendFavoritesRequest(httpMethod: .get, favoriteNfts: nil) {[weak self] result in
             switch result {
             case .success(let profileData):
-                self?.state = .data(.profile(profileData))
+                self?.state = .data(.favorites(profileData))
             case .failure(let error):
                 self?.state = .failed(.profile(error))
             }
@@ -233,7 +233,7 @@ final class UserNFTCollectionPresenter: UserNFTCollectionPresenterProtocol {
     }
 
     private func loadOrder() {
-        orderService.loadOrder {[weak self] result in
+        orderService.sendOrderRequest(httpMethod: .get, orderedNtfs: nil) {[weak self] result in
             switch result {
             case .success(let orderData):
                 self?.state = .data(.order(orderData))

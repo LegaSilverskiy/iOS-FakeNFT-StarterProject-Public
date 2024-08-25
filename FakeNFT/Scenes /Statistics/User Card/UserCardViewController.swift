@@ -107,6 +107,12 @@ final class UserCardViewController: UIViewController, UserCardViewProtocol {
         setUI()
     }
 
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+
+        tabBarController?.tabBar.isHidden = true
+    }
+
     // MARK: - Public Methods
     func updateUserImage(with url: URL) {
         avatarImageView.kf.indicatorType = .activity
