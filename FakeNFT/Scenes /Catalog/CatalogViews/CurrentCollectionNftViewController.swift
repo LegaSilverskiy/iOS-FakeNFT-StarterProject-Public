@@ -11,7 +11,7 @@ import UIKit
 final class CurrentCollectionNftViewController: UIViewController {
     
     // MARK: - Private UI Properties
-    private let collectionNft = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
+    private let collectionNft = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewCompositionalLayout())
     
     // MARK: - Overrides Methods
     override func viewDidLoad() {
@@ -22,6 +22,10 @@ final class CurrentCollectionNftViewController: UIViewController {
     //MARK: - Public methods
     
     //MARK: - Private methods
+    
+    func createLayout() -> UICollectionViewCompositionalLayout {
+        
+    }
     
     private func configureUI() {
         configureView()
