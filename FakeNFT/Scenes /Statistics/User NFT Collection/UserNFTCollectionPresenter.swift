@@ -94,7 +94,7 @@ final class UserNFTCollectionPresenter: UserNFTCollectionPresenterProtocol {
                      name: nft.name,
                      image: nft.images[0],
                      rating: nft.rating,
-                     price: nft.price,
+                     price: "\(String(nft.price)) ETH",
                      isFavorite: faviriteNfts.contains(userNfts[index]),
                      isInCart: orderedNfts.contains(userNfts[index])
         )

@@ -11,7 +11,7 @@ struct NftCellParams {
     let name: String
     let image: String
     let rating: Int
-    let price: Double
+    let price: String
     let isFavorite: Bool
     let isInCart: Bool
 }
