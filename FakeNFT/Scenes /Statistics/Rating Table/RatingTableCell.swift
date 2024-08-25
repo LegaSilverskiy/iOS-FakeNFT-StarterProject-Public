@@ -68,6 +68,7 @@ final class RatingTableCell: UITableViewCell {
         avatarImageView.backgroundColor = .segmentInactive
         avatarImageView.layer.cornerRadius = 14
         avatarImageView.layer.masksToBounds = true
+        avatarImageView.contentMode = .scaleAspectFill
 
         nameLabel.font = .headline3
         nameLabel.textAlignment = .left

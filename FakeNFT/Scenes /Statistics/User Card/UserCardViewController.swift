@@ -23,6 +23,7 @@ final class UserCardViewController: UIViewController, UserCardViewProtocol {
         avatarImageView.backgroundColor = .segmentInactive
         avatarImageView.layer.cornerRadius = 35
         avatarImageView.layer.masksToBounds = true
+        avatarImageView.contentMode = .scaleAspectFill
 
         return avatarImageView
     }()
