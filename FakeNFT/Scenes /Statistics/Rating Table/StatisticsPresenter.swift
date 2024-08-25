@@ -225,7 +225,6 @@ final class StatisticsPresenter: StatisticsPresenterProtocol {
 
 // MARK: - ActionSheetPresenterDelegate
 extension StatisticsPresenter: ActionSheetPresenterDelegate {
-
     func sortingParametersUpdated(with option: SortingOptions) {
         saveSortingOptions(sortingOption: option, sortingOrder: .asc)
         self.sortingOption = option
