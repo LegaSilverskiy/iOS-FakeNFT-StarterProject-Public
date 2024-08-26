@@ -14,6 +14,13 @@ struct OrderRequest: NetworkRequest {
         URL(string: "\(RequestConstants.baseURL)/api/v1/orders/1")
     }
 
+    var dto: (any Encodable)? {
+        guard let orderedNtfs else {
+            return nil
+        }
+        return ("nfts=\(orderedNtfs.joined(separator: ","))")
+    }
+
     init(httpMethod: HttpMethod, orderedNtfs: [String]?) {
         self.httpMethod = httpMethod
         if let orderedNtfs {
