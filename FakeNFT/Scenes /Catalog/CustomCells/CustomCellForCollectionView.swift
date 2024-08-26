@@ -6,164 +6,171 @@
 //
 
 
-import Kingfisher
 import UIKit
+import ProgressHUD
 
-final class CustomCellForCollectionView: UICollectionViewCell {
+//MARK: - NftCollectionViewCell
+final class NftCollectionViewCell: UICollectionViewCell {
     
-    static let reuseIdentifier = "CollectionInCurrentNftCustomViewCell"
+    weak var view: CurrentCollectionNftViewController?
+    
+    //MARK: - Public Properties
+    static let identifier = "NftCollectionViewCell"
+    var indexPath: IndexPath?
     
     //MARK: - Private properties
-    private var frameView = UIView()
-    private var imageNftView = UIImageView()
-    private var ratingStars: [UIView] = []
-    private var nameNftTitle = UILabel()
-    private var currencyNftTitle = UILabel()
-    private var likeButtonNft = UIButton()
-    private var cartButtonNft = UIButton()
-    private var nftRatingContainer = UIStackView()
+    private var idNft: String?
+    private var likeState: Bool = false
+    
+    //MARK: - Private UI properties
+    private lazy var imageView = UIImageView()
+    private lazy var likeButton = UIButton()
+    private lazy var ratingView = StarRatingView()
+    private lazy var nameLabel = UILabel()
+    private lazy var priceLabel = UILabel()
+    private lazy var cartButton = UIButton()
+    private lazy var nameAndPriceStackView = UIStackView()
     
     // MARK: - Initializers
-    
     override init(frame: CGRect) {
         super.init(frame: frame)
-        configureUI()
-        setupConstraints()
+        setupCell()
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-
+    
+    //MARK: - Public methods
+    func configureCell(with model: CurrentCollectionCell) {
+        self.idNft = model.id
+        imageView.kf.setImage(with: model.url)
+        nameLabel.text = model.nameNft.components(separatedBy: " ").first
+        priceLabel.text = String(model.price) + " ETH"
+        ratingView.update(rating: model.rating)
+        cartButton.setImage(setCart(isInTheCart: model.isInTheCart), for: .normal)
+        likeButton.setImage(setLike(isLiked: model.isLiked), for: .normal)
+    }
+    
+    func setLike(isLiked: Bool) -> UIImage? {
+        self.likeState = isLiked
+        return likeState ? UIImage(systemName: "heart.fill") : UIImage(systemName: "heart.fill")
+    }
+    //TODO: сделать изменение картинки корзины
+    func setCart(isInTheCart: Bool) -> UIImage? {
+        isInTheCart ? UIImage(named: "AddToCart") : UIImage(named: "AddToCart")
+    }
 }
 
-//MARK: - Setup UI Extension
-private extension CustomCellForCollectionView {
+private extension NftCollectionViewCell {
     
-    func configureUI() {
-        addSubviews()
+    //MARK: - Private methods
+    func setupCell() {
+        addSubViews()
+        setupConstraints()
+        configImageView()
+        configureLikeButton()
+        configNameLabel()
+        configPriceLabel()
+        configCartButton()
+        configNameAndPriceStack()
     }
     
-    func configureFramveView() {
-        frameView.layer.masksToBounds = true
-        frameView.layer.cornerRadius = 10
-        frameView.layer.cornerCurve = .continuous
+    func configImageView() {
+        imageView.contentMode = .scaleAspectFill
+        imageView.clipsToBounds = true
+        imageView.layer.cornerRadius = 12
     }
     
-    func configureImageNftView() {
-        
+    //TODO: Сделать смену картинку при нажатии на кнопку
+    func configureLikeButton() {
+        likeButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
+        likeButton.tintColor = .pinkForLikeButton
+        likeButton.addTarget(self, action: #selector(didTapLikeButton), for: .touchUpInside)
     }
     
-    func configureNameNftTitle() {
-        nameNftTitle.font = .bodyRegular
+    func configNameLabel() {
+        nameLabel.textColor = .mainTextColor
+        nameLabel.font = UIFont.systemFont(ofSize: 17, weight: .bold)
     }
     
-    func configureCurrencyNftTitle() {
-        nameNftTitle.font = .bodyRegular
+    func configPriceLabel() {
+        priceLabel.textColor = .mainTextColor
+        priceLabel.font = UIFont.systemFont(ofSize: 10, weight: .medium)
     }
     
-    func configureLikeButtonNft() {
-        likeButtonNft.tintColor = .textOnPrimary
+    func configCartButton() {
+        cartButton.setImage(UIImage(systemName: "cart"), for: .normal)
+        cartButton.tintColor = .blackForUI
+        cartButton.addTarget(self, action: #selector(didTapCartButton), for: .touchUpInside)
     }
     
-    func configureCartButtonNft() {
-        cartButtonNft.tintColor = .tabBarItemsTintColor
+    func configNameAndPriceStack() {
+        nameAndPriceStackView.axis = .vertical
+        nameAndPriceStackView.alignment = .fill
+        nameAndPriceStackView.distribution = .equalSpacing
+        nameAndPriceStackView.spacing = 4
+        nameAndPriceStackView.addArrangedSubview(nameLabel)
+        nameAndPriceStackView.addArrangedSubview(priceLabel)
     }
     
-    
-    func setupRatingStars() {
-        ratingStars = (0..<5).map { _ in
-            let star = UIImageView()
-            
-            star.image = UIImage(systemName: "star.fill", withConfiguration: UIImage.SymbolConfiguration(pointSize: 12))
-            star.translatesAutoresizingMaskIntoConstraints = false
-            star.contentMode = .scaleAspectFit
-            star.tintColor = .segmentInactive
-            nftRatingContainer.addArrangedSubview(star)
-            
-            return star
+    func addSubViews() {
+        [imageView,
+         likeButton,
+         ratingView,
+         nameAndPriceStackView,
+         cartButton].forEach {
+            contentView.addSubview($0)
+            $0.translatesAutoresizingMaskIntoConstraints = false
         }
     }
     
-    func setupFrameView() {
-        frameView.backgroundColor = .systemBackground
-    }
-    
-    func addSubviews() {
-        contentView.addSubview(frameView)
-        frameView.addSubview(imageNftView)
-        imageNftView.addSubview(likeButtonNft)
-        frameView.addSubview(nftRatingContainer)
-        frameView.addSubview(nameNftTitle)
-        frameView.addSubview(currencyNftTitle)
-        frameView.addSubview(cartButtonNft)
-        
-        
-    }
-    
     func setupConstraints() {
-        frameView.translatesAutoresizingMaskIntoConstraints = false
-        imageNftView.translatesAutoresizingMaskIntoConstraints = false
-        nameNftTitle.translatesAutoresizingMaskIntoConstraints = false
-        currencyNftTitle.translatesAutoresizingMaskIntoConstraints = false
-        likeButtonNft.translatesAutoresizingMaskIntoConstraints = false
-        cartButtonNft.translatesAutoresizingMaskIntoConstraints = false
-        nftRatingContainer.translatesAutoresizingMaskIntoConstraints = false
-        
         NSLayoutConstraint.activate([
-            frameView.topAnchor.constraint(equalTo: contentView.topAnchor),
-            frameView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            frameView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            frameView.heightAnchor.constraint(equalToConstant: 192),
+            imageView.topAnchor.constraint(equalTo: contentView.topAnchor),
+            imageView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            imageView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            imageView.heightAnchor.constraint(equalToConstant: 108),
             
-            imageNftView.topAnchor.constraint(equalTo: contentView.topAnchor),
-            imageNftView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            imageNftView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            imageNftView.heightAnchor.constraint(equalTo: imageNftView.widthAnchor),
+            likeButton.topAnchor.constraint(equalTo: contentView.topAnchor),
+            likeButton.heightAnchor.constraint(equalToConstant: 40),
+            likeButton.widthAnchor.constraint(equalToConstant: 40),
+            likeButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             
-            likeButtonNft.topAnchor.constraint(equalTo: contentView.topAnchor),
-            likeButtonNft.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-
-            nftRatingContainer.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            nftRatingContainer.topAnchor.constraint(equalTo: imageNftView.bottomAnchor, constant: 8),
-            nftRatingContainer.heightAnchor.constraint(equalToConstant: 12),
-
-            cartButtonNft.topAnchor.constraint(equalTo: nftRatingContainer.bottomAnchor, constant: 5),
-            cartButtonNft.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
-            cartButtonNft.widthAnchor.constraint(equalToConstant: 40),
-
-            nameNftTitle.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            nameNftTitle.topAnchor.constraint(equalTo: cartButtonNft.topAnchor),
-            nameNftTitle.trailingAnchor.constraint(equalTo: cartButtonNft.leadingAnchor),
-
-            currencyNftTitle.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            currencyNftTitle.bottomAnchor.constraint(equalTo: cartButtonNft.bottomAnchor)
+            ratingView.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 8),
+            ratingView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            ratingView.heightAnchor.constraint(equalToConstant: 12),
             
-//            imageNftView.topAnchor.constraint(equalTo: frameView.topAnchor),
-//            imageNftView.leadingAnchor.constraint(equalTo: frameView.leadingAnchor),
-//            imageNftView.trailingAnchor.constraint(equalTo: frameView.trailingAnchor),
-//            imageNftView.bottomAnchor.constraint(equalTo: nftRatingContainer.topAnchor),
-//
-//            likeButtonNft.topAnchor.constraint(equalTo: imageNftView.topAnchor, constant: 11),
-//            likeButtonNft.leadingAnchor.constraint(equalTo: imageNftView.leadingAnchor, constant: 77),
-//            likeButtonNft.trailingAnchor.constraint(equalTo: imageNftView.trailingAnchor, constant: -10),
-//            likeButtonNft.bottomAnchor.constraint(equalTo: imageNftView.bottomAnchor, constant: -79),
-//
-//            nftRatingContainer.leadingAnchor.constraint(equalTo: frameView.leadingAnchor),
-//            nftRatingContainer.trailingAnchor.constraint(equalTo: cartButtonNft.leadingAnchor),
-//            nftRatingContainer.bottomAnchor.constraint(equalTo: nameNftTitle.topAnchor),
-//
-//            nameNftTitle.leadingAnchor.constraint(equalTo: frameView.leadingAnchor),
-//            nameNftTitle.trailingAnchor.constraint(equalTo: cartButtonNft.leadingAnchor),
-//            nameNftTitle.bottomAnchor.constraint(equalTo: currencyNftTitle.topAnchor),
-//
-//            currencyNftTitle.leadingAnchor.constraint(equalTo: frameView.leadingAnchor),
-//            currencyNftTitle.trailingAnchor.constraint(equalTo: cartButtonNft.leadingAnchor),
-//            currencyNftTitle.bottomAnchor.constraint(equalTo: frameView.bottomAnchor, constant: -21),
-//
-//            cartButtonNft.topAnchor.constraint(equalTo: imageNftView.bottomAnchor, constant: 24),
-//            cartButtonNft.trailingAnchor.constraint(equalTo: frameView.trailingAnchor),
-//            cartButtonNft.bottomAnchor.constraint(equalTo: frameView.bottomAnchor, constant: -20)
+            nameAndPriceStackView.topAnchor.constraint(equalTo: ratingView.bottomAnchor, constant: 5),
+            nameAndPriceStackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
+            nameAndPriceStackView.widthAnchor.constraint(equalToConstant: 68),
+            nameAndPriceStackView.heightAnchor.constraint(equalToConstant: 38),
+            
+            cartButton.topAnchor.constraint(equalTo: ratingView.bottomAnchor, constant: 4),
+            cartButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            cartButton.heightAnchor.constraint(equalToConstant: 40),
+            cartButton.widthAnchor.constraint(equalToConstant: 40)
         ])
     }
+    
+    func showLoading() {
+        ProgressHUD.show()
+    }
+    
+    func hideLoading() {
+        ProgressHUD.dismiss()
+    }
+    
+    //MARK: - Actions
+    @objc func didTapLikeButton() {
+            guard let indexPath else { return }
+        view?.updateLike(for: indexPath, state: likeState)
+        }
+        
+    @objc func didTapCartButton() {
+            guard let indexPath else { return }
+        view?.updateOrder(for: indexPath)
+        }
 }
+
+

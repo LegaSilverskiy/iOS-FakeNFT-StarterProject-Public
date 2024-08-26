@@ -19,7 +19,6 @@ final class CatalogPresenter {
             stateDidChange()
         }
     }
-    
     // MARK: - Public Methods
     
     func viewDidLoad() {
@@ -32,7 +31,7 @@ final class CatalogPresenter {
     
     // MARK: - Private Properties
     private let service: CatalogServiceImpl
-    private var catalogs: [Catalog] = []
+    var catalogs: [Catalog] = []
     
     // MARK: - Initializers
     init(servicesAssembly: ServicesAssembly) {

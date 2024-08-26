@@ -9,9 +9,9 @@ protocol NftService {
 final class NftServiceImpl: NftService {
 
     private let networkClient: NetworkClient
-    private let storage: NftStorage
+    private let storage: NftStorageImpl
 
-    init(networkClient: NetworkClient, storage: NftStorage) {
+    init(networkClient: NetworkClient, storage: NftStorageImpl) {
         self.storage = storage
         self.networkClient = networkClient
     }
