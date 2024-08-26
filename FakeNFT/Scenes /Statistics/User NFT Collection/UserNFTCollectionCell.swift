@@ -8,7 +8,8 @@ import Kingfisher
 import UIKit
 
 protocol UserNFTCollectionCellDelegate: AnyObject {
-    // TODO: - Задача на третий модуль, добавить методы работы с избраенным и корзиной
+    func updateNftFaviriteStatus(index: Int)
+    func updateNftOrderStatus(index: Int)
 }
 
 final class UserNFTCollectionCell: UICollectionViewCell {
@@ -96,13 +97,11 @@ final class UserNFTCollectionCell: UICollectionViewCell {
 
     // MARK: - IBAction
     @objc private func favoriteButtonAction() {
-        print("нажата кнопка добавления в избранное в ячейке \(index)")
-        // TODO: - Задача на третий модуль (delegate?.updateNftFaviriteStatus(indexPath: IndexPath))
+        delegate?.updateNftFaviriteStatus(index: index)
     }
 
     @objc private func cartButtonAction() {
-        print("нажата кнопка добавления в корзину в ячейке \(index)")
-        // TODO: - Задача на третий модуль
+        delegate?.updateNftOrderStatus(index: index)
     }
 
     // MARK: - Private Methods
