@@ -7,7 +7,7 @@
 import Foundation
 
 protocol OrderServiceProtocol {
-    func sendOrderRequest(httpMethod: HttpMethod, orderedNtfs: [String]?, completion: @escaping OrderCompletion)
+    func sendOrderRequest(httpMethod: HttpMethod, orderedNfts: [String]?, completion: @escaping OrderCompletion)
 }
 
 typealias OrderCompletion = (Result<Order, Error>) -> Void
@@ -20,8 +20,8 @@ final class OrderService: OrderServiceProtocol {
         self.networkClient = networkClient
     }
 
-    func sendOrderRequest(httpMethod: HttpMethod, orderedNtfs: [String]?, completion: @escaping OrderCompletion) {
-        let request = OrderRequest(httpMethod: httpMethod, orderedNtfs: orderedNtfs)
+    func sendOrderRequest(httpMethod: HttpMethod, orderedNfts: [String]?, completion: @escaping OrderCompletion) {
+        let request = OrderRequest(httpMethod: httpMethod, orderedNtfs: orderedNfts)
         networkClient.send(request: request, type: Order.self) {result in
             switch result {
             case .success(let order):

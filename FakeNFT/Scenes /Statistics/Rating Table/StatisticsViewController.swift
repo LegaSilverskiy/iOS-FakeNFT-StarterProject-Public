@@ -39,7 +39,7 @@ final class StatisticsViewController: UIViewController, StatisticsViewProtocol {
 
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(true)
-        
+
         tabBarController?.tabBar.isHidden = false
         presenter.viewWllAppear()
     }

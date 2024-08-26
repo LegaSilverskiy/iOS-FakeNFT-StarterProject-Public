@@ -8,7 +8,7 @@ import Kingfisher
 import UIKit
 
 protocol UserNFTCollectionCellDelegate: AnyObject {
-    func updateNftFaviriteStatus(index: Int)
+    func updateNftFavoriteStatus(index: Int)
     func updateNftOrderStatus(index: Int)
 }
 
@@ -97,7 +97,7 @@ final class UserNFTCollectionCell: UICollectionViewCell {
 
     // MARK: - IBAction
     @objc private func favoriteButtonAction() {
-        delegate?.updateNftFaviriteStatus(index: index)
+        delegate?.updateNftFavoriteStatus(index: index)
     }
 
     @objc private func cartButtonAction() {
