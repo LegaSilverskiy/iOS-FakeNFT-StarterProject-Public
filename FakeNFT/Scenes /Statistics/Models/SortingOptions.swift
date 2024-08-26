@@ -11,20 +11,20 @@ enum SortingOptions: String {
 
     case name
     case rating
-    
+
     func localizedTitle() -> String {
-        
+
         switch self {
-            
+
         case .name:
             return .sortingOptionsName
         case .rating:
             return .sortingOptionsRating
         }
     }
-    
+
     func asParameter() -> String {
-        
+
         return ("sortBy=\(self.rawValue)")
     }
 }

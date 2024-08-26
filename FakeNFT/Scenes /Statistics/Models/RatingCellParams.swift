@@ -6,7 +6,7 @@
 //
 import UIKit
 
-struct RatingCellParams {    
+struct RatingCellParams {
     let rating: Int
     let avatar: String
     let name: String
