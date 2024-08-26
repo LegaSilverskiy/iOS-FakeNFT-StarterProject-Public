@@ -34,8 +34,8 @@ final class ServicesAssembly {
         )
     }
 
-    var profileService: ProfileServiceProtocol {
-        ProfileService(
+    var favoritesService: FavoritesServiceProtocol {
+        FavoritesService(
             networkClient: networkClient
         )
     }
