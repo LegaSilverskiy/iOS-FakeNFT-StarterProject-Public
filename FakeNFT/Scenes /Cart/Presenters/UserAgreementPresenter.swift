@@ -1,17 +1,21 @@
 import Foundation
 
-protocol UserAgreementView: AnyObject {
-    func loadUserAgreement(with request: URLRequest)
-    func setNavigationTitle(_ title: String)
-    func dismissView()
+protocol UserAgreementPresenterProtocol: AnyObject {
+    var view: UserAgreementView? { get set }
+    func viewDidLoad()
+    func backButtonPressed()
 }
 
-final class UserAgreementPresenter {
+final class UserAgreementPresenter: UserAgreementPresenterProtocol {
     weak var view: UserAgreementView?
     
     func viewDidLoad() {
         setupView()
         loadUserAgreement()
+    }
+    
+    func backButtonPressed() {
+        view?.dismissView()
     }
     
     private func setupView() {
@@ -23,9 +27,5 @@ final class UserAgreementPresenter {
             let request = URLRequest(url: url)
             view?.loadUserAgreement(with: request)
         }
-    }
-    
-    func backButtonPressed() {
-        view?.dismissView()
     }
 }

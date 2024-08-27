@@ -1,8 +1,17 @@
 import UIKit
 
+protocol CartView: AnyObject {
+    func presentBlurredScreen(with indexPath: IndexPath, imageURL: String)
+    func deleteFromCart(at indexPath: IndexPath)
+    func reloadData()
+    func deleteRows(at indexPath: IndexPath)
+    func showHud()
+    func hideHud()
+}
+
 final class CartViewController: UIViewController {
     
-    private let presenter: CartPresenter
+    private let presenter: CartPresenterProtocol
     
     private let nftsTableView: UITableView = {
         let tableView = UITableView()
@@ -66,7 +75,7 @@ final class CartViewController: UIViewController {
         return label
     }()
     
-    init(presenter: CartPresenter) {
+    init(presenter: CartPresenterProtocol) {
         self.presenter = presenter
         super.init(nibName: nil, bundle: nil)
     }

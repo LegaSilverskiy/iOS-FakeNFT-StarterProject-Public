@@ -1,9 +1,17 @@
 import UIKit
 
+protocol CartCurrencyView: AnyObject {
+    func reloadData()
+    func selectCurrency(at indexPath: IndexPath)
+    func navigateToUserAgreement()
+    func showFailedPaymentAlert()
+    func showSuccessFlow()
+}
+
 final class CartCurrencyViewController: UIViewController {
     
     var cartVC: CartViewController?
-    private let presenter: CartCurrencyPresenter
+    private var presenter: CartCurrencyPresenterProtocol
     
     private let currencyCollectionView: UICollectionView = {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
@@ -52,8 +60,7 @@ final class CartCurrencyViewController: UIViewController {
         return button
     }()
     
-    
-    init(presenter: CartCurrencyPresenter) {
+    init(presenter: CartCurrencyPresenterProtocol) {
         self.presenter = presenter
         super.init(nibName: nil, bundle: nil)
     }
@@ -65,7 +72,7 @@ final class CartCurrencyViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        presenter.view = self
+        presenter.view = self 
         setupUI()
         presenter.viewDidLoad()
     }

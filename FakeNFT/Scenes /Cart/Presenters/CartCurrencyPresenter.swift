@@ -1,14 +1,17 @@
 import Foundation
 
-protocol CartCurrencyView: AnyObject {
-    func reloadData()
-    func selectCurrency(at indexPath: IndexPath)
-    func navigateToUserAgreement()
-    func showFailedPaymentAlert() 
-    func showSuccessFlow()
+protocol CartCurrencyPresenterProtocol {
+    var view: CartCurrencyView? { get set }
+    func viewDidLoad()
+    func didSelectCurrency(at indexPath: IndexPath)
+    func userAgreementTapped()
+    func getCurrencies() -> [CartCurrency]
+    func processPayment()
+    func getFailedPaymentAlertActions() -> [AlertButtonAction]
+    func getSuccessFlow() -> CartSuccessPaymentController
 }
 
-final class CartCurrencyPresenter {
+final class CartCurrencyPresenter: CartCurrencyPresenterProtocol {
     weak var view: CartCurrencyView?
     private var currencies: [CartCurrency] = []
     

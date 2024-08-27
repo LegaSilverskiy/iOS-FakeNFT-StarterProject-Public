@@ -1,15 +1,18 @@
 import Foundation
 
-protocol CartView: AnyObject {
-    func presentBlurredScreen(with indexPath: IndexPath, imageURL: String)
+protocol CartPresenterProtocol: AnyObject {
+    var view: CartView? { get set }
+    func viewDidLoad()
+    func loadNfts()
     func deleteFromCart(at indexPath: IndexPath)
-    func reloadData()
-    func deleteRows(at indexPath: IndexPath)
-    func showHud()
-    func hideHud()
+    func clearCart()
+    func showSortOptions() -> [AlertButtonAction]
+    func getNft(at indexPath: IndexPath) -> CartNftModel
+    func getNftsCount() -> [CartNftModel]
+    func formattedTotalPrice() -> String
 }
 
-final class CartPresenter {
+final class CartPresenter: CartPresenterProtocol {
     weak var view: CartView?
     private let interactor: CartInteractorProtocol
     
@@ -91,7 +94,7 @@ final class CartPresenter {
         return actions
     }
     
-    func getNft(at indexPath: IndexPath) -> CartNftModel{
+    func getNft(at indexPath: IndexPath) -> CartNftModel {
         let nft = filteredNfts[indexPath.row]
         
         let cartNftModel = CartNftModel(

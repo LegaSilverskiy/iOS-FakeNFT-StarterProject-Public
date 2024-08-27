@@ -1,11 +1,17 @@
 import UIKit
 import WebKit
 
+protocol UserAgreementView: AnyObject {
+    func loadUserAgreement(with request: URLRequest)
+    func setNavigationTitle(_ title: String)
+    func dismissView()
+}
+
 final class UserAgreementViewController: UIViewController {
     private var webView: WKWebView?
-    private let presenter: UserAgreementPresenter
+    private let presenter: UserAgreementPresenterProtocol
     
-    init(presenter: UserAgreementPresenter) {
+    init(presenter: UserAgreementPresenterProtocol) {
         self.presenter = presenter
         super.init(nibName: nil, bundle: nil)
     }
