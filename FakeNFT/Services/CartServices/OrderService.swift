@@ -150,6 +150,37 @@ final class OrderService {
         task.resume()
     }
     
+    func fetchPaymentRequest(for currencyID: String, completion: @escaping (Result<OrderPayment, Error>) -> Void) {
+        let request = CartGetRequest(end: "orders/1/payment/\(currencyID)")
+        
+        guard let urlRequest = create(request: request) else {
+            completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Failed to create URLRequest"])))
+            return
+        }
+        
+        let task = URLSession.shared.dataTask(with: urlRequest) { data, response, error in
+            if let error = error {
+                completion(.failure(error))
+                return
+            }
+            
+            guard let data = data else {
+                completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "No data received"])))
+                return
+            }
+            
+            do {
+                let payment = try JSONDecoder().decode(OrderPayment.self, from: data)
+                completion(.success(payment))
+            } catch {
+                completion(.failure(error))
+            }
+        }
+        
+        task.resume()
+    }
+
+    
     private func create(request: NetworkRequest) -> URLRequest? {
         guard let endpoint = request.endpoint else {
             assertionFailure("Empty endpoint")

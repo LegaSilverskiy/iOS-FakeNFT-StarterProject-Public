@@ -41,7 +41,14 @@ final class CartCurrencyPresenter: CartCurrencyPresenterProtocol {
     }
     
     func processPayment() {
-        isSuccessPayment() ? view?.showFailedPaymentAlert() : view?.showSuccessFlow()
+        guard let selectedCurrencyIndex = UserDefaults.standard.value(forKey: "SelectedCurrencyIndex") as? Int else {
+            print("No currency selected")
+            view?.showFailedPaymentAlert()
+            return
+        }
+        
+        let selectedCurrency = currencies[selectedCurrencyIndex]
+        makePayment(by: selectedCurrency.id)
     }
     
     func getFailedPaymentAlertActions() -> [AlertButtonAction] {
@@ -92,8 +99,25 @@ final class CartCurrencyPresenter: CartCurrencyPresenterProtocol {
         }
     }
     
-    private func isSuccessPayment() -> Bool {
-        Bool.random()
+    private func makePayment(by id: String)  {
+        interactor.fetchPaymentRequest(for: id) { [weak self] result in
+            switch result {
+            case .success(let payment):
+                if payment.success {
+                    DispatchQueue.main.async {
+                        self?.view?.showSuccessFlow()
+                    }
+                }
+                else {
+                    DispatchQueue.main.async {
+                        self?.view?.showFailedPaymentAlert()
+                    }
+                }
+            case .failure(let error):
+                print("Failed to fetch: \(error)")
+            }
+        }
+        
     }
     
     private func loadSelectedCurrency() {
