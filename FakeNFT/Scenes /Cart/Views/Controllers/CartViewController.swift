@@ -1,8 +1,17 @@
 import UIKit
 
+protocol CartView: AnyObject {
+    func presentBlurredScreen(with indexPath: IndexPath, imageURL: String)
+    func deleteFromCart(at indexPath: IndexPath)
+    func reloadData()
+    func deleteRows(at indexPath: IndexPath)
+    func showHud()
+    func hideHud()
+}
+
 final class CartViewController: UIViewController {
     
-    private let presenter: CartPresenter
+    private let presenter: CartPresenterProtocol
     
     private let nftsTableView: UITableView = {
         let tableView = UITableView()
@@ -66,7 +75,7 @@ final class CartViewController: UIViewController {
         return label
     }()
     
-    init(presenter: CartPresenter) {
+    init(presenter: CartPresenterProtocol) {
         self.presenter = presenter
         super.init(nibName: nil, bundle: nil)
     }
@@ -75,11 +84,15 @@ final class CartViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        presenter.loadNfts()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
         presenter.view = self
-        presenter.loadNfts()
+        presenter.viewDidLoad()
         setupUI()
     }
     
@@ -163,6 +176,7 @@ final class CartViewController: UIViewController {
     
     private func setupPayButton() {
         payButton.setTitle("К оплате", for: .normal)
+        payButton.addTarget(self, action: #selector(payButtonTapped), for: .touchUpInside)
         payButton.titleLabel?.font = UIFont.bodyBold
         payButton.setTitleColor(.textOnPrimary, for: .normal)
         payButton.layer.cornerRadius = 16
@@ -176,9 +190,19 @@ final class CartViewController: UIViewController {
     @objc
     private func sortButtonPressed() {
         let actions = presenter.showSortOptions()
-        let alert = UIAlertController().showSortActionSheet(for: AlertModel(title: "Сортировка", message: nil), action: actions)
+        let alert = UIAlertController().createAlert(for: AlertModel(title: "Сортировка", message: nil), action: actions, style: .actionSheet)
         
         present(alert, animated: true)
+    }
+    
+    @objc
+    private func payButtonTapped() {
+        let currencyViewController = CartCurrencyViewController(presenter: CartCurrencyPresenter(), vc: self)
+        
+        let navController = UINavigationController(rootViewController: currencyViewController)
+        navController.modalPresentationStyle = .fullScreen
+        
+        present(navController, animated: true)
     }
 }
 
@@ -246,6 +270,12 @@ extension CartViewController: UITableViewDelegate, UITableViewDataSource {
 extension CartViewController: CartTableViewCellDelegate {
     func didTapButton(in cell: CartTableViewCell, at indexPath: IndexPath, with image: String) {
         presentBlurredScreen(with: indexPath, imageURL: image)
+    }
+}
+
+extension CartViewController: CartSuccessPaymentDelegate {
+    func clearCart() {
+        presenter.clearCart()
     }
 }
 

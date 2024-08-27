@@ -1,15 +1,18 @@
 import Foundation
 
-protocol CartView: AnyObject {
-    func presentBlurredScreen(with indexPath: IndexPath, imageURL: String)
+protocol CartPresenterProtocol: AnyObject {
+    var view: CartView? { get set }
+    func viewDidLoad()
+    func loadNfts()
     func deleteFromCart(at indexPath: IndexPath)
-    func reloadData()
-    func deleteRows(at indexPath: IndexPath)
-    func showHud()
-    func hideHud()
+    func clearCart()
+    func showSortOptions() -> [AlertButtonAction]
+    func getNft(at indexPath: IndexPath) -> CartNftModel
+    func getNftsCount() -> [CartNftModel]
+    func formattedTotalPrice() -> String
 }
 
-final class CartPresenter {
+final class CartPresenter: CartPresenterProtocol {
     weak var view: CartView?
     private let interactor: CartInteractorProtocol
     
@@ -20,6 +23,11 @@ final class CartPresenter {
     init(interactor: CartInteractorProtocol) {
         self.interactor = interactor
         saveSortOption(.name)
+    }
+    
+    func viewDidLoad() {
+        loadNfts()
+        resetChosenCurrency()
     }
     
     func loadNfts() {
@@ -35,8 +43,10 @@ final class CartPresenter {
                 let savedSortOption = self.loadSortOption()
                 sortNft(by: savedSortOption)
                 
-                view?.reloadData()
-                view?.hideHud()
+                DispatchQueue.main.async {
+                    self.view?.reloadData()
+                    self.view?.hideHud()
+                }
             case .failure(let error):
                 print("Failed to fetch orders: \(error)")
             }
@@ -52,11 +62,19 @@ final class CartPresenter {
         interactor.updateOrder(with: nftsIDs) { [weak self] result in
             switch result {
             case .success:
-                self?.loadNfts()
+                DispatchQueue.main.async {
+                    self?.loadNfts()
+                }
             case .failure(let error):
                 print("Ошибка: \(error.localizedDescription)")
             }
         }
+    }
+    
+    func clearCart() {
+        filteredNfts.removeAll()
+        view?.reloadData()
+        deleteAllItemsInCart()
     }
     
     func showSortOptions() -> [AlertButtonAction] {
@@ -76,7 +94,7 @@ final class CartPresenter {
         return actions
     }
     
-    func getNft(at indexPath: IndexPath) -> CartNftModel{
+    func getNft(at indexPath: IndexPath) -> CartNftModel {
         let nft = filteredNfts[indexPath.row]
         
         let cartNftModel = CartNftModel(
@@ -160,4 +178,18 @@ final class CartPresenter {
         }
     }
 
+    private func resetChosenCurrency() {
+        UserDefaults.standard.removeObject(forKey: "SelectedCurrencyIndex")
+    }
+    
+    private func deleteAllItemsInCart() {
+        interactor.updateOrder(with: []) { result in
+            switch result {
+            case .success:
+                print("Корзина успешно очищена")
+            case .failure(let error):
+                print("Ошибка при очистке корзины: \(error.localizedDescription)")
+            }
+        }
+    }
 }
