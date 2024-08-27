@@ -117,8 +117,10 @@ struct DefaultNetworkClient: NetworkClient {
 
         var urlRequest = URLRequest(url: endpoint)
         urlRequest.httpMethod = request.httpMethod.rawValue
-        urlRequest.setValue("application/json", forHTTPHeaderField: "Content-Type")
-        urlRequest.setValue("67a24255-5ef3-4989-bbdc-84b70a80e456", forHTTPHeaderField: "X-Practicum-Mobile-Token")
+
+        for (key, value) in RequestConstants.headers {
+            urlRequest.setValue(value, forHTTPHeaderField: key)
+        }
 
         if let dto = request.dto,
            let dtoEncoded = try? encoder.encode(dto) {
