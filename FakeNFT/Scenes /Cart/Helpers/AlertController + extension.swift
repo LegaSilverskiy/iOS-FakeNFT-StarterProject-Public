@@ -2,7 +2,11 @@ import UIKit
 
 extension UIAlertController {
     
-    func createAlert(for model: AlertModel, action: [AlertButtonAction], style: UIAlertController.Style) -> UIAlertController {
+    func createAlert(
+        for model: AlertModel,
+        action: [AlertButtonAction],
+        style: UIAlertController.Style
+    ) -> UIAlertController {
         let alert = UIAlertController(
             title: model.title,
             message: model.message,

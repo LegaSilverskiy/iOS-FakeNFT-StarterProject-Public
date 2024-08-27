@@ -23,9 +23,8 @@ final class UserAgreementPresenter: UserAgreementPresenterProtocol {
     }
     
     private func loadUserAgreement() {
-        if let url = URL(string: "https://yandex.ru/legal/practicum_termsofuse/") {
-            let request = URLRequest(url: url)
-            view?.loadUserAgreement(with: request)
-        }
+        guard let url = URL(string: "https://yandex.ru/legal/practicum_termsofuse/") else { return }
+        let request = URLRequest(url: url)
+        view?.loadUserAgreement(with: request)
     }
 }
