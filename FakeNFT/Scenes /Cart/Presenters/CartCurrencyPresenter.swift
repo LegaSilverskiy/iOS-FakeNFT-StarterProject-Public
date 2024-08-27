@@ -12,12 +12,20 @@ protocol CartCurrencyPresenterProtocol {
 }
 
 final class CartCurrencyPresenter: CartCurrencyPresenterProtocol {
+    
     weak var view: CartCurrencyView?
     private var currencies: [CartCurrency] = []
+    private let service = OrderService.shared
+    private let interactor: CartCurrencyInteractorProtocol
+    private let cartCurrencyService: CartCurrencyServiceProtocol
+    
+    init(interactor: CartCurrencyInteractorProtocol, cartCurrencyService: CartCurrencyServiceProtocol) {
+        self.interactor = interactor
+        self.cartCurrencyService = cartCurrencyService
+    }
     
     func viewDidLoad() {
-        currencies = Mock.shared.currencies
-        loadSelectedCurrency()
+        fetchCurrencies()
     }
 
     func didSelectCurrency(at indexPath: IndexPath) {
@@ -61,6 +69,27 @@ final class CartCurrencyPresenter: CartCurrencyPresenterProtocol {
         vc.modalTransitionStyle = .crossDissolve
         
         return vc
+    }
+    
+    private func fetchCurrencies() {
+        interactor.fetchCurrencies { [weak self] result in
+            switch result {
+            case .success(let currencyModels):
+                self?.cartCurrencyService.transformCurrencies(from: currencyModels) { [weak self] cartCurrencies in
+                    if let cartCurrencies = cartCurrencies {
+                        self?.currencies = cartCurrencies.sorted { $0.name < $1.name }
+                        DispatchQueue.main.async {
+                            self?.view?.reloadData()
+                            self?.loadSelectedCurrency()
+                        }
+                    } else {
+                        print("Failed to transform currencies")
+                    }
+                }
+            case .failure(let error):
+                print("Failed to fetch currencies: \(error)")
+            }
+        }
     }
     
     private func isSuccessPayment() -> Bool {
