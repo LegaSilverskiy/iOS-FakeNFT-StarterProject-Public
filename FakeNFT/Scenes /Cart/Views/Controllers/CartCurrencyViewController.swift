@@ -10,7 +10,7 @@ protocol CartCurrencyView: AnyObject {
 
 final class CartCurrencyViewController: UIViewController {
     
-    var cartVC: CartViewController?
+    private weak var cartVC: CartViewController?
     private var presenter: CartCurrencyPresenterProtocol
     
     private let currencyCollectionView: UICollectionView = {
@@ -60,8 +60,9 @@ final class CartCurrencyViewController: UIViewController {
         return button
     }()
     
-    init(presenter: CartCurrencyPresenterProtocol) {
+    init(presenter: CartCurrencyPresenterProtocol, vc: CartViewController) {
         self.presenter = presenter
+        self.cartVC = vc
         super.init(nibName: nil, bundle: nil)
     }
     

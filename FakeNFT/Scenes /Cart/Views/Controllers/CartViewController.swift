@@ -84,6 +84,10 @@ final class CartViewController: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        presenter.loadNfts()
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -193,8 +197,7 @@ final class CartViewController: UIViewController {
     
     @objc
     private func payButtonTapped() {
-        let currencyViewController = CartCurrencyViewController(presenter: CartCurrencyPresenter())
-        currencyViewController.cartVC = self
+        let currencyViewController = CartCurrencyViewController(presenter: CartCurrencyPresenter(), vc: self)
         
         let navController = UINavigationController(rootViewController: currencyViewController)
         navController.modalPresentationStyle = .fullScreen
