@@ -9,22 +9,24 @@ import Foundation
 struct OrderRequest: NetworkRequest {
 
     var httpMethod: HttpMethod
-    var orderedNtfs: [String]?
+    var orderedNfts: [String]?
     var endpoint: URL? {
         URL(string: "\(RequestConstants.baseURL)/api/v1/orders/1")
     }
 
-    var dto: (any Encodable)? {
-        guard let orderedNtfs else {
+    var dtoEncoded: Data? {
+        guard httpMethod == .put,
+              let orderedNfts,
+              !orderedNfts.isEmpty else {
             return nil
         }
-        return ("nfts=\(orderedNtfs.joined(separator: ","))")
+        return ("nfts=\(orderedNfts.joined(separator: ","))").data(using: .utf8)
     }
 
-    init(httpMethod: HttpMethod, orderedNtfs: [String]?) {
+    init(httpMethod: HttpMethod, orderedNfts: [String]?) {
         self.httpMethod = httpMethod
-        if let orderedNtfs {
-            self.orderedNtfs = orderedNtfs
+        if let orderedNfts {
+            self.orderedNfts = orderedNfts
         }
     }
 }

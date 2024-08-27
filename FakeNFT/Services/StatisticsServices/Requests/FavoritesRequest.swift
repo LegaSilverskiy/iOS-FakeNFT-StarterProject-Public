@@ -8,17 +8,22 @@ import Foundation
 
 struct FavoritesRequest: NetworkRequest {
 
-    var httpMethod: HttpMethod
+    let httpMethod: HttpMethod
+    let noFavorites: String? = "likes=null"
     var favoriteNfts: [String]?
     var endpoint: URL? {
         URL(string: "\(RequestConstants.baseURL)/api/v1/profile/1")
     }
 
-    var dto: (any Encodable)? {
-        guard let favoriteNfts else {
+    var dtoEncoded: Data? {
+        guard httpMethod == .put else {
             return nil
         }
-        return ("likes=\(favoriteNfts.joined(separator: ","))")
+        guard let favoriteNfts,
+              !favoriteNfts.isEmpty else {
+            return noFavorites?.data(using: .utf8)
+        }
+        return ("likes=\(favoriteNfts.joined(separator: ","))").data(using: .utf8)
     }
 
     init(httpMethod: HttpMethod, favoriteNfts: [String]?) {

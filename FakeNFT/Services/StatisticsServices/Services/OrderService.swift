@@ -21,7 +21,7 @@ final class OrderService: OrderServiceProtocol {
     }
 
     func sendOrderRequest(httpMethod: HttpMethod, orderedNfts: [String]?, completion: @escaping OrderCompletion) {
-        let request = OrderRequest(httpMethod: httpMethod, orderedNtfs: orderedNfts)
+        let request = OrderRequest(httpMethod: httpMethod, orderedNfts: orderedNfts)
         networkClient.send(request: request, type: Order.self) {result in
             switch result {
             case .success(let order):

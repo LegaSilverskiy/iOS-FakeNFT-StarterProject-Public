@@ -127,6 +127,10 @@ struct DefaultNetworkClient: NetworkClient {
             urlRequest.httpBody = dtoEncoded
         }
 
+        if let dtoEncoded = request.dtoEncoded {
+            urlRequest.httpBody = dtoEncoded
+        }
+
         return urlRequest
     }
 
