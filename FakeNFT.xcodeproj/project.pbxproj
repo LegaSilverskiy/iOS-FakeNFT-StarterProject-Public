@@ -49,7 +49,6 @@
 		9A238E622C6D606F00D75687 /* CartDeleteViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A238E612C6D606F00D75687 /* CartDeleteViewController.swift */; };
 		9A30A9432C790775003FE5CE /* UserAgreementPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A30A9422C790775003FE5CE /* UserAgreementPresenter.swift */; };
 		9A30A9452C790997003FE5CE /* CartCurrencyPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A30A9442C790997003FE5CE /* CartCurrencyPresenter.swift */; };
-		9A30A9492C793ECD003FE5CE /* Mock.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A30A9482C793ECD003FE5CE /* Mock.swift */; };
 		9A30A94B2C794DF6003FE5CE /* CartSuccessPaymentController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A30A94A2C794DF6003FE5CE /* CartSuccessPaymentController.swift */; };
 		9A43E0702C6FBF1700F2A9E6 /* Order.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A43E06F2C6FBF1700F2A9E6 /* Order.swift */; };
 		9A43E0722C70001800F2A9E6 /* OrderService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9A43E0712C70001800F2A9E6 /* OrderService.swift */; };
@@ -139,7 +138,6 @@
 		9A238E612C6D606F00D75687 /* CartDeleteViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartDeleteViewController.swift; sourceTree = "<group>"; };
 		9A30A9422C790775003FE5CE /* UserAgreementPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAgreementPresenter.swift; sourceTree = "<group>"; };
 		9A30A9442C790997003FE5CE /* CartCurrencyPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartCurrencyPresenter.swift; sourceTree = "<group>"; };
-		9A30A9482C793ECD003FE5CE /* Mock.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Mock.swift; sourceTree = "<group>"; };
 		9A30A94A2C794DF6003FE5CE /* CartSuccessPaymentController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartSuccessPaymentController.swift; sourceTree = "<group>"; };
 		9A43E06F2C6FBF1700F2A9E6 /* Order.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Order.swift; sourceTree = "<group>"; };
 		9A43E0712C70001800F2A9E6 /* OrderService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderService.swift; sourceTree = "<group>"; };
@@ -437,6 +435,25 @@
 			path = Models;
 			sourceTree = "<group>";
 		};
+		9AA5C1D42C7E5B1300208F0D /* CartModels */ = {
+			isa = PBXGroup;
+			children = (
+				9A43E0732C70038100F2A9E6 /* CartNft.swift */,
+				9A43E06F2C6FBF1700F2A9E6 /* Order.swift */,
+				9AA5C1CA2C7E2E3800208F0D /* CartCurrencyModel.swift */,
+			);
+			path = CartModels;
+			sourceTree = "<group>";
+		};
+		9AA5C1D52C7E5B3500208F0D /* CartInteractors */ = {
+			isa = PBXGroup;
+			children = (
+				9A9117EA2C7180C800774E64 /* CartInteractor.swift */,
+				9AA5C1CE2C7E3AE500208F0D /* CartCurrencyInteractor.swift */,
+			);
+			path = CartInteractors;
+			sourceTree = "<group>";
+		};
 		9ADB06BD2C77F1D300C800D1 /* Controllers */ = {
 			isa = PBXGroup;
 			children = (
@@ -468,11 +485,8 @@
 		9AEF3EE52C7210AE009331FC /* Cart */ = {
 			isa = PBXGroup;
 			children = (
-				9A43E0732C70038100F2A9E6 /* CartNft.swift */,
-				9A9117EA2C7180C800774E64 /* CartInteractor.swift */,
-				9A43E06F2C6FBF1700F2A9E6 /* Order.swift */,
-				9AA5C1CA2C7E2E3800208F0D /* CartCurrencyModel.swift */,
-				9AA5C1CE2C7E3AE500208F0D /* CartCurrencyInteractor.swift */,
+				9AA5C1D52C7E5B3500208F0D /* CartInteractors */,
+				9AA5C1D42C7E5B1300208F0D /* CartModels */,
 			);
 			path = Cart;
 			sourceTree = "<group>";
@@ -481,7 +495,6 @@
 			isa = PBXGroup;
 			children = (
 				9AE020AD2C6E2511008A52BF /* AlertController + extension.swift */,
-				9A30A9482C793ECD003FE5CE /* Mock.swift */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -728,7 +741,6 @@
 				0C79EE682A76DE0900EE90EA /* NftDetailPresenter.swift in Sources */,
 				3F68069B29CBBAF100B4F915 /* ProductDetailsTableViewController.swift in Sources */,
 				9A04717C2C756A610086E596 /* AlertButtonAction.swift in Sources */,
-				9A30A9492C793ECD003FE5CE /* Mock.swift in Sources */,
 				9A43E0742C70038100F2A9E6 /* CartNft.swift in Sources */,
 				9A43E0702C6FBF1700F2A9E6 /* Order.swift in Sources */,
 				9ADB06BC2C77F01700C800D1 /* CartCurrencyViewController.swift in Sources */,
