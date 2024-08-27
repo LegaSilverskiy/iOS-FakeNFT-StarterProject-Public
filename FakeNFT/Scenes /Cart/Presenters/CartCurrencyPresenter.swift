@@ -79,6 +79,7 @@ final class CartCurrencyPresenter: CartCurrencyPresenterProtocol {
     }
     
     private func fetchCurrencies() {
+        view?.showHud()
         interactor.fetchCurrencies { [weak self] result in
             switch result {
             case .success(let currencyModels):
@@ -88,6 +89,7 @@ final class CartCurrencyPresenter: CartCurrencyPresenterProtocol {
                         DispatchQueue.main.async {
                             self?.view?.reloadData()
                             self?.loadSelectedCurrency()
+                            self?.view?.hideHud()
                         }
                     } else {
                         print("Failed to transform currencies")
@@ -100,17 +102,20 @@ final class CartCurrencyPresenter: CartCurrencyPresenterProtocol {
     }
     
     private func makePayment(by id: String)  {
+        view?.showHud()
         interactor.fetchPaymentRequest(for: id) { [weak self] result in
             switch result {
             case .success(let payment):
                 if payment.success {
                     DispatchQueue.main.async {
                         self?.view?.showSuccessFlow()
+                        self?.view?.hideHud()
                     }
                 }
                 else {
                     DispatchQueue.main.async {
                         self?.view?.showFailedPaymentAlert()
+                        self?.view?.hideHud()
                     }
                 }
             case .failure(let error):

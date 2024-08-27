@@ -6,6 +6,8 @@ protocol CartCurrencyView: AnyObject {
     func navigateToUserAgreement()
     func showFailedPaymentAlert()
     func showSuccessFlow()
+    func showHud()
+    func hideHud()
 }
 
 final class CartCurrencyViewController: UIViewController {
@@ -211,6 +213,14 @@ extension CartCurrencyViewController: UICollectionViewDataSource, UICollectionVi
 }
 
 extension CartCurrencyViewController: CartCurrencyView {
+    func showHud() {
+        UIBlockingProgressHUD.show()
+    }
+    
+    func hideHud() {
+        UIBlockingProgressHUD.dismiss()
+    }
+    
     func showSuccessFlow() {
         let vc = presenter.getSuccessFlow()
         vc.delegate = cartVC
