@@ -14,6 +14,7 @@ final class CartCurrencyViewController: UIViewController {
     
     private weak var cartVC: CartViewController?
     private var presenter: CartCurrencyPresenterProtocol
+    private var selectedCurrencyIndex: IndexPath?
     
     private let currencyCollectionView: UICollectionView = {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
@@ -152,6 +153,8 @@ final class CartCurrencyViewController: UIViewController {
         payButton.titleLabel?.font = UIFont.bodyBold
         payButton.setTitleColor(.textOnPrimary, for: .normal)
         payButton.layer.cornerRadius = 16
+        payButton.isEnabled = false
+        payButton.backgroundColor = .tabBarItemsTintColor.withAlphaComponent(0.2)
         
         NSLayoutConstraint.activate([
             payButton.heightAnchor.constraint(equalToConstant: 60),
@@ -159,6 +162,16 @@ final class CartCurrencyViewController: UIViewController {
             payButton.leadingAnchor.constraint(equalTo: footerPanel.leadingAnchor, constant: 16),
             payButton.trailingAnchor.constraint(equalTo: footerPanel.trailingAnchor, constant: -16)
         ])
+    }
+    
+    private func updatePayButtonState() {
+        if selectedCurrencyIndex != nil {
+            payButton.isEnabled = true
+            payButton.backgroundColor = .tabBarItemsTintColor
+        } else {
+            payButton.isEnabled = false
+            payButton.backgroundColor = .tabBarItemsTintColor.withAlphaComponent(0.2)
+        }
     }
     
     @objc
@@ -209,6 +222,8 @@ extension CartCurrencyViewController: UICollectionViewDataSource, UICollectionVi
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         presenter.didSelectCurrency(at: indexPath)
+        selectedCurrencyIndex = indexPath
+        updatePayButtonState()
     }
 }
 

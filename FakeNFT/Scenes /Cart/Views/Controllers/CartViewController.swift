@@ -288,5 +288,3 @@ extension CartViewController: CartSuccessPaymentDelegate {
         presenter.clearCart()
     }
 }
-
-
