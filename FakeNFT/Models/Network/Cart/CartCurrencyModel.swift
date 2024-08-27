@@ -1,6 +1,6 @@
 import Foundation
 
-struct CartCurrency {
+struct CartCurrencyModel: Decodable {
     let title: String
     let name: String
     let image: String
