@@ -31,13 +31,12 @@ final class CurrentCollectionNftPresenter {
         catalogNfts.nfts.forEach {
             view?.showLoading()
             service.nftService.loadNft(id: $0, completion: { [weak self] result in
+                self?.view?.hideLoading()
                 switch result {
                 case .success(let nft):
                     self?.nfts.append(nft)
-                    self?.view?.hideLoading()
                     self?.view?.reloadData()
                 case .failure(let error):
-                    self?.view?.hideLoading()
                     self?.view?.showErrorAlert()
                     print(error)
                 }
@@ -47,7 +46,7 @@ final class CurrentCollectionNftPresenter {
     
     func loadData() {
         guard let catalogNfts else { return }
-        let coverToUrl = URL(string: catalogNfts.cover)!
+        guard let coverToUrl = URL(string: catalogNfts.cover) else { return }
         view?.setupData(
             name: catalogNfts.name,
             cover: coverToUrl,
