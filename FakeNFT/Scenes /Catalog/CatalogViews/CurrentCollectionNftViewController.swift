@@ -16,7 +16,7 @@ final class CurrentCollectionNftViewController: UIViewController {
     private var presenter: CurrentCollectionNftPresenter
     
     //MARK: - UI properties
-    private lazy var scrollViewForNfts = UIScrollView()
+    private let scrollViewForNfts = UIScrollView()
     private lazy var contentView = UIView()
     private lazy var coverImage = UIImageView()
     private lazy var titleLabel = UILabel()
