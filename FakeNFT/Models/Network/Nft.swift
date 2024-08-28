@@ -9,8 +9,4 @@ struct Nft: Decodable {
     let price: Float
     let author: String
     let id: String
-    
-    var createAtDate: Date {
-        DateFormatter.defaultDateFormatter.date(from: createdAt)!
-    }
 }
