@@ -72,13 +72,13 @@ final class CurrentCollectionNftPresenter {
     }
     
     private func getProfile() {
-        service.profileService.loadProfile(completion: {[weak self] result in
+        service.profileService.loadProfile { [weak self] result in
             switch result {
             case .success(let profile):
                 self?.profile = profile
             case .failure(let error):
                 print(error)
             }
-        })
+        }
     }
 }
