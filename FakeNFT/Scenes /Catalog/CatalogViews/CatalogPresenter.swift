@@ -26,7 +26,10 @@ final class CatalogPresenter {
     }
     
     func viewWllAppear() {
-        state = .loading
+        if catalogs.isEmpty {
+            state = .loading} else {
+                return
+            }
     }
     
     // MARK: - Private Properties
