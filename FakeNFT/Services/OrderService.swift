@@ -9,7 +9,7 @@ import Foundation
 
 typealias OrderCompletion = (Result<Order, Error>) -> Void
 
-final class OrderServiceImpl {
+final class OrderService {
     
     private let networkClient: NetworkClient
     private let storage: NftStorage
