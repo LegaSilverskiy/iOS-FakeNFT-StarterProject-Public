@@ -266,7 +266,7 @@ private extension CurrentCollectionNftViewController {
             contentView.topAnchor.constraint(equalTo: scrollViewForNfts.topAnchor, constant: -100),
             contentView.widthAnchor.constraint(equalTo: scrollViewForNfts.widthAnchor),
             //TODO: Придумать как динамически высчитывать высоту
-            contentView.heightAnchor.constraint(equalToConstant: 3000),
+            contentView.heightAnchor.constraint(equalToConstant: 900),
             contentView.bottomAnchor.constraint(equalTo: scrollViewForNfts.bottomAnchor),
             
             coverImage.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 0),
