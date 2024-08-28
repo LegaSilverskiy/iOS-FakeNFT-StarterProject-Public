@@ -60,14 +60,15 @@ final class CurrentCollectionNftPresenter {
     
     //MARK: - Private methods
     private func convertToCellModel(nft: Nft) -> CurrentCollectionCell {
-        CurrentCollectionCell(
+        .init(
             id: nft.id,
             nameNft: nft.name,
             price: nft.price,
             isLiked: service.profileService.likeState(for: nft.id),
             isInTheCart: service.orderService.cartState(for: nft.id),
             rating: nft.rating,
-            url: nft.images[0])
+            url: nft.images[0]
+        )
     }
     
     private func getProfile() {
