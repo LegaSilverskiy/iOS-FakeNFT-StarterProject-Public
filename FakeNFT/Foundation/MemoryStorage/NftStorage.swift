@@ -5,49 +5,49 @@ final class NftStorage {
     
     private var likes: Set<String> = []
     private var orders: Set<String> = []
-    private var orderId: String?
+    var orderId: String?
     
     private var storage: [String: Nft] = [:]
-    private let syncQueue = DispatchQueue(label: "sync-nft-queue")
+    private let storageQueue = DispatchQueue(label: "storage-nft-queue")
     
     func saveNft(_ nft: Nft) {
-        syncQueue.async { [weak self] in
+        storageQueue.async { [weak self] in
             self?.storage[nft.id] = nft
         }
     }
     
     func getNft(with id: String) -> Nft? {
-        syncQueue.sync {
+        storageQueue.sync {
             storage[id]
         }
     }
     
     func getLike(with id: String) -> String? {
-        return syncQueue.sync {
+        return storageQueue.sync {
             likes.first(where: {$0 == id})
         }
     }
     
     func saveLike(_ nft: String) {
-        syncQueue.async { [weak self] in
+        storageQueue.async { [weak self] in
             self?.likes.insert(nft)
         }
     }
     
     func deleteLike(with id: String) {
-        syncQueue.async { [weak self] in
+        storageQueue.async { [weak self] in
             self?.likes.remove(id)
         }
     }
     
     func saveOrderId(orderId: String){
-        syncQueue.async { [weak self] in
+        storageQueue.async { [weak self] in
             self?.orderId = orderId
         }
     }
     
     func saveOrders(_ nft: String) {
-        syncQueue.async { [weak self] in
+        storageQueue.async { [weak self] in
             self?.orders.insert(nft)
         }
     }
@@ -57,7 +57,7 @@ final class NftStorage {
     }
     
     func deleteOrders(with id: String) {
-        syncQueue.async { [weak self] in
+        storageQueue.async { [weak self] in
             self?.orders.remove(id)
         }
     }
