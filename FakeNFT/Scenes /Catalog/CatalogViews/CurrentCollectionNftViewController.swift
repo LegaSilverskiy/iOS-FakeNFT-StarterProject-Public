@@ -186,6 +186,7 @@ private extension CurrentCollectionNftViewController {
         configDescriptionLabel()
         configCollectionView()
         configBackButton()
+        view.backgroundColor = .systemBackground
     }
     
     func configBackButton() {
