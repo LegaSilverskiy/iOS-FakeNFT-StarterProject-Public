@@ -3,9 +3,9 @@ import Foundation
 
 final class NftStorage {
     
-    var likes: Set<String> = []
-    var orders: Set<String> = []
-    var orderId: String?
+    private var likes: Set<String> = []
+    private var orders: Set<String> = []
+    private var orderId: String?
     
     private var storage: [String: Nft] = [:]
     private let syncQueue = DispatchQueue(label: "sync-nft-queue")
