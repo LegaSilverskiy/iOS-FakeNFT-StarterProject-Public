@@ -21,10 +21,25 @@ final class ServicesAssembly {
         )
     }
     
-    var catalogService: CatalogServiceImpl {
+    var catalogService: CatalogService {
             .init(
                 networkClient: networkClient,
                 storage: catalogStorage
             )
         }
+    
+    
+    var profileService: ProfileService {
+        .init(
+            networkClient: networkClient,
+            storage: nftStorage
+        )
+    }
+    
+    var orderService: OrderService {
+        .init(
+            networkClient: networkClient,
+            storage: nftStorage
+        )
+    }
 }

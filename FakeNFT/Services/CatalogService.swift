@@ -9,7 +9,7 @@ import Foundation
 
 typealias CatalogCompletion = (Result<[Catalog], Error>) -> Void
 
-final class CatalogServiceImpl {
+final class CatalogService {
     private let networkClient: NetworkClient
     private let storage: CatalogStorage
     

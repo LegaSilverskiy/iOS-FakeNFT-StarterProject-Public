@@ -35,7 +35,7 @@ final class CustomCellForTableView: UITableViewCell, ReuseIdentifying {
     }
     
     func setupImageWithKf(with url: URL) {
-        imageCollectionNFT.kf.setImage(with: url, placeholder: UIImage.tabBarIconsCatalog?.withTintColor(.black))
+        imageCollectionNFT.kf.setImage(with: url, placeholder: UIImage.tabBarIconsCatalog?.withTintColor(.mainTextColor))
     }
     
     //MARK: - Overrides Methods

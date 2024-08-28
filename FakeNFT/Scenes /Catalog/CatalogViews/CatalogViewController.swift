@@ -5,6 +5,7 @@ final class CatalogViewController: UIViewController, ErrorView {
     
     
     private let presenter: CatalogPresenter
+    private let servicesAssembly: ServicesAssembly
     
     // MARK: - Private UI Properties
     
@@ -14,7 +15,7 @@ final class CatalogViewController: UIViewController, ErrorView {
     // MARK: - Initializers
     init(servicesAssembly: ServicesAssembly) {
         self.presenter = CatalogPresenter(servicesAssembly: servicesAssembly)
-        
+        self.servicesAssembly = servicesAssembly
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -34,6 +35,7 @@ final class CatalogViewController: UIViewController, ErrorView {
     
     override func viewWillAppear(_ animated: Bool) {
         presenter.viewWllAppear()
+        tabBarController?.tabBar.isHidden = false
     }
     
     //MARK: - Public Methods
@@ -101,11 +103,12 @@ extension CatalogViewController: UITableViewDataSource {
 //MARK: - UITabvleViewDelegate
 extension CatalogViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        let navigationCollection = CurrentCollectionNftViewController()
-        let navigation = UINavigationController(rootViewController: navigationCollection)
-        navigation.modalPresentationStyle = .fullScreen
-        present(navigation, animated: true)
-        
+        tableView.deselectRow(at: indexPath, animated: true)
+        let nftCollectionViewController = CurrentCollectionNftViewController(
+            servicesAssembly: servicesAssembly,
+            collection: presenter.catalogs[indexPath.row]
+        )
+        self.navigationController?.pushViewController(nftCollectionViewController, animated: true)
     }
     
     func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {

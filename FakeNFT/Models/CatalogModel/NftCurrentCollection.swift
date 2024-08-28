@@ -1,13 +1,13 @@
 //
-//  CatalogMainScreenModel.swift
+//  NftCollectionModel.swift
 //  FakeNFT
 //
-//  Created by Олег Серебрянский on 8/13/24.
+//  Created by Олег Серебрянский on 8/23/24.
 //
 
 import Foundation
 
-struct Catalog: Codable {
+struct NftCurrentCollection: Decodable {
     let createdAt: String
     let name: String
     let cover: String

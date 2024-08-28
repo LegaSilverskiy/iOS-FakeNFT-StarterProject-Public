@@ -19,7 +19,6 @@ final class CatalogPresenter {
             stateDidChange()
         }
     }
-    
     // MARK: - Public Methods
     
     func viewDidLoad() {
@@ -27,12 +26,13 @@ final class CatalogPresenter {
     }
     
     func viewWllAppear() {
-        state = .loading
-    }
+          guard catalogs.isEmpty else { return }
+          state = .loading
+      }
     
     // MARK: - Private Properties
-    private let service: CatalogServiceImpl
-    private var catalogs: [Catalog] = []
+    private let service: CatalogService
+    var catalogs: [Catalog] = []
     
     // MARK: - Initializers
     init(servicesAssembly: ServicesAssembly) {
