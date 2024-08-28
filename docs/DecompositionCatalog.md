@@ -50,10 +50,10 @@
 
 ## Доделать оставшуюся логику и смерджит
 
-- Сортировка (est: 240 min; fact: x min).
+- Сортировка (est: 240 min; fact: 140 min).
 - Добавить NFT в избранное (est: 240 min; fact: x min)
 - Добавить NFT в корзину (est: 240 min; fact: x min)
 - Смёрджить проект с командой (est: 240 min; fact: x min)
-- Сохранить способ сортировки (est: 120 min; fact: x min).
+- Сохранить способ сортировки (est: 120 min; fact: 40 min).
 
 `Total:` est: 940 min; fact: x min.
