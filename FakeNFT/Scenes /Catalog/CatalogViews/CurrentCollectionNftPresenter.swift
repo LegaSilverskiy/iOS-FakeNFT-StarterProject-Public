@@ -17,7 +17,7 @@ final class CurrentCollectionNftPresenter {
     private let service: ServicesAssembly
     private var profile: Profile?
     private var catalogNfts: Catalog?
-
+    
     // MARK: - Initializers
     init(service: ServicesAssembly, nftCollection: Catalog?) {
         self.service = service
@@ -45,8 +45,8 @@ final class CurrentCollectionNftPresenter {
     }
     
     func loadData() {
-        guard let catalogNfts else { return }
-        guard let coverToUrl = URL(string: catalogNfts.cover) else { return }
+        guard let catalogNfts,
+              let coverToUrl = URL(string: catalogNfts.cover) else { return }
         view?.setupData(
             name: catalogNfts.name,
             cover: coverToUrl,

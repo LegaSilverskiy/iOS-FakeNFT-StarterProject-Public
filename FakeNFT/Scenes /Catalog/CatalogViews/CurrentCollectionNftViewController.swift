@@ -265,7 +265,7 @@ private extension CurrentCollectionNftViewController {
             
             contentView.topAnchor.constraint(equalTo: scrollViewForNfts.topAnchor, constant: -100),
             contentView.widthAnchor.constraint(equalTo: scrollViewForNfts.widthAnchor),
-            //TODO: Придумать как динамически высчитывать высоту
+            //TODO: Почему-то не работает скролл, если растянуть по view
             contentView.heightAnchor.constraint(equalToConstant: 900),
             contentView.bottomAnchor.constraint(equalTo: scrollViewForNfts.bottomAnchor),
             

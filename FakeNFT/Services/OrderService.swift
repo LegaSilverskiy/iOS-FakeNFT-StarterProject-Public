@@ -17,7 +17,6 @@ final class OrderService {
     init(networkClient: NetworkClient, storage: NftStorage) {
         self.networkClient = networkClient
         self.storage = storage
-        loadOrders { _ in }
     }
     
     func loadOrders(completion: @escaping OrderCompletion) {
