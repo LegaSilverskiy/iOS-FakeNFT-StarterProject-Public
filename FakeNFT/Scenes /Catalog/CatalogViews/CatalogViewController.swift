@@ -3,7 +3,7 @@ import ProgressHUD
 
 final class CatalogViewController: UIViewController, ErrorView {
     
-    
+    //MARK: - Private properties
     private let presenter: CatalogPresenter
     private let servicesAssembly: ServicesAssembly
     
@@ -73,8 +73,12 @@ private extension CatalogViewController {
         let alert = UIAlertController(title: .actionSheetTitleSorting,
                                       message: nil,
                                       preferredStyle: .actionSheet)
-        let sortByName = UIAlertAction(title: .sortingOptionsByNamedNft, style: .default)
-        let sortByNftCount = UIAlertAction(title: .sortingOptionsByNumberOfNFTs, style: .default)
+        let sortByName = UIAlertAction(title: .sortingOptionsByNamedNft, style: .default){ action in
+            self.presenter.sortByName()
+        }
+        let sortByNftCount = UIAlertAction(title: .sortingOptionsByNumberOfNFTs, style: .default){ action in
+            self.presenter.sortByCount()
+        }
         let cancelAction = UIAlertAction(title: .buttonsClose, style: .cancel)
         [sortByName, sortByNftCount, cancelAction].forEach { alert.addAction($0)}
         self.present(alert, animated: true)
