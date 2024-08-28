@@ -10,7 +10,7 @@ import WebKit
 protocol UserSiteViewProtocol: AnyObject {
     func setProgressValue(_ newValue: Float)
     func setProgressHidden(_ isHidden: Bool)
-    func loadSite(url: URL)
+    func loadSite(request: URLRequest)
 }
 
 final class UserSiteViewController: UIViewController, UserSiteViewProtocol {
@@ -46,8 +46,8 @@ final class UserSiteViewController: UIViewController, UserSiteViewProtocol {
     }
 
     // MARK: - Public Methods
-    func loadSite(url: URL) {
-        webView.load(URLRequest(url: url))
+    func loadSite(request: URLRequest) {
+        webView.load(request)
     }
 
     func setProgressValue(_ newValue: Float) {

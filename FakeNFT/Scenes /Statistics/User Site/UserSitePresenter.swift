@@ -45,7 +45,8 @@ final class UserSitePresenter: UserSitePresenterProtocol {
     // MARK: - Private Methods
     private func loadUserSite(with url: String) {
         if let url = URL(string: url) {
-            view?.loadSite(url: url)
+            let urlRequest = URLRequest(url: url)
+            view?.loadSite(request: urlRequest)
         }
     }
 }
