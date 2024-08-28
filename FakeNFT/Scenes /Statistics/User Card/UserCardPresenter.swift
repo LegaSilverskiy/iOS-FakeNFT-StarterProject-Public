@@ -13,6 +13,7 @@ protocol UserCardPresenterProtocol {
     func getUserName() -> String
     func getUserDescription() -> String
     func getNFTcount() -> Int
+    func userSiteButtonPressed()
 }
 
 final class UserCardPresenter: UserCardPresenterProtocol {
@@ -54,5 +55,9 @@ final class UserCardPresenter: UserCardPresenterProtocol {
 
     func showNFTsButtonPressed() {
         view?.switchToUserNFTCollectionVC(userNfts: userInfo.nfts, servisesAssembly: servisesAssembly)
+    }
+
+    func userSiteButtonPressed() {
+        view?.showUserSite(url: userInfo.website)
     }
 }

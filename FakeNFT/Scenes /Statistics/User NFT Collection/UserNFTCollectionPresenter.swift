@@ -20,48 +20,53 @@ final class UserNFTCollectionPresenter: UserNFTCollectionPresenterProtocol {
     // MARK: - Private Properties
     private let servisesAssembly: ServicesAssembly
     private let userNFTService: UserNFTServiceProtocol
-    private let profileService: ProfileServiceProtocol
+    private let favoritesService: FavoritesServiceProtocol
     private let orderService: OrderServiceProtocol
-
     private let userNfts: [String]
     private var userNftsDetails: [NftDetails] = []
-    private var faviriteNfts: [String] = []
-    private var orderedNfts: [String] = []
+    private var favoriteNfts: [String]?
+    private var updatedFavoriteNfts: [String] = []
+    private var orderedNfts: [String]?
+    private var updatedOrderedNfts: [String] = []
     private var state: NFTCollectionPresenterState? {
         didSet {
             stateDidChanged()
         }
     }
-    private var dataIsLoading = false
+    private var dataLoading = false
     private var collectionUpdateMethod: CollectionUpdateMethods = .insertItems
+    private var currentlyUpdatedNftIndex: Int?
     private var firstIndexForReload = 0
     private var alertIsPresented = false
-
     private enum LoadedDataType {
-        case profile(Profile), order(Order), newNft(NftDetails)
+        case favorites(Favorites), order(Order), newNft(NftDetails)
     }
-
     private enum LoadErrorCases {
         case profile(Error), order(Error), newNft(Error)
     }
-
-    private enum NFTCollectionPresenterState {
-        case preload, show, loadNft, data(LoadedDataType), failed(LoadErrorCases)
+    private enum UpdateErrorCases {
+        case favorites(Error), order(Error)
     }
-    /*
-     preload  - стейт предварительной загрузки данных профиля и корзины
-     show     - стейт показа данных с проверкой необходимости подгрузки след. ячейки
-     loadNft  - стейт загрузки данных nft
-     failed   - стейт обработки ошибки при неудачной загрузке данных
-     data     - стейт обработки данных при удачной загрузке из сети
-     */
+    private enum NftUpdateCases {
+        case favorite, order
+    }
+    private enum NFTCollectionPresenterState {
+        case preload,                        // предварительная загрузка данных (избранное / корзина)
+             show,                           // обновление коллекции, проверка необходимости подгрузки след. ячейки
+             loadNft,                        // загрузка данных NFT
+             updateNFT(NftUpdateCases),      // обновление статуса NFT (в избранном / в корзине)
+             loadSuccess(LoadedDataType),    // загрузка данных NFT прошла удачно
+             loadFailure(LoadErrorCases),    // обработка ошибки при неудачной загрузке данных NFT
+             updateSuccess(NftUpdateCases),  // обновление статуса (в избранном / в корзине) прошло удачно
+             updateFailure(UpdateErrorCases) // ошибка обновления статуса (в избранном / в корзине)
+    }
 
     // MARK: - Initializers
     init(userNfts: [String], servisesAssembly: ServicesAssembly) {
         self.userNfts = userNfts
         self.servisesAssembly = servisesAssembly
         self.userNFTService = servisesAssembly.userNFTService
-        self.profileService = servisesAssembly.profileService
+        self.favoritesService = servisesAssembly.favoritesService
         self.orderService = servisesAssembly.orderService
     }
 
@@ -70,13 +75,11 @@ final class UserNFTCollectionPresenter: UserNFTCollectionPresenterProtocol {
         guard !userNfts.isEmpty else {
             return
         }
-
         firstIndexForReload = 0
 
         if userNftsDetails.count == userNfts.count {
             collectionUpdateMethod = .reloadItems
         }
-
         state = .preload
     }
 
@@ -95,30 +98,30 @@ final class UserNFTCollectionPresenter: UserNFTCollectionPresenterProtocol {
                      image: nft.images[0],
                      rating: nft.rating,
                      price: "\(String(nft.price)) ETH",
-                     isFavorite: faviriteNfts.contains(userNfts[index]),
-                     isInCart: orderedNfts.contains(userNfts[index])
+                     isFavorite: favoriteNfts?.contains(userNfts[index]) ?? false,
+                     isInCart: orderedNfts?.contains(userNfts[index]) ?? false
         )
     }
 
     // MARK: - Private Methods
     private func stateDidChanged() {
         switch state {
-
         case .preload:
             preloadStateProcessing()
-
         case .show:
             showStateProcessing()
-
         case .loadNft:
             loadNftStateProcessing()
-
-        case .data(let dataType):
-            dataStateProcessing(dataType: dataType)
-
-        case .failed(let errorCase):
+        case .updateNFT(let option):
+            updateNftStateProcessing(with: option)
+        case .loadSuccess(let dataType):
+            loadSuccessStateProcessing(dataType: dataType)
+        case .loadFailure(let errorCase):
             failedStateProcessing(errorCase: errorCase)
-
+        case .updateSuccess(let option):
+            updateSuccessStateProcessing(with: option)
+        case .updateFailure(let errorCase):
+            updateFailureStateProcessing(errorCase: errorCase)
         case .none:
             assertionFailure("StatisticsPresenter can't move to initial state")
         }
@@ -126,10 +129,10 @@ final class UserNFTCollectionPresenter: UserNFTCollectionPresenterProtocol {
 
     private func preloadStateProcessing() {
         view?.showLoading()
-        if faviriteNfts.isEmpty {
-            self.loadProfile()
-        } else if orderedNfts.isEmpty {
-            self.loadOrder()
+        if favoriteNfts == nil {
+            self.getFavoriteNfts()
+        } else if orderedNfts == nil {
+            self.getOrderedNfts()
         } else {
             view?.hideLoading()
             state = .show
@@ -145,28 +148,39 @@ final class UserNFTCollectionPresenter: UserNFTCollectionPresenterProtocol {
     }
 
     private func loadNftStateProcessing() {
-        if !dataIsLoading {
-            dataIsLoading = true
+        if !dataLoading {
+            dataLoading = true
             loadNextNft()
         }
     }
 
-    private func dataStateProcessing(dataType: LoadedDataType) {
-        dataIsLoading = false
+    private func updateNftStateProcessing(with option: NftUpdateCases) {
+        view?.showLoading()
+        if !dataLoading {
+            dataLoading = true
+        }
+
+        switch option {
+        case .favorite:
+            updateFavoriteNfts()
+        case .order:
+            updateOrderedNfts()
+        }
+    }
+
+    private func loadSuccessStateProcessing(dataType: LoadedDataType) {
+        dataLoading = false
 
         switch dataType {
-
-        case .profile(let profile):
-            faviriteNfts = profile.likes
+        case .favorites(let profileData):
+            favoriteNfts = profileData.likes
             state = .preload
-
         case .order(let order):
             orderedNfts = order.nfts
             state = .loadNft
-
         case .newNft(let newNft):
             view?.hideLoading()
-            self.userNftsDetails.append(newNft)
+            userNftsDetails.append(newNft)
             collectionUpdateMethod = .insertItems
             state = .show
         }
@@ -176,28 +190,24 @@ final class UserNFTCollectionPresenter: UserNFTCollectionPresenterProtocol {
         if !alertIsPresented {
             alertIsPresented.toggle()
             view?.hideLoading()
-
             var primaryAction: () -> Void
             var returnedError: (any Error)
 
             switch errorCase {
-
             case .profile(let error):
                 returnedError = error
                 primaryAction = { [weak self] in
                     self?.alertDismissed()
                     self?.view?.showLoading()
-                    self?.loadProfile()
+                    self?.getFavoriteNfts()
                 }
-
             case .order(let error):
                 returnedError = error
                 primaryAction = { [weak self] in
                     self?.alertDismissed()
                     self?.view?.showLoading()
-                    self?.loadOrder()
+                    self?.getOrderedNfts()
                 }
-
             case .newNft(let error):
                 returnedError = error
                 primaryAction = { [weak self] in
@@ -211,34 +221,103 @@ final class UserNFTCollectionPresenter: UserNFTCollectionPresenterProtocol {
                 returnedError,
                 primaryAction: primaryAction
             )
+            view?.showError(errorModel)
+        }
+    }
 
+    private func updateSuccessStateProcessing(with option: NftUpdateCases) {
+        view?.hideLoading()
+        dataLoading = false
+
+        if option == .favorite {
+            favoriteNfts = updatedFavoriteNfts
+        } else {
+            orderedNfts = updatedOrderedNfts
+        }
+        collectionUpdateMethod = .reloadItems
+        state = .show
+    }
+
+    private func updateFailureStateProcessing(errorCase: UpdateErrorCases) {
+        if !alertIsPresented {
+            alertIsPresented.toggle()
+            view?.hideLoading()
+            dataLoading = false
+            var primaryAction: () -> Void
+            var returnedError: (any Error)
+
+            switch errorCase {
+            case .favorites(let error):
+                returnedError = error
+                primaryAction = { [weak self] in
+                    self?.alertDismissed()
+                    self?.view?.showLoading()
+                    self?.state = .updateNFT(.favorite)
+                }
+            case .order(let error):
+                returnedError = error
+                primaryAction = { [weak self] in
+                    self?.alertDismissed()
+                    self?.view?.showLoading()
+                    self?.state = .updateNFT(.order)
+                }
+            }
+            let errorModel = makeErrorModel(
+                returnedError,
+                primaryAction: primaryAction
+            )
             view?.showError(errorModel)
         }
     }
 
     private func alertDismissed() {
         alertIsPresented = false
-        dataIsLoading = false
+        dataLoading = false
     }
 
-    private func loadProfile() {
-        profileService.loadProfile {[weak self] result in
+    private func getFavoriteNfts() {
+        dataLoading = true
+        favoritesService.sendFavoritesRequest(httpMethod: .get, favoriteNfts: nil) {[weak self] result in
             switch result {
-            case .success(let profileData):
-                self?.state = .data(.profile(profileData))
+            case .success(let favoriteNfts):
+                self?.state = .loadSuccess(.favorites(favoriteNfts))
             case .failure(let error):
-                self?.state = .failed(.profile(error))
+                self?.state = .loadFailure(.profile(error))
             }
         }
     }
 
-    private func loadOrder() {
-        orderService.loadOrder {[weak self] result in
+    private func updateFavoriteNfts() {
+        favoritesService.sendFavoritesRequest(httpMethod: .put, favoriteNfts: updatedFavoriteNfts) {[weak self] result in
+            switch result {
+            case .success(let nfts):
+                self?.updatedFavoriteNfts = nfts.likes
+                self?.state = .updateSuccess(.favorite)
+            case .failure(let error):
+                self?.state = .updateFailure(.favorites(error))
+            }
+        }
+    }
+
+    private func getOrderedNfts() {
+        orderService.sendOrderRequest(httpMethod: .get, orderedNfts: nil) {[weak self] result in
             switch result {
             case .success(let orderData):
-                self?.state = .data(.order(orderData))
+                self?.state = .loadSuccess(.order(orderData))
             case .failure(let error):
-                self?.state = .failed(.order(error))
+                self?.state = .loadFailure(.order(error))
+            }
+        }
+    }
+
+    private func updateOrderedNfts() {
+        orderService.sendOrderRequest(httpMethod: .put, orderedNfts: updatedOrderedNfts) {[weak self] result in
+            switch result {
+            case .success(let orderData):
+                self?.updatedOrderedNfts = orderData.nfts
+                self?.state = .updateSuccess(.order)
+            case .failure(let error):
+                self?.state = .updateFailure(.order(error))
             }
         }
     }
@@ -247,15 +326,21 @@ final class UserNFTCollectionPresenter: UserNFTCollectionPresenterProtocol {
         userNFTService.loadNftDetails(id: userNfts[userNftsDetails.count]) {[weak self] result in
             switch result {
             case .success(let newNft):
-                self?.state = .data(.newNft(newNft))
+                self?.state = .loadSuccess(.newNft(newNft))
             case .failure(let error):
-                self?.state = .failed(.newNft(error))
+                self?.state = .loadFailure(.newNft(error))
             }
         }
     }
 
     private func getIndexesForReload() -> [IndexPath] {
         var indexes: [IndexPath] = []
+        if let currentlyUpdatedNftIndex {
+            indexes.append(.init(item: currentlyUpdatedNftIndex, section: 0))
+            self.currentlyUpdatedNftIndex = nil
+            return(indexes)
+        }
+
         for index in firstIndexForReload ..< userNftsDetails.count {
             indexes.append(.init(item: index, section: 0))
         }
@@ -263,10 +348,7 @@ final class UserNFTCollectionPresenter: UserNFTCollectionPresenterProtocol {
     }
 
     private func makeErrorModel(_ error: Error, primaryAction: @escaping () -> Void) -> ErrorModel {
-
-        let message: String = error is NetworkClientError
-        ? .errorNetwork
-        : .errorUnknown
+        let message: String = error is NetworkClientError ? .errorNetwork : .errorUnknown
 
         return .init(
             message: message,
@@ -280,5 +362,37 @@ final class UserNFTCollectionPresenter: UserNFTCollectionPresenterProtocol {
 
 // MARK: - TrackersCVCellDelegate
 extension UserNFTCollectionPresenter: UserNFTCollectionCellDelegate {
-    // TODO: - Задача на третий модуль, добавить методы работы с избраенным и корзиной
+    func updateNftFavoriteStatus(index: Int) {
+        guard !dataLoading else {return}
+        dataLoading.toggle()
+
+        currentlyUpdatedNftIndex = index
+        let currentlyUpdatedNftID = userNftsDetails[index].id
+        updatedFavoriteNfts = favoriteNfts ?? []
+        if updatedFavoriteNfts.contains(currentlyUpdatedNftID) {
+            updatedFavoriteNfts = updatedFavoriteNfts.filter {nftID in
+                nftID != currentlyUpdatedNftID
+            }
+        } else {
+            updatedFavoriteNfts.append(currentlyUpdatedNftID)
+        }
+        state = .updateNFT(.favorite)
+    }
+
+    func updateNftOrderStatus(index: Int) {
+        guard !dataLoading else {return}
+        dataLoading.toggle()
+
+        currentlyUpdatedNftIndex = index
+        let currentlyUpdatedNftID = userNftsDetails[index].id
+        updatedOrderedNfts = orderedNfts ?? []
+        if updatedOrderedNfts.contains(currentlyUpdatedNftID) {
+            updatedOrderedNfts = updatedOrderedNfts.filter {nftID in
+                nftID != currentlyUpdatedNftID
+            }
+        } else {
+            updatedOrderedNfts.append(currentlyUpdatedNftID)
+        }
+        state = .updateNFT(.order)
+    }
 }

@@ -79,7 +79,6 @@ final class StatisticsViewController: UIViewController, StatisticsViewProtocol {
 
     // MARK: - Private Methods
     private func setUI() {
-
         view.backgroundColor = .systemBackground
 
         setNavBarButtons()

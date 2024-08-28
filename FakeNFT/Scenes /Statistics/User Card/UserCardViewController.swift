@@ -9,6 +9,7 @@ import UIKit
 protocol UserCardViewProtocol: AnyObject {
     func updateUserImage(with url: URL)
     func switchToUserNFTCollectionVC(userNfts: [String], servisesAssembly: ServicesAssembly)
+    func showUserSite(url: String)
 }
 
 final class UserCardViewController: UIViewController, UserCardViewProtocol {
@@ -121,6 +122,12 @@ final class UserCardViewController: UIViewController, UserCardViewProtocol {
         )
     }
 
+    func showUserSite(url: String) {
+        let assembler = UserSiteAssembler(userSiteUrl: url)
+        let viewController  = assembler.build()
+        self.navigationController?.pushViewController(viewController, animated: true)
+    }
+
     func switchToUserNFTCollectionVC(userNfts: [String], servisesAssembly: ServicesAssembly) {
         let assembler = UserNftCollectionAssembler(userNfts: userNfts, servisesAssembly: servisesAssembly)
         let viewController  = assembler.build()
@@ -129,7 +136,7 @@ final class UserCardViewController: UIViewController, UserCardViewProtocol {
 
     // MARK: - IBAction
     @objc private func userSiteButtonPressed() {
-        // TODO: - Задача на третий модуль
+        presenter.userSiteButtonPressed()
     }
 
     @objc private func showNFTsButtonPressed() {
