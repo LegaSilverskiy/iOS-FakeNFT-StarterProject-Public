@@ -17,7 +17,6 @@ final class ProfileService  {
     init(networkClient: NetworkClient, storage: NftStorage) {
         self.networkClient = networkClient
         self.storage = storage
-        loadProfile { _ in }
     }
     
     func loadProfile(completion: @escaping ProfileCompletion) {

@@ -154,14 +154,14 @@ private extension NftCollectionViewCell {
     
     //MARK: - Actions
     @objc func didTapLikeButton() {
-            guard let indexPath else { return }
+        guard let indexPath else { return }
         view?.updateLike(for: indexPath, state: likeState)
-        }
-        
+    }
+    
     @objc func didTapCartButton() {
-            guard let indexPath else { return }
+        guard let indexPath else { return }
         view?.updateOrder(for: indexPath)
-        }
+    }
 }
 
 
