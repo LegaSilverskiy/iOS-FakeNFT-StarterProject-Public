@@ -12,9 +12,9 @@ typealias OrderCompletion = (Result<Order, Error>) -> Void
 final class OrderServiceImpl {
     
     private let networkClient: NetworkClient
-    private let storage: NftStorageImpl
+    private let storage: NftStorage
     
-    init(networkClient: NetworkClient, storage: NftStorageImpl) {
+    init(networkClient: NetworkClient, storage: NftStorage) {
         self.networkClient = networkClient
         self.storage = storage
         loadOrders { _ in }

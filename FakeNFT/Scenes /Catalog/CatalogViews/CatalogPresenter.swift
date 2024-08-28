@@ -30,7 +30,7 @@ final class CatalogPresenter {
     }
     
     // MARK: - Private Properties
-    private let service: CatalogServiceImpl
+    private let service: CatalogService
     var catalogs: [Catalog] = []
     
     // MARK: - Initializers

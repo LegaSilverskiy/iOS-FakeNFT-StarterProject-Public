@@ -1,7 +1,7 @@
 import Foundation
 
 
-final class NftStorageImpl {
+final class NftStorage {
     
     var likes: Set<String> = []
     var orders: Set<String> = []

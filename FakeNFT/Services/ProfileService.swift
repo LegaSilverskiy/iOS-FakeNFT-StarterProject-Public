@@ -9,12 +9,12 @@ import Foundation
 
 typealias ProfileCompletion = (Result<Profile, Error>) -> Void
 
-final class ProfileServiceImpl  {
+final class ProfileService  {
     
     private let networkClient: NetworkClient
-    private let storage: NftStorageImpl
+    private let storage: NftStorage
     
-    init(networkClient: NetworkClient, storage: NftStorageImpl) {
+    init(networkClient: NetworkClient, storage: NftStorage) {
         self.networkClient = networkClient
         self.storage = storage
         loadProfile { _ in }
