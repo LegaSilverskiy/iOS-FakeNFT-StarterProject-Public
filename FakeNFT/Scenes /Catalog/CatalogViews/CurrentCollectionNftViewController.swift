@@ -300,7 +300,10 @@ private extension CurrentCollectionNftViewController {
     
     //MARK: - Actions
     @objc func didTapAuthorButton() {
-        //TODO: реализовать webView
+        let url = presenter.getAuthorURL()
+        guard let url = url else { return }
+        let webView = WebViewForAuthor(url: url)
+        navigationController?.pushViewController(webView, animated: true)
     }
     
     @objc func customBackAction() {

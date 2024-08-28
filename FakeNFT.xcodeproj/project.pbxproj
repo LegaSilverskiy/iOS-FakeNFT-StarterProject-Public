@@ -73,6 +73,7 @@
 		EBFDCF7D2C7D029A001E83BA /* ProfileRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBFDCF7C2C7D029A001E83BA /* ProfileRequest.swift */; };
 		EBFDCF7F2C7D02CA001E83BA /* Order.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBFDCF7E2C7D02CA001E83BA /* Order.swift */; };
 		EBFDCF812C7D02DB001E83BA /* Profile.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBFDCF802C7D02DB001E83BA /* Profile.swift */; };
+		EBFDCF852C7F7E5F001E83BA /* WebViewForAuthor.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBFDCF842C7F7E5F001E83BA /* WebViewForAuthor.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -162,6 +163,7 @@
 		EBFDCF7C2C7D029A001E83BA /* ProfileRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileRequest.swift; sourceTree = "<group>"; };
 		EBFDCF7E2C7D02CA001E83BA /* Order.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Order.swift; sourceTree = "<group>"; };
 		EBFDCF802C7D02DB001E83BA /* Profile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Profile.swift; sourceTree = "<group>"; };
+		EBFDCF842C7F7E5F001E83BA /* WebViewForAuthor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewForAuthor.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -483,6 +485,7 @@
 				EB55301E2C6FCBA0002A15F6 /* CatalogPresenter.swift */,
 				EB5530312C735774002A15F6 /* CurrentCollectionNftViewController.swift */,
 				EBFDCF1F2C77AA33001E83BA /* CurrentCollectionNftPresenter.swift */,
+				EBFDCF842C7F7E5F001E83BA /* WebViewForAuthor.swift */,
 			);
 			path = CatalogViews;
 			sourceTree = "<group>";
@@ -686,6 +689,7 @@
 				3F6806D529CBBEC700B4F915 /* NetworkTask.swift in Sources */,
 				EB5530262C72821F002A15F6 /* CatalogStorage.swift in Sources */,
 				0CF2C2DB2A783C1B00FDC837 /* LoadingView.swift in Sources */,
+				EBFDCF852C7F7E5F001E83BA /* WebViewForAuthor.swift in Sources */,
 				3F68069729CBBAF100B4F915 /* AppDelegate.swift in Sources */,
 				D486EF5B2C6396350023EF6F /* CatalogViewController.swift in Sources */,
 				3F68069929CBBAF100B4F915 /* SceneDelegate.swift in Sources */,

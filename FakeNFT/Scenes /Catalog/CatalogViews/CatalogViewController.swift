@@ -39,7 +39,6 @@ final class CatalogViewController: UIViewController, ErrorView {
     }
     
     //MARK: - Public Methods
-    
     func updatetable() {
         tableForCollectionsNft.reloadData()
     }
@@ -54,14 +53,12 @@ final class CatalogViewController: UIViewController, ErrorView {
         UIBlockingProgressHUD.dismiss()
     }
     //MARK: - IB Actions
-    
     @objc private func sortButtonTapped() {
         showAlertController()
     }
 }
 
 //MARK: - Constraints
-
 private extension CatalogViewController {
     
     func setupConstraints() {
@@ -86,7 +83,6 @@ private extension CatalogViewController {
 }
 
 //MARK: - UITabvleViewDataSource
-
 extension CatalogViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return presenter.getAllCatalogs()

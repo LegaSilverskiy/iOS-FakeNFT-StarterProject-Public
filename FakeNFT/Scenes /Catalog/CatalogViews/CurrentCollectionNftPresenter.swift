@@ -59,6 +59,10 @@ final class CurrentCollectionNftPresenter {
         convertToCellModel(nft: nfts[indexPath.row])
     }
     
+    func getAuthorURL() -> URL? {
+        let authorURL = URL(string: "")
+        return authorURL
+    }
     //MARK: - Private methods
     private func convertToCellModel(nft: Nft) -> CurrentCollectionCell {
         CurrentCollectionCell(
