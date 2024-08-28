@@ -36,6 +36,7 @@ final class CurrentCollectionNftViewController: UIViewController {
     }()
     
     // MARK: - Initializers
+    //TODO: убрать convenience и сделать через обычный init
     convenience init(servicesAssembly: ServicesAssembly, collection: Catalog?){
         let presenter = CurrentCollectionNftPresenter(service: servicesAssembly, nftCollection: collection)
         self.init(servicesAssembly: servicesAssembly, presenter: presenter)

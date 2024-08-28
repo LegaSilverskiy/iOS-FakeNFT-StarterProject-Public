@@ -7,7 +7,6 @@
 
 
 import UIKit
-import ProgressHUD
 
 //MARK: - NftCollectionViewCell
 final class NftCollectionViewCell: UICollectionViewCell {
@@ -151,14 +150,6 @@ private extension NftCollectionViewCell {
             cartButton.heightAnchor.constraint(equalToConstant: 40),
             cartButton.widthAnchor.constraint(equalToConstant: 40)
         ])
-    }
-    
-    func showLoading() {
-        ProgressHUD.show()
-    }
-    
-    func hideLoading() {
-        ProgressHUD.dismiss()
     }
     
     //MARK: - Actions
