@@ -73,6 +73,7 @@
 		EBFDCF7D2C7D029A001E83BA /* ProfileRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBFDCF7C2C7D029A001E83BA /* ProfileRequest.swift */; };
 		EBFDCF7F2C7D02CA001E83BA /* Order.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBFDCF7E2C7D02CA001E83BA /* Order.swift */; };
 		EBFDCF812C7D02DB001E83BA /* Profile.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBFDCF802C7D02DB001E83BA /* Profile.swift */; };
+		EBFDCF872C7FAB1C001E83BA /* WebViewForAuthorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBFDCF862C7FAB1C001E83BA /* WebViewForAuthorViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -162,6 +163,7 @@
 		EBFDCF7C2C7D029A001E83BA /* ProfileRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileRequest.swift; sourceTree = "<group>"; };
 		EBFDCF7E2C7D02CA001E83BA /* Order.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Order.swift; sourceTree = "<group>"; };
 		EBFDCF802C7D02DB001E83BA /* Profile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Profile.swift; sourceTree = "<group>"; };
+		EBFDCF862C7FAB1C001E83BA /* WebViewForAuthorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewForAuthorViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -483,6 +485,7 @@
 				EB55301E2C6FCBA0002A15F6 /* CatalogPresenter.swift */,
 				EB5530312C735774002A15F6 /* CurrentCollectionNftViewController.swift */,
 				EBFDCF1F2C77AA33001E83BA /* CurrentCollectionNftPresenter.swift */,
+				EBFDCF862C7FAB1C001E83BA /* WebViewForAuthorViewController.swift */,
 			);
 			path = CatalogViews;
 			sourceTree = "<group>";
@@ -669,6 +672,7 @@
 				0C79EE6A2A76DE1000EE90EA /* NftDetailAssembly.swift in Sources */,
 				EB05899C2C7703D80064F1B4 /* UIBlockingProgressHUD.swift in Sources */,
 				EB5530302C7311C7002A15F6 /* StatesOfCatalog.swift in Sources */,
+				EBFDCF872C7FAB1C001E83BA /* WebViewForAuthorViewController.swift in Sources */,
 				EBFDCF7B2C7D0289001E83BA /* OrderRequest.swift in Sources */,
 				3FC8C39329D246BA0081F015 /* DateFormatters+Presets.swift in Sources */,
 				EBFDCF242C7855D8001E83BA /* StatesOfCurrentCollection.swift in Sources */,
