@@ -11,7 +11,6 @@ struct CurrentCollectionRequest: NetworkRequest {
     
     let idCollection: String
     var endpoint: URL? {
-        URL(string: "\(RequestConstants.baseURL)/api/v1/collections/\(idCollection)"
-        )
+        URL(string: "\(RequestConstants.baseURL)/api/v1/collections/\(idCollection)")
     }
 }
