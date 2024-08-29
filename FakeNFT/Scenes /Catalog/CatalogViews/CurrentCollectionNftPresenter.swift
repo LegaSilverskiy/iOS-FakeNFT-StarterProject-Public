@@ -36,7 +36,7 @@ final class CurrentCollectionNftPresenter {
             switch result {
             case .success(let profile):
                 self?.likes = profile.likes
-            case .failure(_):
+            case .failure:
                 self?.view?.showErrorAlert()
             }
             self?.view?.hideLoading()
@@ -46,7 +46,7 @@ final class CurrentCollectionNftPresenter {
             switch result {
             case .success(let orders):
                 self?.orders = orders.nfts
-            case .failure(_):
+            case .failure:
                 self?.view?.showErrorAlert()
             }
             self?.view?.hideLoading()
@@ -59,7 +59,7 @@ final class CurrentCollectionNftPresenter {
                     self?.nfts.append(nft)
                     self?.view?.hideLoading()
                     self?.view?.reloadData()
-                case .failure(_):
+                case .failure:
                     self?.view?.showErrorAlert()
                 }
                 self?.view?.hideLoading()
@@ -87,7 +87,7 @@ final class CurrentCollectionNftPresenter {
                 self?.likes = profile.likes
                 self?.view?.updateCell(indexPath: indexPath)
                 
-            case .failure(_):
+            case .failure:
                 self?.view?.showErrorAlert()
             }
             self?.view?.hideLoading()
@@ -113,7 +113,7 @@ final class CurrentCollectionNftPresenter {
                 self?.orders = orders.nfts
                 self?.view?.updateCell(indexPath: indexPath)
                 self?.view?.hideLoading()
-            case .failure(_):
+            case .failure:
                 self?.view?.showErrorAlert()
             }
             self?.view?.hideLoading()
