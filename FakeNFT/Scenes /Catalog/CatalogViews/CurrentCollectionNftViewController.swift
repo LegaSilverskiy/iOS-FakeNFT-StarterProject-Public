@@ -101,7 +101,6 @@ extension CurrentCollectionNftViewController {
             title: NSLocalizedString("Error.repeat", comment: ""),
             style: .default
         ){ [weak self] action in
-            //TODO: избавиться от дублирования нвтишеку
             self?.presenter.getNftCollection()
         }
         

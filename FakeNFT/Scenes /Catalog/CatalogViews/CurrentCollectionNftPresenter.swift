@@ -52,7 +52,8 @@ final class CurrentCollectionNftPresenter {
             self?.view?.hideLoading()
         }
         
-        catalogNfts.nfts.forEach {
+        guard nfts.isEmpty else { return }
+            catalogNfts.nfts.forEach {
             service.nftService.loadNft(id: $0) { [weak self] result in
                 switch result {
                 case .success(let nft):
