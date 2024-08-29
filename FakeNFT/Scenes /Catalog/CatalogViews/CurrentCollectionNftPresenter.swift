@@ -39,6 +39,7 @@ final class CurrentCollectionNftPresenter {
             case .failure(_):
                 self?.view?.showErrorAlert()
             }
+            self?.view?.hideLoading()
         }
         
         service.orderService.loadOrders{ [weak self] result in
@@ -48,6 +49,7 @@ final class CurrentCollectionNftPresenter {
             case .failure(_):
                 self?.view?.showErrorAlert()
             }
+            self?.view?.hideLoading()
         }
         
         catalogNfts.nfts.forEach {
@@ -60,11 +62,13 @@ final class CurrentCollectionNftPresenter {
                 case .failure(_):
                     self?.view?.showErrorAlert()
                 }
+                self?.view?.hideLoading()
             }
         }
     }
     
     func updateLikeState(for indexPath: IndexPath) {
+        view?.showLoading()
         let nftId = nfts[indexPath.row].id
         var updatedLikes = self.likes
         
@@ -82,13 +86,16 @@ final class CurrentCollectionNftPresenter {
                 guard !profile.likes.isEmpty else { return }
                 self?.likes = profile.likes
                 self?.view?.updateCell(indexPath: indexPath)
+                
             case .failure(_):
                 self?.view?.showErrorAlert()
             }
+            self?.view?.hideLoading()
         })
     }
     
     func updateOrderState(for indexPath: IndexPath) {
+        view?.showLoading()
         let nftId = nfts[indexPath.row].id
         var updatedOrders = self.orders
         
@@ -105,9 +112,11 @@ final class CurrentCollectionNftPresenter {
                 guard !orders.nfts.isEmpty else { return }
                 self?.orders = orders.nfts
                 self?.view?.updateCell(indexPath: indexPath)
+                self?.view?.hideLoading()
             case .failure(_):
                 self?.view?.showErrorAlert()
             }
+            self?.view?.hideLoading()
         })
     }
     

@@ -102,6 +102,7 @@ extension CurrentCollectionNftViewController {
             title: NSLocalizedString("Error.repeat", comment: ""),
             style: .default
         ){ [weak self] action in
+            //TODO: избавиться от дублирования нвтишеку
             self?.presenter.getNftCollection()
         }
         
@@ -223,20 +224,15 @@ private extension CurrentCollectionNftViewController {
         collectionView.register(NftCollectionViewCell.self, forCellWithReuseIdentifier: NftCollectionViewCell.identifier)
     }
     func addSubViews() {
-        view.addSubview(coverImage)
-        view.addSubview(titleLabel)
-        view.addSubview(authorLabel)
-        view.addSubview(authorButton)
-        view.addSubview(descriptionLabel)
-        view.addSubview(collectionView)
-        
-        coverImage.translatesAutoresizingMaskIntoConstraints = false
-        titleLabel.translatesAutoresizingMaskIntoConstraints = false
-        authorLabel.translatesAutoresizingMaskIntoConstraints = false
-        authorButton.translatesAutoresizingMaskIntoConstraints = false
-        descriptionLabel.translatesAutoresizingMaskIntoConstraints = false
-        collectionView.translatesAutoresizingMaskIntoConstraints = false
-        
+        [coverImage,
+         titleLabel,
+         authorLabel,
+         authorButton,
+         descriptionLabel,
+         collectionView].forEach {
+            $0.translatesAutoresizingMaskIntoConstraints = false
+            view.addSubview($0)
+        }
     }
     
     func setupConstraints() {
