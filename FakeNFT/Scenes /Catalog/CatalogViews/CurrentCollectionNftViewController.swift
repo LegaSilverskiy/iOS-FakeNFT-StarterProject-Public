@@ -125,11 +125,11 @@ extension CurrentCollectionNftViewController {
 
 extension CurrentCollectionNftViewController {
     func updateOrder(for indexPath: IndexPath) {
-        //TODO: реализовать добавление в корзину
+        presenter.updateOrderState(for: indexPath)
     }
     
-    func updateLike(for indexPath: IndexPath, state: Bool) {
-        //TODO: реализовать лайки
+    func updateLike(for indexPath: IndexPath) {
+        presenter.updateLikeState(for: indexPath)
     }
 }
 
@@ -151,6 +151,7 @@ extension CurrentCollectionNftViewController: UICollectionViewDataSource {
         let model = presenter.getCellModel(for: indexPath)
         cell.configureCell(with: model)
         cell.indexPath = indexPath
+        cell.view = self
         return cell
     }
     
@@ -263,11 +264,11 @@ private extension CurrentCollectionNftViewController {
             scrollViewForNfts.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             scrollViewForNfts.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
             
-            contentView.topAnchor.constraint(equalTo: scrollViewForNfts.topAnchor, constant: -100),
+            contentView.topAnchor.constraint(equalTo: view.topAnchor, constant: -100),
             contentView.widthAnchor.constraint(equalTo: scrollViewForNfts.widthAnchor),
-            //TODO: Почему-то не работает скролл, если растянуть по view
-            contentView.heightAnchor.constraint(equalToConstant: 900),
-            contentView.bottomAnchor.constraint(equalTo: scrollViewForNfts.bottomAnchor),
+            //TODO: Почему-то не работает скролл, если растянуть по view.
+//            contentView.heightAnchor.constraint(equalToConstant: 900),
+            contentView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             
             coverImage.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 0),
             coverImage.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),

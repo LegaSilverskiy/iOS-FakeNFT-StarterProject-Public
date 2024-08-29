@@ -53,11 +53,11 @@ final class NftCollectionViewCell: UICollectionViewCell {
     
     func setLike(isLiked: Bool) -> UIImage? {
         self.likeState = isLiked
-        return likeState ? UIImage(systemName: "heart.fill") : UIImage(systemName: "heart.fill")
+        return likeState ? UIImage(systemName: "heart.fill") : UIImage(systemName: "heart")
     }
-    //TODO: сделать изменение картинки корзины
+    
     func setCart(isInTheCart: Bool) -> UIImage? {
-        isInTheCart ? UIImage(named: "AddToCart") : UIImage(named: "AddToCart")
+        isInTheCart ? UIImage(named: "AddToCart") : UIImage(named: "removeFromCart")
     }
 }
 
@@ -81,7 +81,6 @@ private extension NftCollectionViewCell {
         imageView.layer.cornerRadius = 12
     }
     
-    //TODO: Сделать смену картинку при нажатии на кнопку
     func configureLikeButton() {
         likeButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
         likeButton.tintColor = .pinkForLikeButton
@@ -155,7 +154,7 @@ private extension NftCollectionViewCell {
     //MARK: - Actions
     @objc func didTapLikeButton() {
         guard let indexPath else { return }
-        view?.updateLike(for: indexPath, state: likeState)
+        view?.updateLike(for: indexPath)
     }
     
     @objc func didTapCartButton() {
