@@ -16,8 +16,6 @@ final class CurrentCollectionNftViewController: UIViewController {
     private var presenter: CurrentCollectionNftPresenter
     
     //MARK: - UI properties
-    private let scrollViewForNfts = UIScrollView()
-    private lazy var contentView = UIView()
     private lazy var coverImage = UIImageView()
     private lazy var titleLabel = UILabel()
     private lazy var authorLabel = UILabel()
@@ -179,7 +177,6 @@ private extension CurrentCollectionNftViewController {
     func configureUI() {
         addSubViews()
         setupConstraints()
-        configScrollView()
         configTitleLabel()
         configImageView()
         configureAuthorLabel()
@@ -192,11 +189,6 @@ private extension CurrentCollectionNftViewController {
     
     func configBackButton() {
         self.navigationItem.leftBarButtonItem = backButton
-    }
-    
-    func configScrollView() {
-        scrollViewForNfts.isScrollEnabled = true
-        scrollViewForNfts.showsVerticalScrollIndicator = true
     }
     
     func configTitleLabel() {
@@ -231,23 +223,18 @@ private extension CurrentCollectionNftViewController {
     }
     
     func configCollectionView() {
-        collectionView.isScrollEnabled = false
         collectionView.delegate = self
         collectionView.dataSource = self
         collectionView.register(NftCollectionViewCell.self, forCellWithReuseIdentifier: NftCollectionViewCell.identifier)
     }
     func addSubViews() {
-        view.addSubview(scrollViewForNfts)
-        scrollViewForNfts.addSubview(contentView)
-        contentView.addSubview(coverImage)
-        contentView.addSubview(titleLabel)
-        contentView.addSubview(authorLabel)
-        contentView.addSubview(authorButton)
-        contentView.addSubview(descriptionLabel)
-        contentView.addSubview(collectionView)
+        view.addSubview(coverImage)
+        view.addSubview(titleLabel)
+        view.addSubview(authorLabel)
+        view.addSubview(authorButton)
+        view.addSubview(descriptionLabel)
+        view.addSubview(collectionView)
         
-        scrollViewForNfts.translatesAutoresizingMaskIntoConstraints = false
-        contentView.translatesAutoresizingMaskIntoConstraints = false
         coverImage.translatesAutoresizingMaskIntoConstraints = false
         titleLabel.translatesAutoresizingMaskIntoConstraints = false
         authorLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -259,25 +246,14 @@ private extension CurrentCollectionNftViewController {
     
     func setupConstraints() {
         NSLayoutConstraint.activate([
-            scrollViewForNfts.topAnchor.constraint(equalTo: view.topAnchor),
-            scrollViewForNfts.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            scrollViewForNfts.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            scrollViewForNfts.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor),
-            
-            contentView.topAnchor.constraint(equalTo: view.topAnchor, constant: -100),
-            contentView.widthAnchor.constraint(equalTo: scrollViewForNfts.widthAnchor),
-            //TODO: Почему-то не работает скролл, если растянуть по view.
-//            contentView.heightAnchor.constraint(equalToConstant: 900),
-            contentView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
-            
-            coverImage.topAnchor.constraint(equalTo: contentView.topAnchor, constant: 0),
-            coverImage.leadingAnchor.constraint(equalTo: contentView.leadingAnchor),
-            coverImage.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
+            coverImage.topAnchor.constraint(equalTo: view.topAnchor, constant: 0),
+            coverImage.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            coverImage.trailingAnchor.constraint(equalTo: view.trailingAnchor),
             coverImage.heightAnchor.constraint(equalToConstant: 310),
             
             titleLabel.topAnchor.constraint(equalTo: coverImage.bottomAnchor, constant: 16),
-            titleLabel.leadingAnchor.constraint(equalTo: contentView.leadingAnchor, constant: 16),
-            titleLabel.trailingAnchor.constraint(equalTo: contentView.trailingAnchor,constant: -16),
+            titleLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
+            titleLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             titleLabel.heightAnchor.constraint(equalToConstant: 28),
             
             authorLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor, constant: 13),
@@ -297,7 +273,7 @@ private extension CurrentCollectionNftViewController {
             collectionView.topAnchor.constraint(equalTo: descriptionLabel.bottomAnchor, constant: 24),
             collectionView.leadingAnchor.constraint(equalTo: titleLabel.leadingAnchor),
             collectionView.trailingAnchor.constraint(equalTo: titleLabel.trailingAnchor),
-            collectionView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor)
+            collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
         ])
     }
     

@@ -38,7 +38,6 @@ final class CurrentCollectionNftPresenter {
                 self?.likes = profile.likes
             case .failure(let error):
                 self?.view?.showErrorAlert()
-                print(error)
             }
         })
         
@@ -48,7 +47,6 @@ final class CurrentCollectionNftPresenter {
                 self?.orders = orders.nfts
             case .failure(let error):
                 self?.view?.showErrorAlert()
-                print(error)
             }
         })
         
@@ -61,7 +59,6 @@ final class CurrentCollectionNftPresenter {
                     self?.view?.reloadData()
                 case .failure(let error):
                     self?.view?.showErrorAlert()
-                    print(error)
                 }
             })
         }
@@ -87,7 +84,6 @@ final class CurrentCollectionNftPresenter {
                 self?.view?.updateCell(indexPath: indexPath)
             case .failure(let error):
                 self?.view?.showErrorAlert()
-                print(error)
             }
         })
     }
@@ -111,7 +107,6 @@ final class CurrentCollectionNftPresenter {
                 self?.view?.updateCell(indexPath: indexPath)
             case .failure(let error):
                 self?.view?.showErrorAlert()
-                print(error)
             }
         })
     }
