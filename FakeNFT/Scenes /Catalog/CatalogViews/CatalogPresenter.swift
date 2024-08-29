@@ -61,19 +61,14 @@ final class CatalogPresenter {
         return catalogs.count
     }
     
-    func sortByCount() {
-        saveSort(.byCount)
-        catalogs = catalogs.sorted {
-            $0.nfts.count > $1.nfts.count
-        }
+    func sortByCount() { saveSort(.byCount)
+        catalogs = catalogs.sorted { $0.nfts.count > $1.nfts.count }
         view?.updatetable()
     }
     
     func sortByName() {
         saveSort(.byName)
-        catalogs = catalogs.sorted {
-            $0.name < $1.name
-        }
+        catalogs = catalogs.sorted { $0.name < $1.name }
         view?.updatetable()
     }
 }
@@ -91,8 +86,7 @@ private extension CatalogPresenter {
     }
     
     func checkSort() {
-        let sort = getSort()
-        switch sort {
+        switch getSort() {
         case .byName:
             sortByName()
         case .byCount:

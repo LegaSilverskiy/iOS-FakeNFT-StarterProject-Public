@@ -10,7 +10,6 @@ import WebKit
 
 final class WebViewForAuthorViewController: UIViewController {
     
-    
     //MARK: - Private properties
     private var url: URL?
     private lazy var backButton: UIBarButtonItem = {

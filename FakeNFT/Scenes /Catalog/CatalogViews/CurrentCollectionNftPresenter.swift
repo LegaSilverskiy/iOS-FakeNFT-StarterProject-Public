@@ -32,26 +32,26 @@ final class CurrentCollectionNftPresenter {
         guard let catalogNfts else { return }
         view?.showLoading()
         
-        service.profileService.loadLikes(completion: { [weak self] result in
+        service.profileService.loadLikes{ [weak self] result in
             switch result {
             case .success(let profile):
                 self?.likes = profile.likes
             case .failure(_):
                 self?.view?.showErrorAlert()
             }
-        })
+        }
         
-        service.orderService.loadOrders(completion: { [weak self] result in
+        service.orderService.loadOrders{ [weak self] result in
             switch result {
             case .success(let orders):
                 self?.orders = orders.nfts
             case .failure(_):
                 self?.view?.showErrorAlert()
             }
-        })
+        }
         
         catalogNfts.nfts.forEach {
-            self.service.nftService.loadNft(id: $0, completion: { [weak self] result in
+            service.nftService.loadNft(id: $0) { [weak self] result in
                 switch result {
                 case .success(let nft):
                     self?.nfts.append(nft)
@@ -60,7 +60,7 @@ final class CurrentCollectionNftPresenter {
                 case .failure(_):
                     self?.view?.showErrorAlert()
                 }
-            })
+            }
         }
     }
     
