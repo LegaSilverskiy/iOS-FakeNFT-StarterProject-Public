@@ -12,22 +12,16 @@ typealias OrderCompletion = (Result<Order, Error>) -> Void
 final class OrderService {
     
     private let networkClient: NetworkClient
-    private let storage: NftStorage
     
-    init(networkClient: NetworkClient, storage: NftStorage) {
+    init(networkClient: NetworkClient) {
         self.networkClient = networkClient
-        self.storage = storage
     }
     
     func loadOrders(completion: @escaping OrderCompletion) {
         let request = OrderRequest()
-        networkClient.send(request: request, type: Order.self) { [weak storage] result in
+        networkClient.send(request: request, type: Order.self) { result in
             switch result {
             case .success(let orders):
-                storage?.saveOrderId(orderId: orders.id)
-                orders.nfts.forEach {
-                    storage?.saveOrders($0)
-                }
                 completion(.success(orders))
             case .failure(let error):
                 completion(.failure(error))
@@ -35,8 +29,16 @@ final class OrderService {
         }
     }
     
-    func cartState(for id: String) -> Bool {
-        storage.findInOrders(id)
+    func setOrders(id: String, orders: [String], completion: @escaping OrderCompletion) {
+        let request = OrderPutRequest(id: id, orders: orders)
+        networkClient.send(request: request, type: Order.self) { result in
+            switch result {
+            case .success(let orders):
+                completion(.success(orders))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
     }
 }
 

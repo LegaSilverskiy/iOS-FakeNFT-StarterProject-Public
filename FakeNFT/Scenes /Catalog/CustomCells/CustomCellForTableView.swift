@@ -43,15 +43,12 @@ final class CustomCellForTableView: UITableViewCell, ReuseIdentifying {
         super.prepareForReuse()
         imageCollectionNFT.kf.cancelDownloadTask()
     }
-    
-    
 }
 
 //MARK: - CONSTRAINTS
 extension CustomCellForTableView {
     
     private func setupConstraints() {
-        
         imageCollectionNFT.translatesAutoresizingMaskIntoConstraints = false
         titleLabelForCollectionNFT.translatesAutoresizingMaskIntoConstraints = false
         

@@ -9,24 +9,19 @@ import Foundation
 
 typealias ProfileCompletion = (Result<Profile, Error>) -> Void
 
-final class ProfileService  {
+final class ProfileService {
     
     private let networkClient: NetworkClient
-    private let storage: NftStorage
     
-    init(networkClient: NetworkClient, storage: NftStorage) {
+    init(networkClient: NetworkClient) {
         self.networkClient = networkClient
-        self.storage = storage
     }
     
-    func loadProfile(completion: @escaping ProfileCompletion) {
+    func loadLikes(completion: @escaping ProfileCompletion) {
         let request = ProfileRequest()
-        networkClient.send(request: request, type: Profile.self) { [weak storage] result in
+        networkClient.send(request: request, type: Profile.self) { result in
             switch result {
             case .success(let profile):
-                profile.likes.forEach {
-                    storage?.saveLike($0)
-                }
                 completion(.success(profile))
             case .failure(let error):
                 completion(.failure(error))
@@ -34,7 +29,15 @@ final class ProfileService  {
         }
     }
     
-    func likeState(for id: String) -> Bool {
-        storage.getLike(with: id) != nil
+    func setLike(id: String, likes: [String], completion: @escaping ProfileCompletion) {
+        let request = LikeRequest(likes: likes)
+        networkClient.send(request: request, type: Profile.self) { result in
+            switch result {
+            case .success(let profile):
+                completion(.success(profile))
+            case .failure(let error):
+                completion(.failure(error))
+            }
+        }
     }
 }

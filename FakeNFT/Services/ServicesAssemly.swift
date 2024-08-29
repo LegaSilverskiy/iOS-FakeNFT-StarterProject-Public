@@ -1,9 +1,9 @@
 final class ServicesAssembly {
-
+    
     private let networkClient: NetworkClient
     private let nftStorage: NftStorage
     private let catalogStorage: CatalogStorage
-
+    
     init(
         networkClient: NetworkClient,
         nftStorage: NftStorage,
@@ -13,7 +13,7 @@ final class ServicesAssembly {
         self.nftStorage = nftStorage
         self.catalogStorage = catalogStorage
     }
-
+    
     var nftService: NftService {
         NftServiceImpl(
             networkClient: networkClient,
@@ -22,24 +22,22 @@ final class ServicesAssembly {
     }
     
     var catalogService: CatalogService {
-            .init(
-                networkClient: networkClient,
-                storage: catalogStorage
-            )
-        }
+        .init(
+            networkClient: networkClient,
+            storage: catalogStorage
+        )
+    }
     
     
     var profileService: ProfileService {
         .init(
-            networkClient: networkClient,
-            storage: nftStorage
+            networkClient: networkClient
         )
     }
     
     var orderService: OrderService {
         .init(
-            networkClient: networkClient,
-            storage: nftStorage
+            networkClient: networkClient
         )
     }
 }

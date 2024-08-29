@@ -7,13 +7,19 @@
 
 import Foundation
 
+enum Sort: String {
+    case byName
+    case byCount
+}
+
 final class CatalogPresenter {
     
     weak var view: CatalogViewController?
     
     // MARK: - Private Properties
     private let servicesAssembly: ServicesAssembly
-    
+    private let sortKey = "sortKey"
+    private let userDefaults = UserDefaults.standard
     private var state: StatesOfCatalog? {
         didSet {
             stateDidChange()
@@ -26,9 +32,9 @@ final class CatalogPresenter {
     }
     
     func viewWllAppear() {
-          guard catalogs.isEmpty else { return }
-          state = .loading
-      }
+        guard catalogs.isEmpty else { return }
+        state = .loading
+    }
     
     // MARK: - Private Properties
     private let service: CatalogService
@@ -55,20 +61,52 @@ final class CatalogPresenter {
         return catalogs.count
     }
     
-    private func loadCatalogs() {
-        service.loadCatalogs() {[weak self] result in
-            switch result {
-            case .success(let catalogs):
-                self?.state = .data(catalogs)
-            case .failure(let error):
-                self?.state = .failed(error)
-            }
-        }
+    func sortByCount() {
+        saveSort(.byCount)
+        catalogs = catalogs.sorted { $0.nfts.count > $1.nfts.count }
+        view?.updatetable()
+    }
+    
+    func sortByName() {
+        saveSort(.byName)
+        catalogs = catalogs.sorted { $0.name < $1.name }
+        view?.updatetable()
     }
 }
 
 // MARK: - Private Methods
 private extension CatalogPresenter {
+    
+    func saveSort(_ type: Sort){
+        userDefaults.set(type.rawValue, forKey: sortKey)
+    }
+    
+    func getSort()-> Sort {
+        guard let value = userDefaults.value(forKey: sortKey) as? String else { return Sort.byCount }
+        return Sort(rawValue: value) ?? Sort.byCount
+    }
+    
+    func checkSort() {
+        switch getSort() {
+        case .byName:
+            sortByName()
+        case .byCount:
+            sortByCount()
+        }
+    }
+    
+    func loadCatalogs() {
+        service.loadCatalogs() {[weak self] result in
+            switch result {
+            case .success(let catalogs):
+                self?.state = .data(catalogs)
+                self?.checkSort()
+            case .failure(let error):
+                self?.state = .failed(error)
+            }
+        }
+    }
+    
     func stateDidChange() {
         switch state {
         case .initial:

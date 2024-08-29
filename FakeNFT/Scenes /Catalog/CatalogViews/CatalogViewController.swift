@@ -1,9 +1,8 @@
 import UIKit
-import ProgressHUD
 
 final class CatalogViewController: UIViewController, ErrorView {
     
-    
+    //MARK: - Private properties
     private let presenter: CatalogPresenter
     private let servicesAssembly: ServicesAssembly
     
@@ -22,6 +21,7 @@ final class CatalogViewController: UIViewController, ErrorView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
     //MARK: - Overrides Methods
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -39,29 +39,26 @@ final class CatalogViewController: UIViewController, ErrorView {
     }
     
     //MARK: - Public Methods
-    
     func updatetable() {
         tableForCollectionsNft.reloadData()
     }
     
     
     func showProgressHud() {
-        
         UIBlockingProgressHUD.show()
     }
     
     func hideProgressHud() {
         UIBlockingProgressHUD.dismiss()
     }
-    //MARK: - IB Actions
     
+    //MARK: - IB Actions
     @objc private func sortButtonTapped() {
         showAlertController()
     }
 }
 
 //MARK: - Constraints
-
 private extension CatalogViewController {
     
     func setupConstraints() {
@@ -73,8 +70,12 @@ private extension CatalogViewController {
         let alert = UIAlertController(title: .actionSheetTitleSorting,
                                       message: nil,
                                       preferredStyle: .actionSheet)
-        let sortByName = UIAlertAction(title: .sortingOptionsByNamedNft, style: .default)
-        let sortByNftCount = UIAlertAction(title: .sortingOptionsByNumberOfNFTs, style: .default)
+        let sortByName = UIAlertAction(title: .sortingOptionsByNamedNft, style: .default){ action in
+             self.presenter.sortByName()
+         }
+         let sortByNftCount = UIAlertAction(title: .sortingOptionsByNumberOfNFTs, style: .default){ action in
+             self.presenter.sortByCount()
+         }
         let cancelAction = UIAlertAction(title: .buttonsClose, style: .cancel)
         [sortByName, sortByNftCount, cancelAction].forEach { alert.addAction($0)}
         self.present(alert, animated: true)
@@ -82,7 +83,6 @@ private extension CatalogViewController {
 }
 
 //MARK: - UITabvleViewDataSource
-
 extension CatalogViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return presenter.getAllCatalogs()
@@ -104,10 +104,14 @@ extension CatalogViewController: UITableViewDataSource {
 extension CatalogViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        let nftCollectionViewController = CurrentCollectionNftViewController(
-            servicesAssembly: servicesAssembly,
-            collection: presenter.catalogs[indexPath.row]
-        )
+        let nftCollectionPresenter = CurrentCollectionNftPresenter(
+                    service: servicesAssembly,
+                    nftCollection: presenter.catalogs[indexPath.row]
+                )
+                let nftCollectionViewController = CurrentCollectionNftViewController(
+                    servicesAssembly: servicesAssembly,
+                    presenter: nftCollectionPresenter
+                )
         self.navigationController?.pushViewController(nftCollectionViewController, animated: true)
     }
     

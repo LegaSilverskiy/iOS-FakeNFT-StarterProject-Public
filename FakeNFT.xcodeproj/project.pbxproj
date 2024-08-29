@@ -31,8 +31,6 @@
 		3F68069B29CBBAF100B4F915 /* ProductDetailsTableViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F68069A29CBBAF100B4F915 /* ProductDetailsTableViewController.swift */; };
 		3F6806A029CBBAF200B4F915 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3F68069F29CBBAF200B4F915 /* Assets.xcassets */; };
 		3F6806A329CBBAF200B4F915 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 3F6806A129CBBAF200B4F915 /* LaunchScreen.storyboard */; };
-		3F6806AE29CBBAF200B4F915 /* ExampleUnitTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F6806AD29CBBAF200B4F915 /* ExampleUnitTests.swift */; };
-		3F6806B829CBBAF200B4F915 /* FakeNFTUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F6806B729CBBAF200B4F915 /* FakeNFTUITests.swift */; };
 		3F6806D129CBBE6B00B4F915 /* NetworkClient.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F6806D029CBBE6B00B4F915 /* NetworkClient.swift */; };
 		3F6806D329CBBE9600B4F915 /* NetworkRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F6806D229CBBE9600B4F915 /* NetworkRequest.swift */; };
 		3F6806D529CBBEC700B4F915 /* NetworkTask.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F6806D429CBBEC700B4F915 /* NetworkTask.swift */; };
@@ -73,6 +71,7 @@
 		EBFDCF7D2C7D029A001E83BA /* ProfileRequest.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBFDCF7C2C7D029A001E83BA /* ProfileRequest.swift */; };
 		EBFDCF7F2C7D02CA001E83BA /* Order.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBFDCF7E2C7D02CA001E83BA /* Order.swift */; };
 		EBFDCF812C7D02DB001E83BA /* Profile.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBFDCF802C7D02DB001E83BA /* Profile.swift */; };
+		EBFDCF872C7FAB1C001E83BA /* WebViewForAuthorViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = EBFDCF862C7FAB1C001E83BA /* WebViewForAuthorViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -118,9 +117,7 @@
 		3F6806A229CBBAF200B4F915 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		3F6806A429CBBAF200B4F915 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		3F6806A929CBBAF200B4F915 /* FakeNFTTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FakeNFTTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		3F6806AD29CBBAF200B4F915 /* ExampleUnitTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ExampleUnitTests.swift; sourceTree = "<group>"; };
 		3F6806B329CBBAF200B4F915 /* FakeNFTUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = FakeNFTUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		3F6806B729CBBAF200B4F915 /* FakeNFTUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FakeNFTUITests.swift; sourceTree = "<group>"; };
 		3F6806D029CBBE6B00B4F915 /* NetworkClient.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkClient.swift; sourceTree = "<group>"; };
 		3F6806D229CBBE9600B4F915 /* NetworkRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkRequest.swift; sourceTree = "<group>"; };
 		3F6806D429CBBEC700B4F915 /* NetworkTask.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkTask.swift; sourceTree = "<group>"; };
@@ -162,6 +159,7 @@
 		EBFDCF7C2C7D029A001E83BA /* ProfileRequest.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileRequest.swift; sourceTree = "<group>"; };
 		EBFDCF7E2C7D02CA001E83BA /* Order.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Order.swift; sourceTree = "<group>"; };
 		EBFDCF802C7D02DB001E83BA /* Profile.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Profile.swift; sourceTree = "<group>"; };
+		EBFDCF862C7FAB1C001E83BA /* WebViewForAuthorViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WebViewForAuthorViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -264,8 +262,6 @@
 			isa = PBXGroup;
 			children = (
 				3F68069529CBBAF100B4F915 /* FakeNFT */,
-				3F6806AC29CBBAF200B4F915 /* FakeNFTTests */,
-				3F6806B629CBBAF200B4F915 /* FakeNFTUITests */,
 				3F68069429CBBAF100B4F915 /* Products */,
 			);
 			sourceTree = "<group>";
@@ -294,22 +290,6 @@
 				3F6806A429CBBAF200B4F915 /* Info.plist */,
 			);
 			path = FakeNFT;
-			sourceTree = "<group>";
-		};
-		3F6806AC29CBBAF200B4F915 /* FakeNFTTests */ = {
-			isa = PBXGroup;
-			children = (
-				3F6806AD29CBBAF200B4F915 /* ExampleUnitTests.swift */,
-			);
-			path = FakeNFTTests;
-			sourceTree = "<group>";
-		};
-		3F6806B629CBBAF200B4F915 /* FakeNFTUITests */ = {
-			isa = PBXGroup;
-			children = (
-				3F6806B729CBBAF200B4F915 /* FakeNFTUITests.swift */,
-			);
-			path = FakeNFTUITests;
 			sourceTree = "<group>";
 		};
 		3F6806C629CBBC4E00B4F915 /* Services */ = {
@@ -483,6 +463,7 @@
 				EB55301E2C6FCBA0002A15F6 /* CatalogPresenter.swift */,
 				EB5530312C735774002A15F6 /* CurrentCollectionNftViewController.swift */,
 				EBFDCF1F2C77AA33001E83BA /* CurrentCollectionNftPresenter.swift */,
+				EBFDCF862C7FAB1C001E83BA /* WebViewForAuthorViewController.swift */,
 			);
 			path = CatalogViews;
 			sourceTree = "<group>";
@@ -669,6 +650,7 @@
 				0C79EE6A2A76DE1000EE90EA /* NftDetailAssembly.swift in Sources */,
 				EB05899C2C7703D80064F1B4 /* UIBlockingProgressHUD.swift in Sources */,
 				EB5530302C7311C7002A15F6 /* StatesOfCatalog.swift in Sources */,
+				EBFDCF872C7FAB1C001E83BA /* WebViewForAuthorViewController.swift in Sources */,
 				EBFDCF7B2C7D0289001E83BA /* OrderRequest.swift in Sources */,
 				3FC8C39329D246BA0081F015 /* DateFormatters+Presets.swift in Sources */,
 				EBFDCF242C7855D8001E83BA /* StatesOfCurrentCollection.swift in Sources */,
@@ -724,7 +706,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3F6806AE29CBBAF200B4F915 /* ExampleUnitTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -732,7 +713,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				3F6806B829CBBAF200B4F915 /* FakeNFTUITests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
