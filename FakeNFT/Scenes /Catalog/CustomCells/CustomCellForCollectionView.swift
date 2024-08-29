@@ -5,7 +5,6 @@
 //  Created by Олег Серебрянский on 8/22/24.
 //
 
-
 import UIKit
 
 //MARK: - NftCollectionViewCell

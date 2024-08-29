@@ -34,7 +34,6 @@ final class CurrentCollectionNftViewController: UIViewController {
     }()
     
     // MARK: - Initializers
-    
     init(servicesAssembly: ServicesAssembly, presenter: CurrentCollectionNftPresenter) {
         self.servicesAssembly = servicesAssembly
         self.presenter = presenter
@@ -56,7 +55,7 @@ final class CurrentCollectionNftViewController: UIViewController {
     }
 }
 
-//MARK: Extensions
+//MARK: - Extensions
 extension CurrentCollectionNftViewController {
     func setupData(
         name: String,
@@ -116,7 +115,6 @@ extension CurrentCollectionNftViewController {
     }
 }
 
-
 extension CurrentCollectionNftViewController {
     func updateOrder(for indexPath: IndexPath) {
         presenter.updateOrderState(for: indexPath)
@@ -148,7 +146,6 @@ extension CurrentCollectionNftViewController: UICollectionViewDataSource {
         cell.view = self
         return cell
     }
-    
 }
 
 //MARK: - UICollectionViewDelegateFlowLayout

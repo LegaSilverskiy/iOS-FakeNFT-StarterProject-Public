@@ -2,7 +2,7 @@ import UIKit
 
 final class CatalogViewController: UIViewController, ErrorView {
     
-    //MARK: Private properties
+    //MARK: - Private properties
     private let presenter: CatalogPresenter
     private let servicesAssembly: ServicesAssembly
     
@@ -21,6 +21,7 @@ final class CatalogViewController: UIViewController, ErrorView {
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
     //MARK: - Overrides Methods
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -38,29 +39,26 @@ final class CatalogViewController: UIViewController, ErrorView {
     }
     
     //MARK: - Public Methods
-    
     func updatetable() {
         tableForCollectionsNft.reloadData()
     }
     
     
     func showProgressHud() {
-        
         UIBlockingProgressHUD.show()
     }
     
     func hideProgressHud() {
         UIBlockingProgressHUD.dismiss()
     }
-    //MARK: - IB Actions
     
+    //MARK: - IB Actions
     @objc private func sortButtonTapped() {
         showAlertController()
     }
 }
 
 //MARK: - Constraints
-
 private extension CatalogViewController {
     
     func setupConstraints() {
@@ -85,7 +83,6 @@ private extension CatalogViewController {
 }
 
 //MARK: - UITabvleViewDataSource
-
 extension CatalogViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return presenter.getAllCatalogs()

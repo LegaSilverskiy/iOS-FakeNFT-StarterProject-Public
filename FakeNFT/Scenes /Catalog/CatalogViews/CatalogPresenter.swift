@@ -61,7 +61,8 @@ final class CatalogPresenter {
         return catalogs.count
     }
     
-    func sortByCount() { saveSort(.byCount)
+    func sortByCount() {
+        saveSort(.byCount)
         catalogs = catalogs.sorted { $0.nfts.count > $1.nfts.count }
         view?.updatetable()
     }
