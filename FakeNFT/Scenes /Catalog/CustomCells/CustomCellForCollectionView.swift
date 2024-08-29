@@ -22,6 +22,7 @@ final class NftCollectionViewCell: UICollectionViewCell {
     private var likeState: Bool = false
     
     //MARK: - Private UI properties
+    private lazy var activityIndicator = UIActivityIndicatorView()
     private lazy var imageView = UIImageView()
     private lazy var likeButton = UIButton()
     private lazy var ratingView = StarRatingView()
@@ -117,7 +118,7 @@ private extension NftCollectionViewCell {
          likeButton,
          ratingView,
          nameAndPriceStackView,
-         cartButton].forEach {
+         cartButton, activityIndicator].forEach {
             contentView.addSubview($0)
             $0.translatesAutoresizingMaskIntoConstraints = false
         }
@@ -147,7 +148,12 @@ private extension NftCollectionViewCell {
             cartButton.topAnchor.constraint(equalTo: ratingView.bottomAnchor, constant: 4),
             cartButton.trailingAnchor.constraint(equalTo: contentView.trailingAnchor),
             cartButton.heightAnchor.constraint(equalToConstant: 40),
-            cartButton.widthAnchor.constraint(equalToConstant: 40)
+            cartButton.widthAnchor.constraint(equalToConstant: 40),
+            
+            activityIndicator.centerXAnchor.constraint(equalTo: contentView.centerXAnchor),
+            activityIndicator.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
+            activityIndicator.widthAnchor.constraint(equalToConstant: 25),
+            activityIndicator.heightAnchor.constraint(equalToConstant: 25)
         ])
     }
     
@@ -155,11 +161,13 @@ private extension NftCollectionViewCell {
     @objc func didTapLikeButton() {
         guard let indexPath else { return }
         view?.updateLike(for: indexPath)
+        activityIndicator.startAnimating()
     }
     
     @objc func didTapCartButton() {
         guard let indexPath else { return }
         view?.updateOrder(for: indexPath)
+        activityIndicator.startAnimating()
     }
 }
 
