@@ -108,10 +108,14 @@ extension CatalogViewController: UITableViewDataSource {
 extension CatalogViewController: UITableViewDelegate {
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         tableView.deselectRow(at: indexPath, animated: true)
-        let nftCollectionViewController = CurrentCollectionNftViewController(
-            servicesAssembly: servicesAssembly,
-            collection: presenter.catalogs[indexPath.row]
-        )
+        let nftCollectionPresenter = CurrentCollectionNftPresenter(
+                    service: servicesAssembly,
+                    nftCollection: presenter.catalogs[indexPath.row]
+                )
+                let nftCollectionViewController = CurrentCollectionNftViewController(
+                    servicesAssembly: servicesAssembly,
+                    presenter: nftCollectionPresenter
+                )
         self.navigationController?.pushViewController(nftCollectionViewController, animated: true)
     }
     
