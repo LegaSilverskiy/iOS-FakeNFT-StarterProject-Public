@@ -6,8 +6,8 @@
 //
 
 import UIKit
+import Kingfisher
 
-//MARK: - NftCollectionViewCell
 final class NftCollectionViewCell: UICollectionViewCell {
     
     weak var view: CurrentCollectionNftViewController?
