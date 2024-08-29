@@ -58,7 +58,7 @@ final class NftCollectionViewCell: UICollectionViewCell {
     }
     
     func setCart(isInTheCart: Bool) -> UIImage? {
-        isInTheCart ? UIImage(named: "AddToCart") : UIImage(named: "removeFromCart")
+        isInTheCart ? UIImage(named: "removeFromCart") : UIImage(named: "AddToCart")
     }
 }
 
