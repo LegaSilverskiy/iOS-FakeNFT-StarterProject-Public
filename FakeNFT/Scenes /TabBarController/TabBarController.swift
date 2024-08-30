@@ -51,6 +51,7 @@ final class TabBarController: UITabBarController {
         let profileAssembly = ProfileAssembly(
             servicesAssembler: servicesAssembly
         )
+        
         let profileController = profileAssembly.build()
         profileController.tabBarItem = profileTabBarItem
 
@@ -64,9 +65,11 @@ final class TabBarController: UITabBarController {
         )
         cartController.tabBarItem = cartTabBarItem
 
-        let statisticsController = StatisticsViewController(
-            servicesAssembly: servicesAssembly
+        let statisticsAssembly = StatisticsAssembler(
+            servicesAssembler: servicesAssembly
         )
+        
+        let statisticsController = statisticsAssembly.build()
         statisticsController.tabBarItem = statisticsTabBarItem
 
         let navigationCatalogVC = UINavigationController(rootViewController: catalogController)

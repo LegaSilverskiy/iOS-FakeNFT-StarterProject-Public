@@ -6,7 +6,8 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
     let servicesAssembly = ServicesAssembly(
         networkClient: DefaultNetworkClient(),
-        nftStorage: NftStorageImpl()
+        nftStorage: NftStorageImpl(),
+        usersStorage: UsersStorage()
     )
 
     func scene(
@@ -14,9 +15,11 @@ final class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         willConnectTo session: UISceneSession,
         options connectionOptions: UIScene.ConnectionOptions
     ) {
+
         guard let windowScene = (scene as? UIWindowScene) else { return }
         let window = UIWindow(windowScene: windowScene)
         let tabBarController = TabBarController(servicesAssembly: servicesAssembly)
+
         window.rootViewController = tabBarController
         self.window = window
         window.makeKeyAndVisible()
