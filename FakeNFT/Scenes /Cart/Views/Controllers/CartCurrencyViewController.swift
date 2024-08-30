@@ -12,9 +12,8 @@ protocol CartCurrencyView: AnyObject {
 
 final class CartCurrencyViewController: UIViewController {
     
-    private weak var cartVC: CartViewController?
+    private weak var cartViewController: CartViewController?
     private var presenter: CartCurrencyPresenterProtocol
-    private var selectedCurrencyIndex: IndexPath?
     
     private let currencyCollectionView: UICollectionView = {
         let collectionView = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
@@ -65,7 +64,7 @@ final class CartCurrencyViewController: UIViewController {
     
     init(presenter: CartCurrencyPresenterProtocol, vc: CartViewController) {
         self.presenter = presenter
-        self.cartVC = vc
+        self.cartViewController = vc
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -162,16 +161,14 @@ final class CartCurrencyViewController: UIViewController {
             payButton.leadingAnchor.constraint(equalTo: footerPanel.leadingAnchor, constant: 16),
             payButton.trailingAnchor.constraint(equalTo: footerPanel.trailingAnchor, constant: -16)
         ])
+        
+        updatePayButtonState()
     }
     
     private func updatePayButtonState() {
-        if selectedCurrencyIndex != nil {
-            payButton.isEnabled = true
-            payButton.backgroundColor = .tabBarItemsTintColor
-        } else {
-            payButton.isEnabled = false
-            payButton.backgroundColor = .tabBarItemsTintColor.withAlphaComponent(0.2)
-        }
+        let isSelected = presenter.isCurrencySelected()
+        payButton.isEnabled = isSelected
+        payButton.backgroundColor = isSelected ? .tabBarItemsTintColor : .tabBarItemsTintColor.withAlphaComponent(0.2)
     }
     
     @objc
@@ -222,7 +219,6 @@ extension CartCurrencyViewController: UICollectionViewDataSource, UICollectionVi
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         presenter.didSelectCurrency(at: indexPath)
-        selectedCurrencyIndex = indexPath
         updatePayButtonState()
     }
 }
@@ -237,10 +233,10 @@ extension CartCurrencyViewController: CartCurrencyView {
     }
     
     func showSuccessFlow() {
-        let vc = presenter.getSuccessFlow()
-        vc.delegate = cartVC
+        let viewController = presenter.getSuccessFlow()
+        viewController.delegate = cartViewController
         
-        present(vc, animated: true)
+        present(viewController, animated: true)
     }
     
     func showFailedPaymentAlert() {

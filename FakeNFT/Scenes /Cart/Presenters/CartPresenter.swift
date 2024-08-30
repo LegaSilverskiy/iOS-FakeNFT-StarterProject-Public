@@ -72,9 +72,9 @@ final class CartPresenter: CartPresenterProtocol {
     }
     
     func clearCart() {
+        deleteAllItemsInCart()
         filteredNfts.removeAll()
         view?.reloadData()
-        deleteAllItemsInCart()
     }
     
     func showSortOptions() -> [AlertButtonAction] {

@@ -286,5 +286,6 @@ extension CartViewController: CartTableViewCellDelegate {
 extension CartViewController: CartSuccessPaymentDelegate {
     func clearCart() {
         presenter.clearCart()
+        presenter.loadNfts()
     }
 }
