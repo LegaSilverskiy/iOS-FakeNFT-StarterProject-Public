@@ -51,7 +51,7 @@ final class TabBarController: UITabBarController {
         let profileAssembly = ProfileAssembly(
             servicesAssembler: servicesAssembly
         )
-        
+
         let profileController = profileAssembly.build()
         profileController.tabBarItem = profileTabBarItem
 
@@ -68,7 +68,7 @@ final class TabBarController: UITabBarController {
         let statisticsAssembly = StatisticsAssembler(
             servicesAssembler: servicesAssembly
         )
-        
+
         let statisticsController = statisticsAssembly.build()
         statisticsController.tabBarItem = statisticsTabBarItem
 

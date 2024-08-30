@@ -127,13 +127,13 @@ struct DefaultNetworkClient: NetworkClient {
             urlRequest.httpBody = dtoEncoded
         }
 
-        if let dtoEncoded = request.dtoEncoded {
+        if let dtoEncoded = request.dtoEncoded { // TODO: - убрать дублирующийся код
             urlRequest.httpBody = dtoEncoded
         }
-        
-        if request.httpMethod == .put {
+
+        if request.httpMethod == .put { // TODO: - убрать дублирующийся код
             if let body = request.body {
-                urlRequest.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type")
+                urlRequest.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type") // TODO: - убрать дублирующийся код
                 urlRequest.httpBody = body
             }
         }

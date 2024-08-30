@@ -2,9 +2,9 @@
 "buttons.repeat" = "Повторить";
 "buttons.showUserSite" = "Перейти на сайт пользователя";
 
-"Error.title" = "Ошибка";
-"Error.network" = "Произошла ошибка сети";
-"Error.unknown" = "Произошла неизвестная ошибка";
+"error.title" = "Ошибка";
+"error.network" = "Произошла ошибка сети";
+"error.unknown" = "Произошла неизвестная ошибка";
 
 "tabBarController.tab.profile" = "Профиль";
 "tabBarController.tab.catalog" = "Каталог";
@@ -16,13 +16,11 @@
 "sortingOptions.name" = "По имени";
 "sortingOptions.rating" = "По рейтингу";
 
-"buttons.cancel" = "Отмена";
-
 "sortingOptions.name" = "По имени";
 "sortingOptions.rating" = "По рейтингу";
 
 "userCardViewController.showNFTs" = "Коллекция NFT (%d)";
-"UserNFTCollectionVC.title" = "Коллекция NFT";
-"UserNFTCollectionVC.userHasNoNfts" = "У пользователя пока нет NFT";
+"userNFTCollectionVC.title" = "Коллекция NFT";
+"userNFTCollectionVC.userHasNoNfts" = "У пользователя пока нет NFT";
 
 "Catalog.openNft" = "Открыть Nft";
