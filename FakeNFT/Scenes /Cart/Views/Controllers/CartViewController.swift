@@ -197,7 +197,17 @@ final class CartViewController: UIViewController {
     
     @objc
     private func payButtonTapped() {
-        let currencyViewController = CartCurrencyViewController(presenter: CartCurrencyPresenter(), vc: self)
+        let interactor = CartCurrencyInteractor()
+        
+        let currencyViewController = CartCurrencyViewController(
+            presenter: CartCurrencyPresenter(
+                interactor: interactor,
+                cartCurrencyService: CartCurrencyService(
+                    interactor: interactor
+                )
+            ),
+            vc: self
+        )
         
         let navController = UINavigationController(rootViewController: currencyViewController)
         navController.modalPresentationStyle = .fullScreen
@@ -276,7 +286,6 @@ extension CartViewController: CartTableViewCellDelegate {
 extension CartViewController: CartSuccessPaymentDelegate {
     func clearCart() {
         presenter.clearCart()
+        presenter.loadNfts()
     }
 }
-
-

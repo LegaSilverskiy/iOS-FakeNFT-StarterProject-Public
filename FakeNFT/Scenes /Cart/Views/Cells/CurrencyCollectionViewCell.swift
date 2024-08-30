@@ -1,11 +1,12 @@
 import UIKit
+import Kingfisher
 
 final class CurrencyCollectionViewCell: UICollectionViewCell {
     static let reuseIdentifier = "CurrencyCollectionViewCell"
     
     private let currencyImage: UIImageView = {
         let imageView = UIImageView()
-        imageView.image = UIImage(named: "btc")
+        imageView.backgroundColor = .tabBarItemsTintColor
         imageView.layer.cornerRadius = 6
         
         return imageView
@@ -15,7 +16,6 @@ final class CurrencyCollectionViewCell: UICollectionViewCell {
         let label = UILabel()
         label.font = UIFont.caption2
         label.textColor = .tabBarItemsTintColor
-        label.text = "Bitcoin"
         
         return label
     }()
@@ -24,7 +24,6 @@ final class CurrencyCollectionViewCell: UICollectionViewCell {
         let label = UILabel()
         label.font = UIFont.caption2
         label.textColor = .yaGreen
-        label.text = "BTC"
         
         return label
     }()
@@ -56,9 +55,18 @@ final class CurrencyCollectionViewCell: UICollectionViewCell {
     }
     
     func configCell(for model: CartCurrency) {
-        currencyImage.image = UIImage(named: model.image)
         currencyName.text = model.title
         currencyShortName.text = model.name
+        setCurrencyImage(for: model)
+        
+    }
+    
+    private func setCurrencyImage(for model: CartCurrency) {
+        guard let url = URL(string: model.image) else { return }
+        currencyImage.kf.indicatorType = .activity
+        (currencyImage.kf.indicator?.view as? UIActivityIndicatorView)?.color = .textSecondary
+        currencyImage.kf.setImage(with: url, placeholder: UIImage(named: "cart.placeholder"))
+
     }
     
     private func setupUI() {

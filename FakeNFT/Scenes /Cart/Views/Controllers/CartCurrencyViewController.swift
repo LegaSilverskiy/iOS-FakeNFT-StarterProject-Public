@@ -6,11 +6,13 @@ protocol CartCurrencyView: AnyObject {
     func navigateToUserAgreement()
     func showFailedPaymentAlert()
     func showSuccessFlow()
+    func showHud()
+    func hideHud()
 }
 
 final class CartCurrencyViewController: UIViewController {
     
-    private weak var cartVC: CartViewController?
+    private weak var cartViewController: CartViewController?
     private var presenter: CartCurrencyPresenterProtocol
     
     private let currencyCollectionView: UICollectionView = {
@@ -62,7 +64,7 @@ final class CartCurrencyViewController: UIViewController {
     
     init(presenter: CartCurrencyPresenterProtocol, vc: CartViewController) {
         self.presenter = presenter
-        self.cartVC = vc
+        self.cartViewController = vc
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -150,6 +152,8 @@ final class CartCurrencyViewController: UIViewController {
         payButton.titleLabel?.font = UIFont.bodyBold
         payButton.setTitleColor(.textOnPrimary, for: .normal)
         payButton.layer.cornerRadius = 16
+        payButton.isEnabled = false
+        payButton.backgroundColor = .tabBarItemsTintColor.withAlphaComponent(0.2)
         
         NSLayoutConstraint.activate([
             payButton.heightAnchor.constraint(equalToConstant: 60),
@@ -157,6 +161,14 @@ final class CartCurrencyViewController: UIViewController {
             payButton.leadingAnchor.constraint(equalTo: footerPanel.leadingAnchor, constant: 16),
             payButton.trailingAnchor.constraint(equalTo: footerPanel.trailingAnchor, constant: -16)
         ])
+        
+        updatePayButtonState()
+    }
+    
+    private func updatePayButtonState() {
+        let isSelected = presenter.isCurrencySelected()
+        payButton.isEnabled = isSelected
+        payButton.backgroundColor = isSelected ? .tabBarItemsTintColor : .tabBarItemsTintColor.withAlphaComponent(0.2)
     }
     
     @objc
@@ -198,7 +210,7 @@ extension CartCurrencyViewController: UICollectionViewDataSource, UICollectionVi
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        7
+         7
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
@@ -207,15 +219,24 @@ extension CartCurrencyViewController: UICollectionViewDataSource, UICollectionVi
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         presenter.didSelectCurrency(at: indexPath)
+        updatePayButtonState()
     }
 }
 
 extension CartCurrencyViewController: CartCurrencyView {
+    func showHud() {
+        UIBlockingProgressHUD.show()
+    }
+    
+    func hideHud() {
+        UIBlockingProgressHUD.dismiss()
+    }
+    
     func showSuccessFlow() {
-        let vc = presenter.getSuccessFlow()
-        vc.delegate = cartVC
+        let viewController = presenter.getSuccessFlow()
+        viewController.delegate = cartViewController
         
-        present(vc, animated: true)
+        present(viewController, animated: true)
     }
     
     func showFailedPaymentAlert() {

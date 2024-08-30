@@ -5,24 +5,24 @@ final class OrderService {
     private init() {}
     
     func fetchOrders(completion: @escaping (Result<Order, Error>) -> Void) {
-        let request = GetNFTByIDRequest(end: "orders/1")
-
+        let request = CartGetRequest(end: "orders/1")
+        
         guard let urlRequest = create(request: request) else {
             completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Failed to create URLRequest"])))
             return
         }
-
+        
         let task = URLSession.shared.dataTask(with: urlRequest) { data, response, error in
             if let error = error {
                 completion(.failure(error))
                 return
             }
-
+            
             guard let data = data else {
                 completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "No data received"])))
                 return
             }
-
+            
             do {
                 let nftResponse = try JSONDecoder().decode(Order.self, from: data)
                 completion(.success(nftResponse))
@@ -33,26 +33,26 @@ final class OrderService {
         
         task.resume()
     }
-
+    
     func fetchNFTByID(nftID: String, completion: @escaping (Result<CartNft, Error>) -> Void) {
-        let request = GetNFTByIDRequest(end: "nft/\(nftID)")
-
+        let request = CartGetRequest(end: "nft/\(nftID)")
+        
         guard let urlRequest = create(request: request) else {
             completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Failed to create URLRequest"])))
             return
         }
-
+        
         let task = URLSession.shared.dataTask(with: urlRequest) { data, response, error in
             if let error = error {
                 completion(.failure(error))
                 return
             }
-
+            
             guard let data = data else {
                 completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "No data received"])))
                 return
             }
-
+            
             do {
                 let nft = try JSONDecoder().decode(CartNft.self, from: data)
                 completion(.success(nft))
@@ -60,10 +60,10 @@ final class OrderService {
                 completion(.failure(error))
             }
         }
-
+        
         task.resume()
     }
-    
+ 
     func updateOrder(nftsIds: [String], completion: @escaping (Error?) -> Void) {
         let nftsString = nftsIds.joined(separator: ",")
         
@@ -89,6 +89,97 @@ final class OrderService {
         
         task.resume()
     }
+    
+    func fetchCurrencies(completion: @escaping (Result<[CartCurrencyModel], Error>) -> Void) {
+        let request = CartGetRequest(end: "currencies")
+        
+        guard let urlRequest = create(request: request) else {
+            completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Failed to create URLRequest"])))
+            return
+        }
+        
+        let task = URLSession.shared.dataTask(with: urlRequest) { data, response, error in
+            if let error = error {
+                completion(.failure(error))
+                return
+            }
+            
+            guard let data = data else {
+                completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "No data received"])))
+                return
+            }
+            
+            do {
+                let currencies = try JSONDecoder().decode([CartCurrencyModel].self, from: data)
+                completion(.success(currencies))
+            } catch {
+                completion(.failure(error))
+            }
+        }
+        
+        task.resume()
+    }
+    
+    func fetchCurrencyByID(_ id: String, completion: @escaping (Result<CartCurrencyModel, Error>) -> Void) {
+        let request = CartGetRequest(end: "currencies/\(id)")
+        
+        guard let urlRequest = create(request: request) else {
+            completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Failed to create URLRequest"])))
+            return
+        }
+        
+        let task = URLSession.shared.dataTask(with: urlRequest) { data, response, error in
+            if let error = error {
+                completion(.failure(error))
+                return
+            }
+            
+            guard let data = data else {
+                completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "No data received"])))
+                return
+            }
+            
+            do {
+                let currency = try JSONDecoder().decode(CartCurrencyModel.self, from: data)
+                completion(.success(currency))
+            } catch {
+                completion(.failure(error))
+            }
+        }
+        
+        task.resume()
+    }
+    
+    func fetchPaymentRequest(for currencyID: String, completion: @escaping (Result<OrderPayment, Error>) -> Void) {
+        let request = CartGetRequest(end: "orders/1/payment/\(currencyID)")
+        
+        guard let urlRequest = create(request: request) else {
+            completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "Failed to create URLRequest"])))
+            return
+        }
+        
+        let task = URLSession.shared.dataTask(with: urlRequest) { data, response, error in
+            if let error = error {
+                completion(.failure(error))
+                return
+            }
+            
+            guard let data = data else {
+                completion(.failure(NSError(domain: "", code: -1, userInfo: [NSLocalizedDescriptionKey: "No data received"])))
+                return
+            }
+            
+            do {
+                let payment = try JSONDecoder().decode(OrderPayment.self, from: data)
+                completion(.success(payment))
+            } catch {
+                completion(.failure(error))
+            }
+        }
+        
+        task.resume()
+    }
+
     
     private func create(request: NetworkRequest) -> URLRequest? {
         guard let endpoint = request.endpoint else {
