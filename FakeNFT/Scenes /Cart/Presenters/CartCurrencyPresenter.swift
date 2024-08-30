@@ -59,13 +59,13 @@ final class CartCurrencyPresenter: CartCurrencyPresenterProtocol {
     func getFailedPaymentAlertActions() -> [AlertButtonAction] {
         let actions = [
             AlertButtonAction(
-                buttonTitle: "Отменить",
+                buttonTitle: .errorCancel,
                 style: .cancel,
                 action: nil
             ),
             
             AlertButtonAction(
-                buttonTitle: "Повторить",
+                buttonTitle: .errorRepeat,
                 style: .default) { [weak self] action in
                     guard let self else { return }
                     processPayment()

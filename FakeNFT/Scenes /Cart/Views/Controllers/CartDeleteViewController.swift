@@ -54,7 +54,7 @@ final class CartDeleteViewController: UIViewController {
         let label = UILabel()
         label.font = UIFont.caption2
         label.textColor = .tabBarItemsTintColor
-        label.text = "Вы уверены, что хотите \nудалить объект из корзины?"
+        label.text = .cartWarningDelete
         label.textAlignment = .center
         label.numberOfLines = 2
         
@@ -70,7 +70,7 @@ final class CartDeleteViewController: UIViewController {
         button.titleLabel?.font = UIFont.bodyRegular
         
         button.setTitleColor(.yaRed, for: .normal)
-        button.setTitle("Удалить", for: .normal)
+        button.setTitle(.buttonsDelete, for: .normal)
         button.addTarget(self, action: #selector(deleteFromCart), for: .touchUpInside)
         
         return button
@@ -85,7 +85,7 @@ final class CartDeleteViewController: UIViewController {
         button.titleLabel?.font = UIFont.bodyRegular
         
         button.setTitleColor(.textOnPrimary, for: .normal)
-        button.setTitle("Вернуться", for: .normal)
+        button.setTitle(.buttonsBack, for: .normal)
         button.addTarget(self, action: #selector(closeScreen), for: .touchUpInside)
         
         return button

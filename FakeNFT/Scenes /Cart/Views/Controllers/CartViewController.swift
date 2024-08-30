@@ -70,7 +70,7 @@ final class CartViewController: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false
         label.font = UIFont.bodyBold
         label.textColor = .tabBarItemsTintColor
-        label.text = "Корзина пуста"
+        label.text = .cartEmptyState
 
         return label
     }()
@@ -175,7 +175,7 @@ final class CartViewController: UIViewController {
     }
     
     private func setupPayButton() {
-        payButton.setTitle("К оплате", for: .normal)
+        payButton.setTitle(.cartToPayment, for: .normal)
         payButton.addTarget(self, action: #selector(payButtonTapped), for: .touchUpInside)
         payButton.titleLabel?.font = UIFont.bodyBold
         payButton.setTitleColor(.textOnPrimary, for: .normal)
@@ -190,7 +190,7 @@ final class CartViewController: UIViewController {
     @objc
     private func sortButtonPressed() {
         let actions = presenter.showSortOptions()
-        let alert = UIAlertController().createAlert(for: AlertModel(title: "Сортировка", message: nil), action: actions, style: .actionSheet)
+        let alert = UIAlertController().createAlert(for: AlertModel(title: .actionSheetTitleSorting, message: nil), action: actions, style: .actionSheet)
         
         present(alert, animated: true)
     }

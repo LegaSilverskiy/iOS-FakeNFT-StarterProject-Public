@@ -19,7 +19,7 @@ final class UserAgreementPresenter: UserAgreementPresenterProtocol {
     }
     
     private func setupView() {
-        view?.setNavigationTitle("Пользовательское соглашение")
+        view?.setNavigationTitle(.cartUserAgreement)
     }
     
     private func loadUserAgreement() {

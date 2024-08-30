@@ -36,7 +36,6 @@ final class CartPresenter: CartPresenterProtocol {
             guard let self else { return }
             switch result {
             case .success(let fetchedNfts):
-                
                 nftModels = fetchedNfts
                 filteredNfts = fetchedNfts
                 
@@ -74,21 +73,20 @@ final class CartPresenter: CartPresenterProtocol {
     func clearCart() {
         deleteAllItemsInCart()
         filteredNfts.removeAll()
-        view?.reloadData()
     }
     
     func showSortOptions() -> [AlertButtonAction] {
         let sortOptions: [(title: String, option: SortOption)] = [
-            ("По цене", .price),
-            ("По рейтингу", .rating),
-            ("По названию", .name)
+            (.sortingOptionsPrice, .price),
+            (.sortingOptionsRating, .rating),
+            (.sortingOptionsName, .name)
         ]
         
         var actions = sortOptions.map { option in
             createSortAction(title: option.title, sortOption: option.option)
         }
         
-        let cancelAction = AlertButtonAction(buttonTitle: "Закрыть", style: .cancel, action: nil)
+        let cancelAction = AlertButtonAction(buttonTitle: .buttonsClose, style: .cancel, action: nil)
         actions.append(cancelAction)
         
         return actions
@@ -186,7 +184,10 @@ final class CartPresenter: CartPresenterProtocol {
         interactor.updateOrder(with: []) { result in
             switch result {
             case .success:
-                print("Корзина успешно очищена")
+                DispatchQueue.main.async { [weak self] in
+                    guard let self else { return }
+                    view?.reloadData()
+                }
             case .failure(let error):
                 print("Ошибка при очистке корзины: \(error.localizedDescription)")
             }

@@ -100,7 +100,6 @@ final class CartTableViewCell: UITableViewCell {
         let label = UILabel()
         label.font = UIFont.caption2
         label.textColor = .tabBarItemsTintColor
-        label.text = "Цена"
         
         return label
     }()

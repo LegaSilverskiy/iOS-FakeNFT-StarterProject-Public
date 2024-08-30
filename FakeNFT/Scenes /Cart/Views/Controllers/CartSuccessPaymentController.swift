@@ -26,7 +26,7 @@ final class CartSuccessPaymentController: UIViewController {
         let label = UILabel()
         label.font = UIFont.headline3
         label.textColor = .tabBarItemsTintColor
-        label.text = "Успех! Оплата прошла, поздравляем с покупкой!"
+        label.text = .cartSuccessPayment
         label.textAlignment = .center
         label.numberOfLines = 2
         
@@ -44,6 +44,7 @@ final class CartSuccessPaymentController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         setupUI()
+        delegate?.clearCart()
     }
     
     private func setupUI() {
@@ -81,7 +82,7 @@ final class CartSuccessPaymentController: UIViewController {
     private func setupButton() {
         view.addSubview(button)
         
-        button.setTitle("Вернуться в корзину", for: .normal)
+        button.setTitle(.cartBackToCart, for: .normal)
         button.addTarget(self, action: #selector(returnToCart), for: .touchUpInside)
         button.titleLabel?.font = UIFont.bodyBold
         button.setTitleColor(.textOnPrimary, for: .normal)
@@ -98,6 +99,5 @@ final class CartSuccessPaymentController: UIViewController {
     @objc
     private func returnToCart() {
         self.presentingViewController?.presentingViewController?.dismiss(animated: true)
-        delegate?.clearCart()
     }
 }

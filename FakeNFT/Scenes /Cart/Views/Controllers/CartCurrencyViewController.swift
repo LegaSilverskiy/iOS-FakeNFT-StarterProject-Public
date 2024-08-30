@@ -39,7 +39,7 @@ final class CartCurrencyViewController: UIViewController {
         let label = UILabel()
         label.font = UIFont.caption2
         label.textColor = .tabBarItemsTintColor
-        label.text = "Совершая покупку, вы соглашаетесь с условиями"
+        label.text = .cartUserAgreementFirstPart
         
         return label
     }()
@@ -48,7 +48,7 @@ final class CartCurrencyViewController: UIViewController {
         let label = UILabel()
         label.font = UIFont.caption2
         label.textColor = .yaBlue
-        label.text = "Пользовательского соглашения"
+        label.text = .cartUserAgreementSecondPart
         label.isUserInteractionEnabled = true
         
         return label
@@ -81,7 +81,7 @@ final class CartCurrencyViewController: UIViewController {
     }
     
     private func setupUI() {
-        navigationItem.title = "Выберите способ оплаты"
+        navigationItem.title = .cartChoosePaymentMethod
         navigationItem.leftBarButtonItem = UIBarButtonItem(image: UIImage(systemName: "chevron.backward"), style: .plain, target: self, action: #selector(backButtonPressed))
         navigationItem.leftBarButtonItem?.tintColor = .tabBarItemsTintColor
         view.backgroundColor = .textOnPrimary
@@ -147,7 +147,7 @@ final class CartCurrencyViewController: UIViewController {
     }
     
     private func setupPayButton() {
-        payButton.setTitle("Оплатить", for: .normal)
+        payButton.setTitle(.buttonsPay, for: .normal)
         payButton.addTarget(self, action: #selector(payButtonTapped), for: .touchUpInside)
         payButton.titleLabel?.font = UIFont.bodyBold
         payButton.setTitleColor(.textOnPrimary, for: .normal)
@@ -243,7 +243,7 @@ extension CartCurrencyViewController: CartCurrencyView {
         let actions = presenter.getFailedPaymentAlertActions()
         
         let alert = UIAlertController().createAlert(
-            for: AlertModel(title: "Не удалось произвести оплату", message: nil),
+            for: AlertModel(title: .cartErrorPayment, message: nil),
             action: actions,
             style: .alert
         )
