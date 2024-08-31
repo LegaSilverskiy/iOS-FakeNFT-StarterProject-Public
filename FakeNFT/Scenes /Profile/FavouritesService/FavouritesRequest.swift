@@ -15,7 +15,7 @@ final class FavouritesRequest: NetworkRequest {
 
     var httpMethod: HttpMethod = .put
 
-    var body: Data?
+    var dtoEncoded: Data?
 
     init(profile: Profile) {
         let likeStr = profile.likes.joined(separator: ", ")
@@ -29,7 +29,7 @@ final class FavouritesRequest: NetworkRequest {
         ]
 
         if let queryString = components.percentEncodedQuery {
-            self.body = queryString.data(using: .utf8)
+            self.dtoEncoded = queryString.data(using: .utf8)
         }
     }
 }

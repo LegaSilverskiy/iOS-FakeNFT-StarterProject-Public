@@ -122,20 +122,8 @@ struct DefaultNetworkClient: NetworkClient {
             urlRequest.setValue(value, forHTTPHeaderField: key)
         }
 
-        if let dto = request.dto,
-           let dtoEncoded = try? encoder.encode(dto) {
+        if let dtoEncoded = request.dtoEncoded {
             urlRequest.httpBody = dtoEncoded
-        }
-
-        if let dtoEncoded = request.dtoEncoded { // TODO: - убрать дублирующийся код
-            urlRequest.httpBody = dtoEncoded
-        }
-
-        if request.httpMethod == .put { // TODO: - убрать дублирующийся код
-            if let body = request.body {
-                urlRequest.setValue("application/x-www-form-urlencoded", forHTTPHeaderField: "Content-Type") // TODO: - убрать дублирующийся код
-                urlRequest.httpBody = body
-            }
         }
 
         return urlRequest
