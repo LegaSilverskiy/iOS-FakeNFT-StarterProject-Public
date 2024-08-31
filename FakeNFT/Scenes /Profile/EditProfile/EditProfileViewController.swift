@@ -198,7 +198,7 @@ final class EditProfileViewController: UIViewController, EditProfileViewProtocol
             textField.placeholder = alertModel.placeholder
         }
         let okAction = UIAlertAction(title: alertModel.okTitle, style: .default) { [weak self] _ in
-            guard let text = alertController.textFields?.first?.text else {
+            guard let text = alertController.textFields?.first?.text, !text.isEmpty else {
                 return
             }
             self?.presenter.loadPhoto(with: text)

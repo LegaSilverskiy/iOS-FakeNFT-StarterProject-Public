@@ -15,7 +15,7 @@ struct EditProfileRequest: NetworkRequest {
 
     var httpMethod: HttpMethod = .put
 
-    var body: Data?
+    var dtoEncoded: Data?
 
     init(profile: Profile) {
         var components = URLComponents()
@@ -27,7 +27,7 @@ struct EditProfileRequest: NetworkRequest {
         ]
 
         if let queryString = components.percentEncodedQuery {
-            self.body = queryString.data(using: .utf8)
+            self.dtoEncoded = queryString.data(using: .utf8)
         }
     }
 }
