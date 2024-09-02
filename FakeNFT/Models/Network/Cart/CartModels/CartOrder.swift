@@ -1,6 +1,6 @@
 import Foundation
 
-struct Order: Decodable {
+struct CartOrder: Decodable {
     let nfts: [String]
     let id: String
 }

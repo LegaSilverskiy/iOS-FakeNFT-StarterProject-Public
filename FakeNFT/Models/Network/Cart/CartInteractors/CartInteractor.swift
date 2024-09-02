@@ -6,7 +6,7 @@ protocol CartInteractorProtocol {
 }
 
 final class CartInteractor: CartInteractorProtocol {
-    private let service = OrderService.shared
+    private let service = CartOrderService.shared
 
     private let numberFormatter: NumberFormatter = {
         let formatter = NumberFormatter()

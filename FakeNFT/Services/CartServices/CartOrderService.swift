@@ -1,10 +1,10 @@
 import Foundation
 
-final class OrderService {
-    static let shared = OrderService()
+final class CartOrderService {
+    static let shared = CartOrderService()
     private init() {}
 
-    func fetchOrders(completion: @escaping (Result<Order, Error>) -> Void) {
+    func fetchOrders(completion: @escaping (Result<CartOrder, Error>) -> Void) {
         let request = CartGetRequest(end: "orders/1")
 
         guard let urlRequest = create(request: request) else {
@@ -40,7 +40,7 @@ final class OrderService {
             }
 
             do {
-                let nftResponse = try JSONDecoder().decode(Order.self, from: data)
+                let nftResponse = try JSONDecoder().decode(CartOrder.self, from: data)
                 completion(.success(nftResponse))
             } catch {
                 completion(.failure(error))

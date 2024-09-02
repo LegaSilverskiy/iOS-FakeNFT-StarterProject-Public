@@ -7,7 +7,7 @@ protocol CartCurrencyInteractorProtocol {
 }
 
 final class CartCurrencyInteractor: CartCurrencyInteractorProtocol {
-    private let service = OrderService.shared
+    private let service = CartOrderService.shared
 
     func fetchCurrencies(completion: @escaping (Result<[CartCurrencyModel], Error>) -> Void) {
         service.fetchCurrencies { result in
