@@ -201,7 +201,7 @@ final class CartViewController: UIViewController {
     private func sortButtonPressed() {
         let actions = presenter.showSortOptions()
         let alert = UIAlertController().createAlert(
-            for: AlertModel(
+            for: CartAlertModel(
                 title: .actionSheetTitleSorting,
                 message: nil
             ),

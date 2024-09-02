@@ -46,8 +46,34 @@ final class TabBarController: UITabBarController {
         setTabs()
     }
 
-    private func setTabs() {
+//    private func setTabs() {
+//
+//        let profileAssembly = ProfileAssembly(
+//            servicesAssembler: servicesAssembly
+//        )
+//
+//        let profileController = profileAssembly.build()
+//        profileController.tabBarItem = profileTabBarItem
+//
+//        let catalogController = CatalogViewController(
+//            servicesAssembly: servicesAssembly
+//        )
+//        catalogController.tabBarItem = catalogTabBarItem
+//
+//       
+//
+//        let statisticsController = statisticsAssembly.build()
+//        statisticsController.tabBarItem = statisticsTabBarItem
+//
+//        let navigationCatalogVC = UINavigationController(rootViewController: catalogController)
+//        let navigationCartVC = UINavigationController(rootViewController: cartController)
+//        let navigationProfileVC = UINavigationController(rootViewController: profileController)
+//        let navigationStatisticVC = UINavigationController(rootViewController: statisticsController)
+//
+//        viewControllers = [navigationProfileVC, navigationCatalogVC, navigationCartVC, navigationStatisticVC]
+//    }
 
+    private func setTabs() {
         let profileAssembly = ProfileAssembly(
             servicesAssembler: servicesAssembly
         )
@@ -59,9 +85,14 @@ final class TabBarController: UITabBarController {
             servicesAssembly: servicesAssembly
         )
         catalogController.tabBarItem = catalogTabBarItem
-   
+
         let cartController = CartViewController(presenter: CartPresenter(interactor: CartInteractor()))
         cartController.tabBarItem = cartTabBarItem
+        cartController.tabBarItem = cartTabBarItem
+
+        let statisticsAssembly = StatisticsAssembler(
+            servicesAssembler: servicesAssembly
+        )
 
         let statisticsController = statisticsAssembly.build()
         statisticsController.tabBarItem = statisticsTabBarItem

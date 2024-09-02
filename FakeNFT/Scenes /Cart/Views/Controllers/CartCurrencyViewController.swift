@@ -280,7 +280,7 @@ extension CartCurrencyViewController: CartCurrencyView {
         let actions = presenter.getFailedPaymentAlertActions()
 
         let alert = UIAlertController().createAlert(
-            for: AlertModel(title: .cartErrorPayment, message: nil),
+            for: CartAlertModel(title: .cartErrorPayment, message: nil),
             action: actions,
             style: .alert
         )

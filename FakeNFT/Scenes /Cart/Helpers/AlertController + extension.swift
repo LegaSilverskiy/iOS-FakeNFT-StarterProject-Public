@@ -3,7 +3,7 @@ import UIKit
 extension UIAlertController {
 
     func createAlert(
-        for model: AlertModel,
+        for model: CartAlertModel,
         action: [AlertButtonAction],
         style: UIAlertController.Style
     ) -> UIAlertController {

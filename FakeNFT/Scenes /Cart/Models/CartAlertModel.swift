@@ -1,6 +1,6 @@
 import UIKit
 
-struct AlertModel {
+struct CartAlertModel {
     let title: String?
     let message: String?
 }
