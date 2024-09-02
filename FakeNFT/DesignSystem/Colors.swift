@@ -46,9 +46,15 @@ extension UIColor {
     static let yaGreen = UIColor(hexString: "#1C9F00")
     static let yaRed = UIColor(hexString: "#FF3B30")
     static let yaBlue = UIColor(hexString: "#0A84FF")
+    static let yellowStar = UIColor(hexString: "#FEEF0D")
+    static let redFavoriteButton = UIColor(hexString: "#FF3B30")
 
     // epic Statistics
     static let avatarStubTintColor = UIColor(hexString: "#625C5C")
+
+    // epic Profile
+    static let textFieldTintColor = UIColor(hexString: "#F7F7F8")
+    static let likeTintColor = UIColor(hexString: "#F56B6C")
 
     // тут создаем константы для цветов с поддержкой темной темы
     static let tabBarItemsTintColor = UIColor { traits in

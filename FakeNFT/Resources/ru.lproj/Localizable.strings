@@ -1,35 +1,26 @@
-"tabBarController.tab.profile" = "Profile";
-"tabBarController.tab.catalog" = "Catalog";
-"tabBarController.tab.cart" = "Cart";
-"tabBarController.tab.statistics" = "Statistics";
+"buttons.cancel" = "Отмена";
+"buttons.repeat" = "Повторить";
+"buttons.showUserSite" = "Перейти на сайт пользователя";
 
-"actionSheet.title.sorting" = "Sorting";
+"error.title" = "Ошибка";
+"error.network" = "Произошла ошибка сети";
+"error.unknown" = "Произошла неизвестная ошибка";
 
-"sortingOptions.name" = "By Name";
-"sortingOptions.rating" = "By Rating";
-"sortingOptions.price" = "By Price";
+"tabBarController.tab.profile" = "Профиль";
+"tabBarController.tab.catalog" = "Каталог";
+"tabBarController.tab.cart" = "Корзина";
+"tabBarController.tab.statistics" = "Статистика";
 
-"buttons.cancel" = "Cancel";
-"buttons.close" = "Close";
-"buttons.delete" = "Delete";
-"buttons.back" = "Back";
-"buttons.pay" = "Pay";
+"actionSheet.title.sorting" = "Сортировка";
 
-"Catalog.openNft" = "Open Nft";
-"Error.network" = "A network error occurred";
-"Error.unknown" = "An unknown error occurred";
-"Error.repeat" = "Retry";
-"Error.cancel" = "Cancel";
-"Error.title" = "Error";
+"sortingOptions.name" = "По имени";
+"sortingOptions.rating" = "По рейтингу";
 
-// MARK: - CART
-"cart.userAgreement" = "User Agreement";
-"cart.userAgreement.firstPart" = "By making a purchase, you agree to the terms of the";
-"cart.userAgreement.secondPart" = "User Agreement";
-"cart.emptyState" = "Cart is empty";
-"cart.toPayment" = "To payment";
-"cart.choosePaymentMethod" = "Choose a payment method";
-"cart.warningDelete" = "Are you sure you want to \ndelete the item from the cart?";
-"cart.errorPayment" = "Failed to process the payment";
-"cart.successPayment" = "Success! Payment processed, congratulations on your purchase!";
-"cart.backToCart" = "Back to cart";
+"sortingOptions.name" = "По имени";
+"sortingOptions.rating" = "По рейтингу";
+
+"userCardViewController.showNFTs" = "Коллекция NFT (%d)";
+"userNFTCollectionVC.title" = "Коллекция NFT";
+"userNFTCollectionVC.userHasNoNfts" = "У пользователя пока нет NFT";
+
+"Catalog.openNft" = "Открыть Nft";

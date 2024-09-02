@@ -47,10 +47,11 @@ final class TabBarController: UITabBarController {
     }
 
     private func setTabs() {
-
-        let profileController = ProfileViewController(
-            servicesAssembly: servicesAssembly
+        let profileAssembly = ProfileAssembly(
+            servicesAssembler: servicesAssembly
         )
+
+        let profileController = profileAssembly.build()
         profileController.tabBarItem = profileTabBarItem
 
         let catalogController = CatalogViewController(
@@ -63,7 +64,12 @@ final class TabBarController: UITabBarController {
 
         let statisticsController = StatisticsViewController(
             servicesAssembly: servicesAssembly
+
+        let statisticsAssembly = StatisticsAssembler(
+            servicesAssembler: servicesAssembly
         )
+
+        let statisticsController = statisticsAssembly.build()
         statisticsController.tabBarItem = statisticsTabBarItem
 
         let navigationCatalogVC = UINavigationController(rootViewController: catalogController)

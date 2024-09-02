@@ -122,8 +122,7 @@ struct DefaultNetworkClient: NetworkClient {
             urlRequest.setValue(value, forHTTPHeaderField: key)
         }
 
-        if let dto = request.dto,
-           let dtoEncoded = try? encoder.encode(dto) {
+        if let dtoEncoded = request.dtoEncoded {
             urlRequest.httpBody = dtoEncoded
         }
 
