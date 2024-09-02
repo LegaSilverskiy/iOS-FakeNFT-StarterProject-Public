@@ -52,7 +52,7 @@ final class NftCollectionViewCell: UICollectionViewCell {
     
     func setLike(isLiked: Bool) -> UIImage? {
         self.likeState = isLiked
-        return likeState ? UIImage(systemName: "heart.fill") : UIImage(systemName: "heart")
+        return likeState ? UIImage(named: "LikeActive") : UIImage(named: "Like")
     }
     
     func setCart(isInTheCart: Bool) -> UIImage? {
@@ -81,8 +81,8 @@ private extension NftCollectionViewCell {
     }
     
     func configureLikeButton() {
-        likeButton.setImage(UIImage(systemName: "heart.fill"), for: .normal)
-        likeButton.tintColor = .pinkForLikeButton
+        likeButton.setImage(UIImage(named: "LikeActive"), for: .normal)
+        likeButton.tintColor = .white
         likeButton.addTarget(self, action: #selector(didTapLikeButton), for: .touchUpInside)
     }
     
