@@ -7,7 +7,7 @@
 
 import Foundation
 
-struct Profile: Codable {
+struct ProfileForCatalog: Codable {
     let name: String
     let avatar: String
     let description: String

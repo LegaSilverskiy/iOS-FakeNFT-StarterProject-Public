@@ -7,9 +7,9 @@
 
 import Foundation
 
-typealias ProfileCompletion = (Result<Profile, Error>) -> Void
+typealias ProfileCompl = (Result<ProfileForCatalog, Error>) -> Void
 
-final class ProfileService {
+final class ProfileServiceCatalog {
     
     private let networkClient: NetworkClient
     
@@ -17,9 +17,9 @@ final class ProfileService {
         self.networkClient = networkClient
     }
     
-    func loadLikes(completion: @escaping ProfileCompletion) {
-        let request = ProfileRequest()
-        networkClient.send(request: request, type: Profile.self) { result in
+    func loadLikes(completion: @escaping ProfileCompl) {
+        let request = ProfileRequestCatalog()
+        networkClient.send(request: request, type: ProfileForCatalog.self) { result in
             switch result {
             case .success(let profile):
                 completion(.success(profile))
@@ -29,9 +29,9 @@ final class ProfileService {
         }
     }
     
-    func setLike(id: String, likes: [String], completion: @escaping ProfileCompletion) {
+    func setLike(id: String, likes: [String], completion: @escaping ProfileCompl) {
         let request = LikeRequest(likes: likes)
-        networkClient.send(request: request, type: Profile.self) { result in
+        networkClient.send(request: request, type: ProfileForCatalog.self) { result in
             switch result {
             case .success(let profile):
                 completion(.success(profile))

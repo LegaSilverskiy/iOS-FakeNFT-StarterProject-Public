@@ -7,9 +7,9 @@
 
 import Foundation
 
-typealias OrderCompletion = (Result<Order, Error>) -> Void
+typealias OrderCompl = (Result<OrderForCatalog, Error>) -> Void
 
-final class OrderService {
+final class OrderServiceCatalog {
     
     private let networkClient: NetworkClient
     
@@ -17,9 +17,9 @@ final class OrderService {
         self.networkClient = networkClient
     }
     
-    func loadOrders(completion: @escaping OrderCompletion) {
-        let request = OrderRequest()
-        networkClient.send(request: request, type: Order.self) { result in
+    func loadOrders(completion: @escaping OrderCompl) {
+        let request = OrderRequestCatalog()
+        networkClient.send(request: request, type: OrderForCatalog.self) { result in
             switch result {
             case .success(let orders):
                 completion(.success(orders))
@@ -29,9 +29,9 @@ final class OrderService {
         }
     }
     
-    func setOrders(id: String, orders: [String], completion: @escaping OrderCompletion) {
-        let request = OrderPutRequest(id: id, orders: orders)
-        networkClient.send(request: request, type: Order.self) { result in
+    func setOrders(id: String, orders: [String], completion: @escaping OrderCompl) {
+        let request = OrderPutRequestCatalog(id: id, orders: orders)
+        networkClient.send(request: request, type: OrderForCatalog.self) { result in
             switch result {
             case .success(let orders):
                 completion(.success(orders))

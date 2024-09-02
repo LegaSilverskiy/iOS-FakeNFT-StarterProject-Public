@@ -15,7 +15,7 @@ final class CurrentCollectionNftPresenter {
     
     //MARK: - Private properties
     private let service: ServicesAssembly
-    private var profile: Profile?
+    private var profile: ProfileForCatalog?
     private var catalogNfts: Catalog?
     private var likes: [String] = []
     private var orders: [String] = []
@@ -32,7 +32,7 @@ final class CurrentCollectionNftPresenter {
         guard let catalogNfts else { return }
         view?.showLoading()
         
-        service.profileService.loadLikes{ [weak self] result in
+        service.profileServiceCatalog.loadLikes{ [weak self] result in
             switch result {
             case .success(let profile):
                 self?.likes = profile.likes
@@ -42,7 +42,7 @@ final class CurrentCollectionNftPresenter {
             self?.view?.hideLoading()
         }
         
-        service.orderService.loadOrders{ [weak self] result in
+        service.orderServiceCatalog.loadOrders{ [weak self] result in
             switch result {
             case .success(let orders):
                 self?.orders = orders.nfts
@@ -80,7 +80,7 @@ final class CurrentCollectionNftPresenter {
         }
         self.likes = updatedLikes
         
-        service.profileService.setLike(id: nftId, likes: self.likes, completion: { [weak self] result in
+        service.profileServiceCatalog.setLike(id: nftId, likes: self.likes, completion: { [weak self] result in
             switch result {
             case .success(let profile):
                 self?.profile = profile
@@ -107,7 +107,7 @@ final class CurrentCollectionNftPresenter {
         }
         self.orders = updatedOrders
         
-        service.orderService.setOrders(id: nftId, orders: self.orders, completion: { [weak self] result in
+        service.orderServiceCatalog.setOrders(id: nftId, orders: self.orders, completion: { [weak self] result in
             switch result {
             case .success(let orders):
                 guard !orders.nfts.isEmpty else { return }

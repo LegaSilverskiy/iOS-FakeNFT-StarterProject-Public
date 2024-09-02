@@ -28,14 +28,13 @@ final class ServicesAssembly {
         )
     }
     
-    
-    var profileService: ProfileService {
+    var profileServiceCatalog: ProfileServiceCatalog {
         .init(
             networkClient: networkClient
         )
     }
     
-    var orderService: OrderService {
+    var orderServiceCatalog: OrderServiceCatalog {
         .init(
             networkClient: networkClient
         )

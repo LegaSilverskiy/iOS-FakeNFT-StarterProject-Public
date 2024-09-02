@@ -7,13 +7,13 @@
 
 import Foundation
 
-struct OrderRequest: NetworkRequest {
+struct OrderRequestCatalog: NetworkRequest {
     var endpoint: URL? {
         URL(string: "\(RequestConstants.baseURL)/api/v1/orders/1")
     }
 }
 
-struct OrderPutRequest: NetworkRequest {
+struct OrderPutRequestCatalog: NetworkRequest {
     
     let httpMethod: HttpMethod = .put
     var id: String
@@ -22,7 +22,7 @@ struct OrderPutRequest: NetworkRequest {
         URL(string: "\(RequestConstants.baseURL)/api/v1/orders/1")
     }
     
-    var body: Data? {
+    var dtoEncoded: Data? {
         return ordersToString().data(using: .utf8)
     }
     
