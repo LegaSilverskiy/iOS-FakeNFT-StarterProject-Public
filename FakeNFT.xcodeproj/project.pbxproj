@@ -150,6 +150,8 @@
 		9AA5C1D02C7E42C400208F0D /* CartCurrency.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartCurrency.swift; sourceTree = "<group>"; };
 		9AA5C1D22C7E507E00208F0D /* CartCurrencyService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartCurrencyService.swift; sourceTree = "<group>"; };
 		9AA5C1D62C7E5F6F00208F0D /* OrderPayment.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OrderPayment.swift; sourceTree = "<group>"; };
+		9AB5AEFD2C853FDF00806906 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/LaunchScreen.strings; sourceTree = "<group>"; };
+		9AB5AEFE2C85402900806906 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/Localizable.strings; sourceTree = "<group>"; };
 		9ADB06BB2C77F01700C800D1 /* CartCurrencyViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CartCurrencyViewController.swift; sourceTree = "<group>"; };
 		9ADB06BF2C77F23500C800D1 /* CurrencyCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CurrencyCollectionViewCell.swift; sourceTree = "<group>"; };
 		9ADB06C22C7811C800C800D1 /* UserAgreementViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAgreementViewController.swift; sourceTree = "<group>"; };
@@ -582,6 +584,7 @@
 			buildRules = (
 			);
 			dependencies = (
+				9AB5AEFC2C8531D000806906 /* PBXTargetDependency */,
 			);
 			name = FakeNFT;
 			packageProductDependencies = (
@@ -658,11 +661,13 @@
 			knownRegions = (
 				Base,
 				ru,
+				en,
 			);
 			mainGroup = 3F68068A29CBBAF100B4F915;
 			packageReferences = (
 				3F603CCB29DB4A53000C43D7 /* XCRemoteSwiftPackageReference "ProgressHUD" */,
 				3F603CCE29DB4A74000C43D7 /* XCRemoteSwiftPackageReference "Kingfisher" */,
+				9AB5AEFA2C8531B000806906 /* XCRemoteSwiftPackageReference "SwiftLint" */,
 			);
 			productRefGroup = 3F68069429CBBAF100B4F915 /* Products */;
 			projectDirPath = "";
@@ -705,7 +710,7 @@
 /* Begin PBXShellScriptBuildPhase section */
 		3FC8C39529D24CDB0081F015 /* Swiftlint */ = {
 			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
+			buildActionMask = 12;
 			files = (
 			);
 			inputFileListPaths = (
@@ -821,6 +826,10 @@
 			target = 3F68069229CBBAF100B4F915 /* FakeNFT */;
 			targetProxy = 3F6806B429CBBAF200B4F915 /* PBXContainerItemProxy */;
 		};
+		9AB5AEFC2C8531D000806906 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = 9AB5AEFB2C8531D000806906 /* SwiftLintBuildToolPlugin */;
+		};
 /* End PBXTargetDependency section */
 
 /* Begin PBXVariantGroup section */
@@ -829,6 +838,7 @@
 			children = (
 				3F6806A229CBBAF200B4F915 /* Base */,
 				E1CD40D92A96BE7D00BE7FE8 /* ru */,
+				9AB5AEFD2C853FDF00806906 /* en */,
 			);
 			name = LaunchScreen.storyboard;
 			sourceTree = "<group>";
@@ -837,9 +847,11 @@
 			isa = PBXVariantGroup;
 			children = (
 				D4D5536E2C660B0600684EAC /* ru */,
+				9AB5AEFE2C85402900806906 /* en */,
 			);
 			name = Localizable.strings;
 			sourceTree = "<group>";
+			usesTabs = 0;
 		};
 /* End PBXVariantGroup section */
 
@@ -1146,6 +1158,14 @@
 				minimumVersion = 7.0.0;
 			};
 		};
+		9AB5AEFA2C8531B000806906 /* XCRemoteSwiftPackageReference "SwiftLint" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/realm/SwiftLint";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.56.2;
+			};
+		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
@@ -1158,6 +1178,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 3F603CCE29DB4A74000C43D7 /* XCRemoteSwiftPackageReference "Kingfisher" */;
 			productName = Kingfisher;
+		};
+		9AB5AEFB2C8531D000806906 /* SwiftLintBuildToolPlugin */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 9AB5AEFA2C8531B000806906 /* XCRemoteSwiftPackageReference "SwiftLint" */;
+			productName = "plugin:SwiftLintBuildToolPlugin";
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

@@ -13,17 +13,17 @@ protocol CartCurrencyPresenterProtocol {
 }
 
 final class CartCurrencyPresenter: CartCurrencyPresenterProtocol {
-    
+
     weak var view: CartCurrencyView?
     private var currencies: [CartCurrency] = []
     private let interactor: CartCurrencyInteractorProtocol
     private let cartCurrencyService: CartCurrencyServiceProtocol
-    
+
     init(interactor: CartCurrencyInteractorProtocol, cartCurrencyService: CartCurrencyServiceProtocol) {
         self.interactor = interactor
         self.cartCurrencyService = cartCurrencyService
     }
-    
+
     func viewDidLoad() {
         fetchCurrencies()
     }
@@ -31,58 +31,58 @@ final class CartCurrencyPresenter: CartCurrencyPresenterProtocol {
     func didSelectCurrency(at indexPath: IndexPath) {
         UserDefaults.standard.set(indexPath.row, forKey: "SelectedCurrencyIndex")
     }
-    
+
     func isCurrencySelected() -> Bool {
-        if let savedIndex = UserDefaults.standard.value(forKey: "SelectedCurrencyIndex") as? Int { return true }
+        if UserDefaults.standard.value(forKey: "SelectedCurrencyIndex") is Int { return true }
         return false
     }
-    
+
     func userAgreementTapped() {
         view?.navigateToUserAgreement()
     }
-    
+
     func getCurrencies() -> [CartCurrency] {
         currencies
     }
-    
+
     func processPayment() {
         guard let selectedCurrencyIndex = UserDefaults.standard.value(forKey: "SelectedCurrencyIndex") as? Int else {
             print("No currency selected")
             view?.showFailedPaymentAlert()
             return
         }
-        
+
         let selectedCurrency = currencies[selectedCurrencyIndex]
         makePayment(by: selectedCurrency.id)
     }
-    
+
     func getFailedPaymentAlertActions() -> [AlertButtonAction] {
         let actions = [
             AlertButtonAction(
-                buttonTitle: "Отменить",
+                buttonTitle: .errorCancel,
                 style: .cancel,
                 action: nil
             ),
-            
+
             AlertButtonAction(
-                buttonTitle: "Повторить",
-                style: .default) { [weak self] action in
+                buttonTitle: .errorRepeat,
+                style: .default) { [weak self] _ in
                     guard let self else { return }
                     processPayment()
                 }
         ]
-        
+
         return actions
     }
-    
+
     func getSuccessFlow() -> CartSuccessPaymentController {
         let viewController = CartSuccessPaymentController()
         viewController.modalPresentationStyle = .fullScreen
         viewController.modalTransitionStyle = .crossDissolve
-        
+
         return viewController
     }
-    
+
     private func fetchCurrencies() {
         view?.showHud()
         interactor.fetchCurrencies { [weak self] result in
@@ -102,8 +102,8 @@ final class CartCurrencyPresenter: CartCurrencyPresenterProtocol {
             }
         }
     }
-    
-    private func makePayment(by id: String)  {
+
+    private func makePayment(by id: String) {
         view?.showHud()
         interactor.fetchPaymentRequest(for: id) { [weak self] result in
             switch result {
@@ -115,16 +115,16 @@ final class CartCurrencyPresenter: CartCurrencyPresenterProtocol {
                 print("Failed to fetch: \(error)")
             }
         }
-        
+
     }
-    
+
     private func loadSelectedCurrency() {
         if let savedIndex = UserDefaults.standard.value(forKey: "SelectedCurrencyIndex") as? Int {
             let selectedCurrencyIndex = IndexPath(row: savedIndex, section: 0)
             view?.selectCurrency(at: selectedCurrencyIndex)
         }
     }
-    
+
     private func handlePaymentRequest(isSuccess: Bool) {
         if isSuccess {
             view?.showSuccessFlow()

@@ -30,10 +30,9 @@ final class CartCurrencyInteractor: CartCurrencyInteractorProtocol {
             }
         }
     }
-    
+
     func fetchPaymentRequest(for currencyID: String, completion: @escaping (Result<OrderPayment, Error>) -> Void) {
-        service.fetchPaymentRequest(for: currencyID) {
-            result in
+        service.fetchPaymentRequest(for: currencyID) { result in
             switch result {
             case .success(let payment):
                 completion(.success(payment))
