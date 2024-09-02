@@ -114,7 +114,7 @@ struct DefaultNetworkClient: NetworkClient {
             assertionFailure("Empty endpoint")
             return nil
         }
-
+        
         var urlRequest = URLRequest(url: endpoint)
         urlRequest.httpMethod = request.httpMethod.rawValue
 
@@ -122,12 +122,13 @@ struct DefaultNetworkClient: NetworkClient {
             urlRequest.setValue(value, forHTTPHeaderField: key)
         }
 
-//        if let dtoEncoded = request.dtoEncoded {
-        if let dto = request.dto,
-           let dtoEncoded = try? encoder.encode(dto) {
+        if let dtoEncoded = request.dtoEncoded {
             urlRequest.httpBody = dtoEncoded
         }
-
+        if let body = request.dtoEncoded {
+            urlRequest.httpBody = body
+        }
+        
         return urlRequest
     }
 

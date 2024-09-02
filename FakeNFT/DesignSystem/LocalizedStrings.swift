@@ -41,4 +41,6 @@ extension String {
     static let errorRepeat = NSLocalizedString("Error.repeat", comment: "")
     static let errorCancel = NSLocalizedString("Error.cancel", comment: "")
 
+    static let sortingOptionsByNamedNft = NSLocalizedString("sortingOptions.sortByNamedNft", comment: "")
+    static let sortingOptionsByNumberOfNFTs = NSLocalizedString("sortingOptions.sortByNumberOfNFTs", comment: "")
 }

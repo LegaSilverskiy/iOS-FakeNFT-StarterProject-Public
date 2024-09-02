@@ -1,0 +1,84 @@
+final class ServicesAssembly {
+    
+    private let networkClient: NetworkClient
+    private let nftStorage: NftStorage
+<<<<<<< HEAD
+    private let usersStorage: UsersStorage
+
+    init(
+        networkClient: NetworkClient,
+        nftStorage: NftStorage,
+        usersStorage: UsersStorage
+    ) {
+        self.networkClient = networkClient
+        self.nftStorage = nftStorage
+        self.usersStorage = usersStorage
+=======
+    private let catalogStorage: CatalogStorage
+    
+    init(
+        networkClient: NetworkClient,
+        nftStorage: NftStorage,
+        catalogStorage: CatalogStorage
+    ) {
+        self.networkClient = networkClient
+        self.nftStorage = nftStorage
+        self.catalogStorage = catalogStorage
+>>>>>>> catalog
+    }
+    
+    var nftService: NftService {
+        NftServiceImpl(
+            networkClient: networkClient,
+            storage: nftStorage
+        )
+    }
+<<<<<<< HEAD
+
+    var profileService: ProfileServiceProtocol {
+        ProfileService(networkClient: networkClient)
+    }
+
+    var usersService: UsersServiceProtocol {
+        UsersService(
+            networkClient: networkClient,
+            storage: usersStorage
+        )
+    }
+
+    var userNFTService: UserNFTServiceProtocol {
+        UserNFTService(
+            networkClient: networkClient
+        )
+    }
+
+    var favoritesService: FavoritesServiceProtocol {
+        FavoritesService(
+            networkClient: networkClient
+        )
+    }
+
+    var orderService: OrderServiceProtocol {
+        OrderService(
+=======
+    
+    var catalogService: CatalogService {
+        .init(
+            networkClient: networkClient,
+            storage: catalogStorage
+        )
+    }
+    
+    var profileServiceCatalog: ProfileServiceCatalog {
+        .init(
+            networkClient: networkClient
+        )
+    }
+    
+    var orderServiceCatalog: OrderServiceCatalog {
+        .init(
+>>>>>>> catalog
+            networkClient: networkClient
+        )
+    }
+}

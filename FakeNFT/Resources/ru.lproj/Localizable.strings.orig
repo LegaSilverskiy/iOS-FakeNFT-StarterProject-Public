@@ -1,0 +1,52 @@
+"buttons.cancel" = "Отмена";
+"buttons.repeat" = "Повторить";
+"buttons.showUserSite" = "Перейти на сайт пользователя";
+"buttons.close" = "Закрыть";
+"buttons.delete" = "Удалить";
+"buttons.back" = "Вернуться";
+"buttons.pay" = "Оплатить";
+
+"error.title" = "Ошибка";
+"error.network" = "Произошла ошибка сети";
+"error.unknown" = "Произошла неизвестная ошибка";
+"error.cancel" = "Отменить";
+
+"tabBarController.tab.profile" = "Профиль";
+"tabBarController.tab.catalog" = "Каталог";
+"tabBarController.tab.cart" = "Корзина";
+"tabBarController.tab.statistics" = "Статистика";
+
+"actionSheet.title.sorting" = "Сортировка";
+
+"sortingOptions.name" = "По имени";
+"sortingOptions.rating" = "По рейтингу";
+<<<<<<< HEAD
+"sortingOptions.price" = "По цене";
+
+"sortingOptions.name" = "По имени";
+"sortingOptions.rating" = "По рейтингу";
+
+"userCardViewController.showNFTs" = "Коллекция NFT (%d)";
+"userNFTCollectionVC.title" = "Коллекция NFT";
+"userNFTCollectionVC.userHasNoNfts" = "У пользователя пока нет NFT";
+=======
+"sortingOptions.sortByNamedNft" = "По названию";
+"sortingOptions.sortByNumberOfNFTs" = "По количеству NFT";
+
+"buttons.cancel" = "Отмена";
+"buttons.close" = "Закрыть";
+>>>>>>> catalog
+
+"Catalog.openNft" = "Открыть Nft";
+
+// MARK: - CART
+"cart.userAgreement" = "Пользовательское соглашение";
+"cart.userAgreement.firstPart" = "Совершая покупку, вы соглашаетесь с условиями";
+"cart.userAgreement.secondPart" = "Пользовательского соглашения";
+"cart.emptyState" = "Корзина пуста";
+"cart.toPayment" = "К оплате";
+"cart.choosePaymentMethod" = "Выберите способ оплаты";
+"cart.warningDelete" = "Вы уверены, что хотите \nудалить объект из корзины?";
+"cart.errorPayment" = "Не удалось произвести оплату";
+"cart.successPayment" = "Успех! Оплата прошла, поздравляем с покупкой!";
+"cart.backToCart" = "Вернуться в корзину";

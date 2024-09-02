@@ -10,4 +10,5 @@ extension UIImage {
     static let nftAddToCart = UIImage(named: "nft.addToCart")
     static let nftDeleteFromCart = UIImage(named: "nft.deleteFromCart")
     static let nftFavorites = UIImage(named: "nft.favorites")
+    static let navBarIconsSort = UIImage(named: "navBar.sortButton")
 }

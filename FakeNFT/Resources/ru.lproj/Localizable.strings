@@ -28,6 +28,11 @@
 "userCardViewController.showNFTs" = "Коллекция NFT (%d)";
 "userNFTCollectionVC.title" = "Коллекция NFT";
 "userNFTCollectionVC.userHasNoNfts" = "У пользователя пока нет NFT";
+"sortingOptions.sortByNamedNft" = "По названию";
+"sortingOptions.sortByNumberOfNFTs" = "По количеству NFT";
+
+"buttons.cancel" = "Отмена";
+"buttons.close" = "Закрыть";
 
 "Catalog.openNft" = "Открыть Nft";
 
