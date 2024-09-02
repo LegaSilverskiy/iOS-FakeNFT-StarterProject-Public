@@ -24,7 +24,7 @@ extension UIColor {
             alpha: CGFloat(alpha) / 255
         )
     }
-    
+
     // сюда добавляем цвета нужные для верстки
     // Ниже приведены примеры цветов, настоящие цвета надо взять из фигмы
 
@@ -46,7 +46,7 @@ extension UIColor {
     static let yaGreen = UIColor(hexString: "#1C9F00")
     static let yaRed = UIColor(hexString: "#FF3B30")
     static let yaBlue = UIColor(hexString: "#0A84FF")
-    
+
     // epic Statistics
     static let avatarStubTintColor = UIColor(hexString: "#625C5C")
 
@@ -56,7 +56,7 @@ extension UIColor {
         ? .yaBlackDark
         : .yaBlackLight
     }
-    
+
     static let segmentActive = UIColor { traits in
         return traits.userInterfaceStyle == .dark
         ? .yaBlackDark
@@ -74,10 +74,10 @@ extension UIColor {
         ? .yaBlackDark
         : .yaBlackLight
     }
-    
+
     // сюда помещаем цвета, используемые для создания констант, но не используемые в коде напрямую
     private static let yaBlackLight = UIColor(hexString: "1A1B22")
     private static let yaBlackDark = UIColor.white
-    private static let yaLightGrayLight = UIColor(hexString: "#F7F7F8") 
+    private static let yaLightGrayLight = UIColor(hexString: "#F7F7F8")
     private static let yaLightGrayDark = UIColor(hexString: "#2C2C2E")
 }

@@ -1,7 +1,7 @@
 import UIKit
 
 extension UIAlertController {
-    
+
     func createAlert(
         for model: AlertModel,
         action: [AlertButtonAction],
@@ -12,7 +12,7 @@ extension UIAlertController {
             message: model.message,
             preferredStyle: style
         )
-        
+
         action.forEach { button in
             let actionButton = UIAlertAction(
                 title: button.buttonTitle,
@@ -23,7 +23,7 @@ extension UIAlertController {
                 actionButton
             )
         }
-        
+
         return alert
     }
 }

@@ -1,7 +1,7 @@
 import Foundation
 
 extension String {
-    
+
     static let tabBarItemsProfile = NSLocalizedString("tabBarController.tab.profile", comment: "")
     static let tabBarItemsCatalog = NSLocalizedString("tabBarController.tab.catalog", comment: "")
     static let tabBarItemsCart = NSLocalizedString("tabBarController.tab.cart", comment: "")
@@ -27,5 +27,5 @@ extension String {
     static let cartBackToCart = NSLocalizedString("cart.backToCart", comment: "")
     static let errorRepeat = NSLocalizedString("Error.repeat", comment: "")
     static let errorCancel = NSLocalizedString("Error.cancel", comment: "")
-    
+
 }

@@ -6,12 +6,17 @@ protocol CartCurrencyServiceProtocol {
 
 final class CartCurrencyService: CartCurrencyServiceProtocol {
     private let interactor: CartCurrencyInteractorProtocol
-    
+
     init(interactor: CartCurrencyInteractorProtocol) {
         self.interactor = interactor
     }
-    
-    func transformCurrencies(from currencyModels: [CartCurrencyModel], completion: @escaping ([CartCurrency]?) -> Void) {
+
+    func transformCurrencies(
+        from currencyModels: [CartCurrencyModel],
+        completion: @escaping (
+            [CartCurrency]?
+        ) -> Void
+    ) {
         let dispatchGroup = DispatchGroup()
         var cartCurrencies: [CartCurrency] = []
         var fetchError: Error?
@@ -23,7 +28,7 @@ final class CartCurrencyService: CartCurrencyServiceProtocol {
                 case .success(let currencyByID):
                     let cartCurrency = CartCurrency(
                         title: currencyModel.title,
-                        name: currencyByID.id, 
+                        name: currencyByID.id,
                         image: currencyModel.image,
                         id: currencyModel.id
                     )
