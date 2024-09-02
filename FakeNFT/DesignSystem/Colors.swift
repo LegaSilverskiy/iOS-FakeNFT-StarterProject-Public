@@ -44,6 +44,10 @@ extension UIColor {
     static let textOnSecondary = UIColor.black
     static let yellowStar = UIColor(hexString: "#FEEF0D")
     static let redFavoriteButton = UIColor(hexString: "#FF3B30")
+    static let yaYellow = UIColor(hexString: "#FEEF0D")
+    static let yaGreen = UIColor(hexString: "#1C9F00")
+    static let yaRed = UIColor(hexString: "#FF3B30")
+    static let yaBlue = UIColor(hexString: "#0A84FF")
 
     // epic Statistics
     static let avatarStubTintColor = UIColor(hexString: "#625C5C")

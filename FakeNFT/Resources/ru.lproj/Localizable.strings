@@ -6,16 +6,6 @@
 "error.network" = "Произошла ошибка сети";
 "error.unknown" = "Произошла неизвестная ошибка";
 
-"tabBarController.tab.profile" = "Профиль";
-"tabBarController.tab.catalog" = "Каталог";
-"tabBarController.tab.cart" = "Корзина";
-"tabBarController.tab.statistics" = "Статистика";
-
-"actionSheet.title.sorting" = "Сортировка";
-
-"sortingOptions.name" = "По имени";
-"sortingOptions.rating" = "По рейтингу";
-
 "sortingOptions.name" = "По имени";
 "sortingOptions.rating" = "По рейтингу";
 
