@@ -12,14 +12,14 @@ typealias CatalogCompletion = (Result<[Catalog], Error>) -> Void
 final class CatalogService {
     private let networkClient: NetworkClient
     private let storage: CatalogStorage
-    
+
     init(networkClient: NetworkClient, storage: CatalogStorage) {
         self.networkClient = networkClient
         self.storage = storage
     }
-    
+
     func loadCatalogs(completion: @escaping CatalogCompletion) {
-        
+
         let request = CatalogsRequest()
         networkClient.send(request: request, type: [Catalog].self) { [weak storage] result in
             switch result {

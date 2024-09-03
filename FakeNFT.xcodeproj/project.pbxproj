@@ -448,7 +448,7 @@
 				3F478ECD29DB473000F6D39E /* DesignSystem */,
 				3F6806CE29CBBD1B00B4F915 /* Foundation */,
 				3F6806C929CBBCAF00B4F915 /* Models */,
-				3F6806C729CBBC5B00B4F915 /* Scenes  */,
+				3F6806C729CBBC5B00B4F915 /* Scenes */,
 				3F6806C629CBBC4E00B4F915 /* Services */,
 				3F6806A429CBBAF200B4F915 /* Info.plist */,
 			);
@@ -470,7 +470,7 @@
 			path = Services;
 			sourceTree = "<group>";
 		};
-		3F6806C729CBBC5B00B4F915 /* Scenes  */ = {
+		3F6806C729CBBC5B00B4F915 /* Scenes */ = {
 			isa = PBXGroup;
 			children = (
 				D4E113FC2C814CF500D6EF8C /* Statistics */,
@@ -482,7 +482,7 @@
 				0C79EE642A76DDCF00EE90EA /* NftDetails */,
 				3F6806C829CBBC8100B4F915 /* ProductDetails */,
 			);
-			path = "Scenes ";
+			path = Scenes;
 			sourceTree = "<group>";
 		};
 		3F6806C829CBBC8100B4F915 /* ProductDetails */ = {
@@ -1164,7 +1164,6 @@
 				0C79EE682A76DE0900EE90EA /* NftDetailPresenterImpl.swift in Sources */,
 				6B1B6CAD2C6B7E2100F012EF /* ProfileTableViewCell.swift in Sources */,
 				9AD5F3802C85C9DF00FB407C /* CartGetRequest.swift in Sources */,
-				0C79EE682A76DE0900EE90EA /* NftDetailPresenterImpl.swift in Sources */,
 				EBFDCF202C77AA33001E83BA /* CurrentCollectionNftPresenter.swift in Sources */,
 				EBFDCF7F2C7D02CA001E83BA /* OrderForCatalog.swift in Sources */,
 				3F68069B29CBBAF100B4F915 /* ProductDetailsTableViewController.swift in Sources */,

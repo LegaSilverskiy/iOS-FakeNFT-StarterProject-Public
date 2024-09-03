@@ -10,13 +10,13 @@ import Foundation
 typealias OrderCompl = (Result<OrderForCatalog, Error>) -> Void
 
 final class OrderServiceCatalog {
-    
+
     private let networkClient: NetworkClient
-    
+
     init(networkClient: NetworkClient) {
         self.networkClient = networkClient
     }
-    
+
     func loadOrders(completion: @escaping OrderCompl) {
         let request = OrderRequestCatalog()
         networkClient.send(request: request, type: OrderForCatalog.self) { result in
@@ -28,7 +28,7 @@ final class OrderServiceCatalog {
             }
         }
     }
-    
+
     func setOrders(id: String, orders: [String], completion: @escaping OrderCompl) {
         let request = OrderPutRequestCatalog(id: id, orders: orders)
         networkClient.send(request: request, type: OrderForCatalog.self) { result in
@@ -41,4 +41,3 @@ final class OrderServiceCatalog {
         }
     }
 }
-

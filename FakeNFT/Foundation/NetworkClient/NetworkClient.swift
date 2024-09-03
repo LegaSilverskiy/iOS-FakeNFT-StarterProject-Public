@@ -114,7 +114,7 @@ struct DefaultNetworkClient: NetworkClient {
             assertionFailure("Empty endpoint")
             return nil
         }
-        
+
         var urlRequest = URLRequest(url: endpoint)
         urlRequest.httpMethod = request.httpMethod.rawValue
 
@@ -128,7 +128,7 @@ struct DefaultNetworkClient: NetworkClient {
         if let body = request.dtoEncoded {
             urlRequest.httpBody = body
         }
-        
+
         return urlRequest
     }
 

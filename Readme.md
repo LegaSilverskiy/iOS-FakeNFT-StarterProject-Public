@@ -8,7 +8,7 @@
 - Профиль - https://disk.yandex.ru/i/MvSCjH9Ii6zs2g;
 - Каталог - https://disk.yandex.ru/i/1Bn5YLpm-9PFBw;
 - Корзина - https://disk.yandex.ru/i/YN-X7Re2SB84lA;
-- Статистика - ;
+- Статистика - https://disk.yandex.ru/i/p8DJsPleeXIXvA;
 
 # Назначение и цели приложения
 

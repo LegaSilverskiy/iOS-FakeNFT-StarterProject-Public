@@ -51,7 +51,7 @@ extension UIColor {
 
     // epic Statistics
     static let avatarStubTintColor = UIColor(hexString: "#625C5C")
-    
+
     // epic Catalog
     static let blueColorForLinks = UIColor(hexString: "#0A84FF")
     static let blackForUI = UIColor(hexString: "#1A1B22")

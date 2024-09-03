@@ -14,23 +14,23 @@ struct OrderRequestCatalog: NetworkRequest {
 }
 
 struct OrderPutRequestCatalog: NetworkRequest {
-    
+
     let httpMethod: HttpMethod = .put
     var id: String
     var orders: [String]
     var endpoint: URL? {
         URL(string: "\(RequestConstants.baseURL)/api/v1/orders/1")
     }
-    
+
     var dtoEncoded: Data? {
         return ordersToString().data(using: .utf8)
     }
-    
+
     init(id: String, orders: [String]) {
         self.orders = orders
         self.id = id
     }
-    
+
     private func ordersToString() -> String {
         var ordersString = "nfts="
         if orders.isEmpty {
