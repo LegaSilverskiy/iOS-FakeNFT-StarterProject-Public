@@ -2,6 +2,6 @@ import Foundation
 
 struct ExampleRequest: NetworkRequest {
     var endpoint: URL? {
-        URL(string: "INSERT_URL_HERE")
+        URL(string: "https://d5dn3j2ouj72b0ejucbl.apigw.yandexcloud.net/")
     }
 }

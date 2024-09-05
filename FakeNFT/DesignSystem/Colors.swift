@@ -25,6 +25,7 @@ extension UIColor {
         )
     }
 
+    // сюда добавляем цвета нужные для верстки
     // Ниже приведены примеры цветов, настоящие цвета надо взять из фигмы
 
     // Primary Colors
@@ -41,11 +42,33 @@ extension UIColor {
     static let textSecondary = UIColor.gray
     static let textOnPrimary = UIColor.white
     static let textOnSecondary = UIColor.black
+    static let yellowStar = UIColor(hexString: "#FEEF0D")
+    static let redFavoriteButton = UIColor(hexString: "#FF3B30")
+    static let yaYellow = UIColor(hexString: "#FEEF0D")
+    static let yaGreen = UIColor(hexString: "#1C9F00")
+    static let yaRed = UIColor(hexString: "#FF3B30")
+    static let yaBlue = UIColor(hexString: "#0A84FF")
 
-    private static let yaBlackLight = UIColor(hexString: "1A1B22")
-    private static let yaBlackDark = UIColor.white
-    private static let yaLightGrayLight = UIColor(hexString: "#F7F7F8")
-    private static let yaLightGrayDark = UIColor(hexString: "#2C2C2E")
+    // epic Statistics
+    static let avatarStubTintColor = UIColor(hexString: "#625C5C")
+
+    // epic Catalog
+    static let blueColorForLinks = UIColor(hexString: "#0A84FF")
+    static let blackForUI = UIColor(hexString: "#1A1B22")
+    static let yelowForStars = UIColor(hexString: "#FEEF0D")
+    static let pinkForLikeButton = UIColor(hexString: "#F56B6C")
+    static let mainTextColor = UIColor(hexString: "#1A1B22")
+
+    // epic Profile
+    static let textFieldTintColor = UIColor(hexString: "#F7F7F8")
+    static let likeTintColor = UIColor(hexString: "#F56B6C")
+
+    // тут создаем константы для цветов с поддержкой темной темы
+    static let tabBarItemsTintColor = UIColor { traits in
+        return traits.userInterfaceStyle == .dark
+        ? .yaBlackDark
+        : .yaBlackLight
+    }
 
     static let segmentActive = UIColor { traits in
         return traits.userInterfaceStyle == .dark
@@ -64,4 +87,10 @@ extension UIColor {
         ? .yaBlackDark
         : .yaBlackLight
     }
+
+    // сюда помещаем цвета, используемые для создания констант, но не используемые в коде напрямую
+    private static let yaBlackLight = UIColor(hexString: "1A1B22")
+    private static let yaBlackDark = UIColor.white
+    private static let yaLightGrayLight = UIColor(hexString: "#F7F7F8")
+    private static let yaLightGrayDark = UIColor(hexString: "#2C2C2E")
 }
